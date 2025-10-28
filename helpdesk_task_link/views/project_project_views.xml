@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- Agrega booleano en proyecto para habilitar asociación de tickets -->
+	<record id="view_project_form_inherit_ticket_flag" model="ir.ui.view">
+		<field name="name">project.project.form.inherit.ticket.flag</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.edit_project"/>
+		<field name="arch" type="xml">
+			<!-- Inserta en el primer grupo del sheet -->
+			<xpath expr="//sheet/group[1]" position="inside">
+				<label for="enable_ticket_task_link"/>
+				<field name="enable_ticket_task_link"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>
+

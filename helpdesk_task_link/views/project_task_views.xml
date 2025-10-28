@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!--
+	Vista: Inserta un notebook con listado de tickets en la tarea.
+	Muestra los tickets relacionados para seguimiento desde la tarea.
+	-->
+	<record id="view_project_task_form_inherit_ticket_tab" model="ir.ui.view">
+		<field name="name">project.task.form.inherit.ticket.tab</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_form2"/>
+		<field name="arch" type="xml">
+			<xpath expr="//sheet/notebook" position="inside">
+				<page string="Tickets" name="tickets_tab">
+					<group>
+						<field name="enable_ticket_task_link" invisible="1"/>
+					</group>
+					<field name="ticket_ids" context="{'default_task_id': active_id}" invisible="not enable_ticket_task_link">
+						<tree>
+							<field name="name"/>
+							<field name="partner_id"/>
+							<field name="task_id" column_invisible="1"/>
+						</tree>
+					</field>
+				</page>
+			</xpath>
+		</field>
+	</record>
+</odoo>
+
