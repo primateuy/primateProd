@@ -4,7 +4,7 @@
 {
 	"name": "Helpdesk Ticket - Project Task Link",
 	"summary": "Asocia tickets de Helpdesk con tareas de Proyecto en ambos sentidos.",
-	"version": "17.0.1.0.0",
+	"version": "18.0.1.0.0",
 	"category": "Project",
 	"author": "PrimateUY",
 	"website": "https://primateuy.com",
