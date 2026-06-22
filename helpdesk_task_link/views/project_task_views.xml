@@ -15,11 +15,11 @@
 						<field name="enable_ticket_task_link" invisible="1"/>
 					</group>
 					<field name="ticket_ids" context="{'default_task_id': active_id}" invisible="not enable_ticket_task_link">
-						<tree>
+						<list>
 							<field name="name"/>
 							<field name="partner_id"/>
 							<field name="task_id" column_invisible="1"/>
-						</tree>
+						</list>
 					</field>
 				</page>
 			</xpath>
