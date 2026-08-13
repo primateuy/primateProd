@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 18:46+0000\n"
-"PO-Revision-Date: 2026-08-13 18:46+0000\n"
+"POT-Creation-Date: 2026-08-13 19:00+0000\n"
+"PO-Revision-Date: 2026-08-13 19:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -696,6 +696,14 @@ msgstr "La acción planificada diaria guarda un snapshot por cada proyecto activ
 #: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
 msgid "The dashboard data could not be loaded."
 msgstr "No se pudieron cargar los datos del dashboard."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid ""
+"The period selects which projects are listed. Progress, hours and health are"
+" always calculated as of today."
+msgstr "El período elige qué proyectos se listan. El avance, las horas y el semáforo se calculan siempre al día de hoy."
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,help:primate_project_dashboard.field_project_project__progress_plan_is_estimated

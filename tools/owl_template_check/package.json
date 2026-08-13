@@ -1,0 +1,10 @@
+{
+	"name": "owl-template-check",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Compila plantillas OWL fuera del navegador para detectar errores de expresión.",
+	"dependencies": {
+		"linkedom": "^0.18.0"
+	}
+}

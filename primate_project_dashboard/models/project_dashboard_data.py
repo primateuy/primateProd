@@ -207,7 +207,9 @@ class ProjectProject(models.Model):
 		if compliance_weight:
 			compliance = compliance_weighted / compliance_weight * 100.0
 		elif rows:
-			# Ningún proyecto con horas vendidas: promedio simple, no un cero engañoso.
+			# Desvío deliberado de la spec 1.4, que pide ponderar siempre por horas
+			# vendidas: un portafolio de proyectos internos no tiene ninguna, y ponderar
+			# por cero daría siempre vacío. Se cae a promedio simple, que es un dato real.
 			compliance = compliance_plain / len(rows) * 100.0
 		else:
 			compliance = None

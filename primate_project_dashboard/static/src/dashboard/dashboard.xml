@@ -8,6 +8,7 @@
 					<h1 class="o_primate_dashboard_title mb-0">Project Dashboard</h1>
 					<div class="d-flex flex-wrap gap-2 align-items-center">
 						<select class="form-select form-select-sm w-auto"
+							t-att-title="periodTooltip"
 							t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
 							<t t-foreach="periods" t-as="period" t-key="period.value">
 								<option t-att-value="period.value"

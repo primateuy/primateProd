@@ -43,6 +43,14 @@ export class ProjectDashboard extends Component {
 		return this.state.data?.selectors?.partners || [];
 	}
 
+	/** Sin esto, el primero que filtre "trimestre pasado" reporta como bug que las horas no cambian. */
+	get periodTooltip() {
+		return _t(
+			"The period selects which projects are listed. Progress, hours and health are " +
+				"always calculated as of today."
+		);
+	}
+
 	get periods() {
 		return [
 			{ value: "month", label: _t("This month") },
