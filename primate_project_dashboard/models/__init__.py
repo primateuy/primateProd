@@ -1,0 +1,8 @@
+# Copyright 2026 - PrimateUY
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
+from . import project_milestone
+from . import project_task
+from . import project_project
+from . import project_progress_snapshot
+from . import res_config_settings
