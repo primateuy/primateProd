@@ -54,6 +54,12 @@ class ProjectProject(models.Model):
 		store=True,
 		index=True,
 		readonly=True,
+		# Explícito aunque `store=True` ya lo ponga en True por default: el valor es global
+		# y lo ven todos. Si un PM sin lectura sobre sale.order.line dispara el recompute al
+		# cargar un timesheet, sin sudo sold_hours daría 0 y se guardaría un semáforo
+		# equivocado para toda la empresa hasta el cron. No contradice la regla de "sin
+		# sudo()": esa aplica a get_dashboard_data y a lo que cada usuario lee.
+		compute_sudo=True,
 		help="Calculated from objective rules; it is never set by hand.",
 	)
 	sold_hours = fields.Float(

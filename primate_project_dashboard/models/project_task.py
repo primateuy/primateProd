@@ -8,6 +8,10 @@ from . import dashboard_params
 # Estado estándar de Odoo 19 que representa una tarea en espera.
 WAITING_STATE = "04_waiting_normal"
 
+# Campos que pueden cambiar el bloqueo. project.task es el modelo más caliente de Odoo:
+# si ninguno viene en vals, el override sale sin costo.
+BLOCKING_TRIGGER_FIELDS = ("blocking_state", "state", "tag_ids")
+
 AREA_SELECTION = [
 	("technical", "Technical"),
 	("functional", "Functional"),
@@ -25,6 +29,8 @@ class ProjectTask(models.Model):
 		tracking=True,
 		help="Area in charge of the task. Used by the executive dashboard to group workload.",
 	)
+	# Caso borde asumido: al ser Selection, una tarea no puede estar "bloqueada" y
+	# "esperando al cliente" a la vez. Si la operativa real lo necesita, se revisa en v2.
 	blocking_state = fields.Selection(
 		selection=[("blocked", "Blocked"), ("waiting_customer", "Waiting for Customer")],
 		string="Blocking",
@@ -60,9 +66,10 @@ class ProjectTask(models.Model):
 		tag_ids = set(self.tag_ids.ids)
 		return bool(tag_ids & set(blocked_tag_ids)) or bool(tag_ids & set(waiting_tag_ids))
 
-	def _primate_sync_blocked_since(self):
+	def _primate_sync_blocked_since(self, blocked_tag_ids=None, waiting_tag_ids=None):
 		"""Sella la fecha de bloqueo; sin esto la alerta 'bloqueada hace X días' no se puede calcular."""
-		blocked_tag_ids, waiting_tag_ids = self._primate_blocking_tag_ids()
+		if blocked_tag_ids is None or waiting_tag_ids is None:
+			blocked_tag_ids, waiting_tag_ids = self._primate_blocking_tag_ids()
 		now = fields.Datetime.now()
 		to_stamp = self.browse()
 		to_clear = self.browse()
@@ -81,14 +88,27 @@ class ProjectTask(models.Model):
 	@api.model_create_multi
 	def create(self, vals_list):
 		tasks = super().create(vals_list)
-		tasks._primate_sync_blocked_since()
+		if self.env.context.get("primate_skip_blocked_sync"):
+			return tasks
+		# La enorme mayoría de las tareas nace desbloqueada: se filtra con campos ya en
+		# caché antes de tocar etiquetas o de escribir nada.
+		candidates = tasks.filtered(
+			lambda task: task.blocking_state or task.state == WAITING_STATE
+		)
+		blocked_tag_ids, waiting_tag_ids = self._primate_blocking_tag_ids()
+		if blocked_tag_ids or waiting_tag_ids:
+			tag_ids = set(blocked_tag_ids) | set(waiting_tag_ids)
+			candidates |= tasks.filtered(lambda task: tag_ids & set(task.tag_ids.ids))
+		if candidates:
+			candidates._primate_sync_blocked_since(blocked_tag_ids, waiting_tag_ids)
 		return tasks
 
 	def write(self, vals):
+		sync_blocking = not self.env.context.get("primate_skip_blocked_sync") and any(
+			field in vals for field in BLOCKING_TRIGGER_FIELDS
+		)
 		res = super().write(vals)
-		if not self.env.context.get("primate_skip_blocked_sync") and (
-			{"blocking_state", "state", "tag_ids"} & set(vals)
-		):
+		if sync_blocking:
 			self._primate_sync_blocked_since()
 		return res
 
