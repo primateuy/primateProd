@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.KpiCards">
+		<div class="o_primate_kpi_row row g-3">
+			<div class="col-12 col-sm-6 col-lg">
+				<div class="o_primate_kpi_card">
+					<div class="o_primate_kpi_label">Active projects</div>
+					<div class="o_primate_kpi_value" t-esc="props.kpis.active_projects"/>
+				</div>
+			</div>
+			<div class="col-12 col-sm-6 col-lg">
+				<div class="o_primate_kpi_card">
+					<div class="o_primate_kpi_label">At risk</div>
+					<div class="o_primate_kpi_value text-danger" t-esc="props.kpis.at_risk"/>
+				</div>
+			</div>
+			<div class="col-12 col-sm-6 col-lg">
+				<div class="o_primate_kpi_card">
+					<div class="o_primate_kpi_label">Plan compliance</div>
+					<div class="o_primate_kpi_value" t-esc="formatPercentage(props.kpis.plan_compliance)"/>
+				</div>
+			</div>
+			<div class="col-12 col-sm-6 col-lg">
+				<div class="o_primate_kpi_card">
+					<div class="o_primate_kpi_label">Hours deviation</div>
+					<div class="o_primate_kpi_value" t-att-class="deviationClass"
+						t-esc="formatSignedPercentage(props.kpis.hours_deviation)"
+						t-att-title="hoursDeviationTooltip"/>
+				</div>
+			</div>
+			<div class="col-12 col-sm-6 col-lg" t-if="props.config.can_see_margin">
+				<div class="o_primate_kpi_card">
+					<div class="o_primate_kpi_label">Estimated margin</div>
+					<div class="o_primate_kpi_value" t-att-class="marginClass"
+						t-esc="formatMargin(props.kpis.margin_estimate)"/>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

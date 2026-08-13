@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ProjectTable">
+		<div class="o_primate_card">
+			<t t-if="!props.projects.length">
+				<div class="text-center text-muted py-5">
+					No project matches the current filters.
+				</div>
+			</t>
+			<table t-else="" class="o_primate_table table align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Status</th>
+						<th>Real vs planned progress</th>
+						<th class="text-end">Hours</th>
+						<th>Next milestone</th>
+						<th class="text-center">Mgr</th>
+						<th class="text-end" t-if="props.config.can_see_margin">Margin</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr t-foreach="props.projects" t-as="row" t-key="row.id"
+						class="o_primate_row" t-on-click="() => props.onOpenProject(row.id)">
+						<td>
+							<div class="o_primate_project_name" t-esc="row.name"/>
+							<div class="text-muted small" t-esc="row.partner_name or noData"/>
+						</td>
+						<td>
+							<span class="o_primate_badge" t-att-class="healthClass(row)"
+								t-esc="healthLabel(row)"/>
+						</td>
+						<td>
+							<div class="o_primate_bar">
+								<div class="o_primate_bar_fill" t-att-class="healthClass(row)"
+									t-att-style="'width: ' + barWidth(row.progress_real)"/>
+								<div class="o_primate_bar_marker"
+									t-att-style="'left: ' + barWidth(row.progress_planned)"
+									title="Planned progress"/>
+							</div>
+							<div class="text-muted small mt-1">
+								<t t-esc="row.progress_real"/>% real /
+								<t t-esc="row.progress_planned"/>% planned
+								<i t-if="row.plan_is_estimated" class="fa fa-info-circle ms-1"
+									t-att-title="estimatedPlanTooltip" role="img"
+									aria-label="Approximate plan"/>
+							</div>
+						</td>
+						<td class="text-end">
+							<span t-esc="hoursLabel(row)" t-att-title="hoursTooltip(row)"/>
+						</td>
+						<td>
+							<t t-if="!props.config.can_see_milestones">
+								<span class="text-muted" t-att-title="milestoneTooltip" t-esc="noData"/>
+							</t>
+							<t t-elif="row.next_milestone">
+								<div t-esc="row.next_milestone.name"/>
+								<div t-if="row.next_milestone.overdue_days"
+									class="text-danger small" t-esc="overdueLabel(row)"/>
+								<div t-else="" class="text-muted small" t-esc="milestoneDate(row)"/>
+							</t>
+							<t t-else="">
+								<span class="text-muted" t-esc="noData"/>
+							</t>
+						</td>
+						<td class="text-center">
+							<img t-if="row.user_id" class="o_primate_avatar rounded-circle"
+								t-att-src="'/web/image/res.users/' + row.user_id + '/avatar_128'"
+								t-att-alt="row.user_name" t-att-title="row.user_name"/>
+							<span t-else="" class="text-muted" t-esc="noData"/>
+						</td>
+						<td class="text-end" t-if="props.config.can_see_margin"
+							t-esc="formatMargin(row)"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</t>
+
+</templates>

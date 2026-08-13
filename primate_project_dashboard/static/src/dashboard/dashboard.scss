@@ -1,0 +1,125 @@
+// Dashboard ejecutivo de proyectos.
+// Se usan las variables de color estándar de Odoo para respetar el theming.
+
+.o_primate_dashboard {
+	.o_primate_dashboard_content {
+		overflow: auto;
+	}
+
+	.o_primate_dashboard_title {
+		font-size: 1.75rem;
+		font-weight: 400;
+	}
+
+	.o_primate_section_title {
+		font-size: 1.15rem;
+		font-weight: 500;
+		color: $o-main-text-color;
+	}
+
+	.o_primate_card,
+	.o_primate_kpi_card {
+		background-color: $o-view-background-color;
+		border: 1px solid $border-color;
+		border-radius: $border-radius;
+		overflow: hidden;
+	}
+
+	.o_primate_kpi_card {
+		height: 100%;
+		padding: 1rem 1.25rem;
+	}
+
+	.o_primate_kpi_label {
+		color: $text-muted;
+		font-size: 0.9rem;
+	}
+
+	.o_primate_kpi_value {
+		font-size: 2rem;
+		font-weight: 300;
+		line-height: 1.2;
+	}
+
+	.o_primate_table {
+		th {
+			font-weight: 500;
+			color: $text-muted;
+		}
+
+		.o_primate_row {
+			cursor: pointer;
+
+			&:hover {
+				background-color: rgba($o-main-text-color, 0.04);
+			}
+		}
+
+		.o_primate_project_name {
+			font-weight: 500;
+		}
+	}
+
+	.o_primate_avatar {
+		width: 28px;
+		height: 28px;
+		object-fit: cover;
+	}
+
+	// Barra de avance real con el marcador del avance planificado encima.
+	.o_primate_bar {
+		position: relative;
+		height: 10px;
+		min-width: 120px;
+		border-radius: 5px;
+		background-color: $gray-200;
+	}
+
+	.o_primate_bar_fill {
+		height: 100%;
+		border-radius: 5px;
+		background-color: $o-success;
+	}
+
+	.o_primate_bar_marker {
+		position: absolute;
+		top: -3px;
+		width: 2px;
+		height: 16px;
+		background-color: $o-main-text-color;
+	}
+
+	.o_primate_badge {
+		display: inline-block;
+		padding: 0.2rem 0.7rem;
+		border-radius: 1rem;
+		font-size: 0.85rem;
+	}
+
+	.o_primate_health_on_track {
+		background-color: rgba($o-success, 0.15);
+		color: shade-color($o-success, 20%);
+
+		&.o_primate_bar_fill {
+			background-color: $o-success;
+		}
+	}
+
+	.o_primate_health_at_risk {
+		background-color: rgba($o-warning, 0.15);
+		color: shade-color($o-warning, 30%);
+
+		&.o_primate_bar_fill {
+			background-color: $o-warning;
+		}
+	}
+
+	.o_primate_health_critical {
+		background-color: rgba($o-danger, 0.12);
+		color: shade-color($o-danger, 10%);
+
+		&.o_primate_bar_fill {
+			background-color: $o-danger;
+		}
+	}
+}

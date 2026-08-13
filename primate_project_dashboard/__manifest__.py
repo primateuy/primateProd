@@ -23,7 +23,13 @@
 		"views/project_milestone_views.xml",
 		"views/project_progress_snapshot_views.xml",
 		"views/res_config_settings_views.xml",
+		"views/dashboard_views.xml",
 	],
+	"assets": {
+		"web.assets_backend": [
+			"primate_project_dashboard/static/src/dashboard/**/*",
+		],
+	},
 	"installable": True,
 	"application": False,
 }

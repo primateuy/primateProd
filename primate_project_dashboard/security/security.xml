@@ -30,6 +30,9 @@
 		<field name="sequence">30</field>
 		<field name="privilege_id" ref="res_groups_privilege_project_dashboard"/>
 		<field name="implied_ids" eval="[Command.link(ref('group_dashboard_area_lead'))]"/>
+		<!-- Sin esto nadie ve el menú recién instalado: el dashboard restringe al perfil PM
+		     a quien no tenga ningún grupo, y el admin no tendría ninguno. -->
+		<field name="user_ids" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
 	</record>
 
 	<!-- El PM solo ve el histórico de los proyectos que tiene a cargo. -->
