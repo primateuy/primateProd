@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 19:00+0000\n"
-"PO-Revision-Date: 2026-08-13 19:00+0000\n"
+"POT-Creation-Date: 2026-08-13 19:13+0000\n"
+"PO-Revision-Date: 2026-08-13 19:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -335,6 +335,11 @@ msgstr "Desvío (días)"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr ""
+
+#. module: primate_project_dashboard
+#: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__deviation_min_elapsed_days
+msgid "Estimate the deviation after (days)"
+msgstr "Estimar el desvío a partir de (días)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__margin_estimate

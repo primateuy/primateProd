@@ -91,6 +91,11 @@ class ResConfigSettings(models.TransientModel):
 		default="closed",
 		config_parameter=PARAM_PREFIX + "progress_method",
 	)
+	deviation_min_elapsed_days = fields.Integer(
+		string="Estimate the deviation after (days)",
+		default=7,
+		config_parameter=PARAM_PREFIX + "deviation_min_elapsed_days",
+	)
 	# Dashboard
 	auto_refresh_enabled = fields.Boolean(
 		string="Auto-refresh the dashboard",

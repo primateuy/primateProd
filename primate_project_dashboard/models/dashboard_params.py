@@ -31,6 +31,7 @@ PARAM_DEFAULTS = {
 	"use_planning_capacity": False,
 	# Avance
 	"progress_method": "closed",
+	"deviation_min_elapsed_days": 7,
 	# Dashboard
 	"auto_refresh_enabled": False,
 	"auto_refresh_interval": 5,
@@ -101,6 +102,7 @@ def get_params(env):
 		"capacity_window_days": get_int(env, "capacity_window_days"),
 		"use_planning_capacity": get_bool(env, "use_planning_capacity"),
 		"progress_method": get_str(env, "progress_method"),
+		"deviation_min_elapsed_days": get_int(env, "deviation_min_elapsed_days"),
 		"auto_refresh_enabled": get_bool(env, "auto_refresh_enabled"),
 		"auto_refresh_interval": get_int(env, "auto_refresh_interval"),
 		"blocked_tag_ids": get_ids(env, "blocked_tag_ids"),

@@ -56,6 +56,8 @@ class ProjectProject(models.Model):
 		if not self.env.user.has_group(AREA_LEAD_GROUP):
 			domain.append(("user_id", "=", self.env.uid))
 		date_from, date_to = self._primate_dashboard_period(options, today)
+		# Decisión: un proyecto sin fechas aparece en todos los períodos. Es preferible
+		# que se vea siempre a que desaparezca del portafolio por un dato faltante.
 		if date_to:
 			domain += ["|", ("date_start", "=", False), ("date_start", "<=", date_to)]
 		if date_from:
@@ -134,7 +136,8 @@ class ProjectProject(models.Model):
 					"has_plan": values.get("has_plan", False),
 					"consumed_hours": self._primate_round(values.get("consumed_hours")),
 					"sold_hours": self._primate_round(values.get("sold_hours")),
-					"deviation_days": project.deviation_days,
+					# None = no calculable (proyecto muy nuevo o sin plan), no cero días.
+					"deviation_days": values.get("deviation_days"),
 					"margin_estimate": margin_map.get(project.id) if can_see_margin else None,
 					"next_milestone": self._primate_serialize_milestone(next_milestone),
 				}

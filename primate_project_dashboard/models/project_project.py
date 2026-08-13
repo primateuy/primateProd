@@ -186,7 +186,17 @@ class ProjectProject(models.Model):
 		return points[-1][1]
 
 	def _primate_progress_planned_map(self, milestone_map=None, today=None):
-		"""{project_id: (avance planificado, plan aproximado, plan cargado)}."""
+		"""{project_id: (avance planificado, plan aproximado, plan cargado)}.
+
+		El plan describe el proyecto completo; los hitos son puntos intermedios de esa
+		curva, no su techo. Por eso la curva SIEMPRE termina en 100%, anclada en la fecha
+		más tardía entre la fecha de fin del proyecto y el deadline del último hito: si
+		los hitos topean en 70%, el tramo final interpola de 70% a 100% hasta esa ancla.
+
+		Caso degenerado conocido: si el último hito es posterior a la fecha de fin, el
+		ancla cae sobre ese mismo hito y el tramo final tiene longitud cero, así que el
+		plan salta de 70% a 100% en esa fecha en vez de subir gradualmente.
+		"""
 		result = {}
 		if not self.ids:
 			return result
@@ -196,15 +206,17 @@ class ProjectProject(models.Model):
 		for project in self:
 			planned_milestones = [
 				milestone
-				for milestone in milestone_map.get(project.id, [])
+				for milestone in milestone_map.get(project._origin.id, [])
 				if milestone["deadline"] and milestone["planned_progress"]
 			]
 			has_plan = bool(project.date_start and project.date and len(planned_milestones) >= 2)
 			if has_plan:
 				points = [(project.date_start, 0.0)]
 				points += [(m["deadline"], m["planned_progress"]) for m in planned_milestones]
-				if project.date > planned_milestones[-1]["deadline"]:
-					points.append((project.date, 100.0))
+				last_deadline = planned_milestones[-1]["deadline"]
+				end_date = max(project.date, last_deadline)
+				if points[-1] != (end_date, 100.0):
+					points.append((end_date, 100.0))
 			elif project.date_start and project.date:
 				# Plan aproximado: recta entre inicio y fin del proyecto.
 				points = [(project.date_start, 0.0), (project.date, 100.0)]
@@ -231,7 +243,7 @@ class ProjectProject(models.Model):
 		planned_map = self._primate_progress_planned_map()
 		for project in self:
 			planned, estimated, has_plan = planned_map.get(project.id, (0.0, True, False))
-			project.progress_real = real_map.get(project.id, 0.0)
+			project.progress_real = real_map.get(project._origin.id, 0.0)
 			project.progress_planned = planned
 			project.progress_plan_is_estimated = estimated
 			project.has_dashboard_plan = has_plan
@@ -291,15 +303,35 @@ class ProjectProject(models.Model):
 		]
 
 	def _primate_orphan_sale_lines(self):
-		"""Líneas de venta del proyecto que no quedan atrapadas por el agrupado por project_id.
+		"""{línea de venta: id de proyecto} para las líneas que el agrupado no atrapa.
 
-		Evita contar dos veces: solo entran las que apuntan a otro proyecto (o a ninguno).
+		Una línea con `project_id` ya tiene dueño y entra por el agrupado, así que no se
+		vuelve a contar acá. Las que no lo tienen se imputan al proyecto que las apunta
+		con `sale_line_id`; si varios proyectos apuntan a la misma, se asigna al de menor
+		id —determinístico— y el resto la ignora, porque sumarla en todos inflaría los
+		KPIs del portafolio.
 		"""
-		orphans = defaultdict(list)
+		candidates = defaultdict(list)
 		for project in self:
+			project_id = project._origin.id
 			line = project.sale_line_id
-			if line and line.project_id.id != project.id and line.state == "sale":
-				orphans[line].append(project.id)
+			if not project_id or not line or line.state != "sale" or line.project_id:
+				continue
+			candidates[line].append(project_id)
+		orphans = {}
+		for line, project_ids in candidates.items():
+			project_ids.sort()
+			if len(project_ids) > 1:
+				# Es un problema de datos del cliente: se avisa, no se esconde.
+				_logger.warning(
+					"Dashboard: la línea de venta %s está referenciada como sale_line_id por "
+					"los proyectos %s. Sus horas y su monto se imputan solo al proyecto %s "
+					"para no contarlos dos veces.",
+					line.id,
+					project_ids,
+					project_ids[0],
+				)
+			orphans[line] = project_ids[0]
 		return orphans
 
 	def _primate_sold_hours_map(self):
@@ -315,12 +347,13 @@ class ProjectProject(models.Model):
 			self._primate_sale_line_domain(), ["project_id", "product_uom_id"], ["product_uom_qty:sum"]
 		):
 			if project and uom and uom._has_common_reference(uom_hour):
-				result[project.id] += uom._compute_quantity(qty, uom_hour, round=False)
-		for line, project_ids in self._primate_orphan_sale_lines().items():
+				result[project.id] = result.get(project.id, 0.0) + uom._compute_quantity(
+					qty, uom_hour, round=False
+				)
+		for line, project_id in self._primate_orphan_sale_lines().items():
 			if line.product_uom_id and line.product_uom_id._has_common_reference(uom_hour):
 				qty = line.product_uom_id._compute_quantity(line.product_uom_qty, uom_hour, round=False)
-				for project_id in project_ids:
-					result[project_id] += qty
+				result[project_id] = result.get(project_id, 0.0) + qty
 		return result
 
 	def _primate_sold_amount_map(self):
@@ -335,16 +368,15 @@ class ProjectProject(models.Model):
 		):
 			if project:
 				result[project.id] = subtotal
-		for line, project_ids in self._primate_orphan_sale_lines().items():
-			for project_id in project_ids:
-				result[project_id] += line.price_subtotal
+		for line, project_id in self._primate_orphan_sale_lines().items():
+			result[project_id] = result.get(project_id, 0.0) + line.price_subtotal
 		return result
 
 	@api.depends("sale_line_id")
 	def _compute_sale_metrics(self):
 		sold_map = self._primate_sold_hours_map()
 		for project in self:
-			project.sold_hours = sold_map.get(project.id) or 0.0
+			project.sold_hours = sold_map.get(project._origin.id) or 0.0
 
 	@api.depends("timesheet_ids.unit_amount")
 	def _compute_consumed_hours(self):
@@ -352,32 +384,66 @@ class ProjectProject(models.Model):
 		# "sin permiso" de "cero real" mandando None.
 		consumed_map = self._primate_consumed_hours_map()
 		for project in self:
-			project.consumed_hours = consumed_map.get(project.id) or 0.0
+			project.consumed_hours = consumed_map.get(project._origin.id) or 0.0
 
 	@api.depends("sale_line_id", "timesheet_ids.amount")
 	def _compute_margin_estimate(self):
 		revenue_map = self._primate_sold_amount_map()
 		cost_map = self._primate_timesheet_cost_map()
 		for project in self:
-			project.margin_estimate = (revenue_map.get(project.id) or 0.0) - (
-				cost_map.get(project.id) or 0.0
+			project.margin_estimate = (revenue_map.get(project._origin.id) or 0.0) - (
+				cost_map.get(project._origin.id) or 0.0
 			)
+
+	@api.model
+	def _primate_deviation_days(self, project, values, params, today):
+		"""Atraso estimado en días. Devuelve None cuando el número no sería creíble.
+
+		ESTIMACIÓN GRUESA, NUNCA UNA FECHA COMPROMETIDA. La fórmula es:
+
+			ritmo   = avance_real / días transcurridos desde date_start   [pp/día]
+			atraso  = (avance_planificado − avance_real) / ritmo          [días]
+
+		Si el proyecto todavía no tiene ritmo propio se usa el que el plan exige
+		(100 pp repartidos en la duración del proyecto). Guardas, porque un ritmo
+		calculado sobre pocos días proyecta desvíos absurdos:
+
+		- None si el proyecto lleva menos días que el mínimo configurado (default 7).
+		- None si no tiene plan cargado: sin plan no hay contra qué comparar.
+		- Tope de ±90 días.
+
+		Al exponerlo en el frontend va siempre etiquetado como "estimado".
+		"""
+		if not values.get("has_plan") or not project.date_start:
+			return None
+		elapsed = (today - project.date_start).days
+		if elapsed < params["deviation_min_elapsed_days"]:
+			return None
+		gap = values["progress_planned"] - values["progress_real"]
+		if gap <= 0:
+			return 0
+		progress_real = values["progress_real"]
+		rate = progress_real / elapsed if elapsed > 0 and progress_real else 0.0
+		if not rate:
+			duration = (project.date - project.date_start).days if project.date else 0
+			rate = 100.0 / duration if duration > 0 else 0.0
+		if not rate:
+			return None
+		return max(-90, min(90, int(round(gap / rate))))
 
 	@api.depends("progress_real", "progress_planned", "date_start", "date")
 	def _compute_deviation_days(self):
+		# Un Integer no puede ser nulo: el campo queda en 0 y es el RPC el que distingue
+		# "no calculable" mandando None.
+		params = dashboard_params.get_params(self.env)
 		today = fields.Date.context_today(self)
 		for project in self:
-			gap = project.progress_planned - project.progress_real
-			if gap <= 0 or not project.date_start:
-				project.deviation_days = 0
-				continue
-			elapsed = (today - project.date_start).days
-			rate = project.progress_real / elapsed if elapsed > 0 and project.progress_real else 0.0
-			if not rate:
-				# Sin ritmo propio todavía: se usa el ritmo que el plan exige.
-				duration = (project.date - project.date_start).days if project.date else 0
-				rate = 100.0 / duration if duration > 0 else 0.0
-			project.deviation_days = int(round(gap / rate)) if rate else 0
+			values = {
+				"has_plan": project.has_dashboard_plan,
+				"progress_real": project.progress_real,
+				"progress_planned": project.progress_planned,
+			}
+			project.deviation_days = self._primate_deviation_days(project, values, params, today) or 0
 
 	# ------------------------------------------------------------------
 	# Semáforo
@@ -453,20 +519,22 @@ class ProjectProject(models.Model):
 		overdue_map, soon_ratio_map = self._primate_milestone_risk_map(milestone_map, params, today)
 		metrics = {}
 		for project in self:
+			origin_id = project._origin.id
 			planned, estimated, has_plan = planned_map.get(project.id, (0.0, True, False))
 			values = {
-				"next_milestone": self._primate_next_milestone(milestone_map.get(project.id, []), today),
-				"progress_real": real_map.get(project.id, 0.0),
+				"next_milestone": self._primate_next_milestone(milestone_map.get(origin_id, []), today),
+				"progress_real": real_map.get(origin_id, 0.0),
 				"progress_planned": planned,
 				"progress_plan_is_estimated": estimated,
 				"has_plan": has_plan,
 				# None = el usuario no tiene permiso para ver el dato, distinto de cero.
-				"sold_hours": sold_map.get(project.id),
-				"consumed_hours": consumed_map.get(project.id),
-				"overdue_milestone_days": overdue_map.get(project.id, 0),
-				"milestone_soon_open_ratio": soon_ratio_map.get(project.id, 0.0),
+				"sold_hours": sold_map.get(origin_id),
+				"consumed_hours": consumed_map.get(origin_id),
+				"overdue_milestone_days": overdue_map.get(origin_id, 0),
+				"milestone_soon_open_ratio": soon_ratio_map.get(origin_id, 0.0),
 			}
 			values["health_state"] = self._primate_health_state(values, params)
+			values["deviation_days"] = self._primate_deviation_days(project, values, params, today)
 			metrics[project.id] = values
 		return metrics
 

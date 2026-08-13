@@ -14,6 +14,12 @@
 					<setting id="primate_progress_method_setting" string="Real progress method"
 						help="How the progress of each task is measured before weighting it by allocated hours">
 						<field name="progress_method" widget="radio"/>
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="deviation_min_elapsed_days" class="col-lg-8 o_light_label"/>
+								<field name="deviation_min_elapsed_days"/>
+							</div>
+						</div>
 					</setting>
 					<setting id="primate_red_setting" string="At Risk thresholds"
 						help="A project turns red when any of these rules applies">
