@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="project_milestone_view_form_dashboard" model="ir.ui.view">
+		<field name="name">project.milestone.form.inherit.primate.dashboard</field>
+		<field name="model">project.milestone</field>
+		<field name="inherit_id" ref="project.project_milestone_view_form"/>
+		<field name="arch" type="xml">
+			<field name="deadline" position="after">
+				<field name="planned_progress"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="project_milestone_view_tree_dashboard" model="ir.ui.view">
+		<field name="name">project.milestone.list.inherit.primate.dashboard</field>
+		<field name="model">project.milestone</field>
+		<field name="inherit_id" ref="project.project_milestone_view_tree"/>
+		<field name="arch" type="xml">
+			<field name="deadline" position="after">
+				<field name="planned_progress"/>
+			</field>
+		</field>
+	</record>
+
+</odoo>

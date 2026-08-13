@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="edit_project_dashboard" model="ir.ui.view">
+		<field name="name">project.project.form.inherit.primate.dashboard</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.edit_project"/>
+		<field name="arch" type="xml">
+			<xpath expr="//notebook/page[@name='settings']" position="before">
+				<page name="primate_dashboard" string="Dashboard" invisible="is_template">
+					<group>
+						<group name="primate_progress" string="Progress">
+							<field name="health_state" widget="badge"
+								decoration-success="health_state == 'on_track'"
+								decoration-warning="health_state == 'at_risk'"
+								decoration-danger="health_state == 'critical'"/>
+							<!-- Los avances se guardan en escala 0-100, no 0-1: sin widget percentage. -->
+							<field name="progress_real"/>
+							<field name="progress_planned"/>
+							<field name="progress_plan_is_estimated"/>
+							<field name="has_dashboard_plan"/>
+							<field name="deviation_days"/>
+							<button name="action_recompute_health_state" type="object" string="Recompute health"
+								class="btn-link ps-0" icon="fa-refresh"/>
+						</group>
+						<group name="primate_economics" string="Hours and margin">
+							<field name="sold_hours" widget="timesheet_uom"/>
+							<field name="consumed_hours" widget="timesheet_uom"/>
+							<field name="currency_id" invisible="1"/>
+							<field name="margin_estimate" groups="primate_project_dashboard.group_dashboard_manager"/>
+						</group>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_project_dashboard" model="ir.ui.view">
+		<field name="name">project.project.list.inherit.primate.dashboard</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.view_project"/>
+		<field name="arch" type="xml">
+			<xpath expr="//list" position="inside">
+				<field name="health_state" optional="show" widget="badge"
+					decoration-success="health_state == 'on_track'"
+					decoration-warning="health_state == 'at_risk'"
+					decoration-danger="health_state == 'critical'"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_project_project_filter_dashboard" model="ir.ui.view">
+		<field name="name">project.project.select.inherit.primate.dashboard</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.view_project_project_filter"/>
+		<field name="arch" type="xml">
+			<xpath expr="//filter[@name='late_milestones']" position="after">
+				<separator/>
+				<filter string="At Risk" name="primate_health_critical"
+					domain="[('health_state', '=', 'critical')]"/>
+				<filter string="Attention" name="primate_health_at_risk"
+					domain="[('health_state', '=', 'at_risk')]"/>
+				<filter string="On Track" name="primate_health_on_track"
+					domain="[('health_state', '=', 'on_track')]"/>
+			</xpath>
+			<xpath expr="//filter[@name='status']" position="after">
+				<filter string="Health" name="primate_groupby_health_state"
+					context="{'group_by': 'health_state'}"/>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

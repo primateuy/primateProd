@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="view_task_form2_dashboard" model="ir.ui.view">
+		<field name="name">project.task.form.inherit.primate.dashboard</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_form2"/>
+		<field name="arch" type="xml">
+			<!-- tag_ids aparece también dentro de las listas de subtareas: se ancla al del grupo. -->
+			<xpath expr="//group/field[@name='tag_ids']" position="after">
+				<field name="area"/>
+				<field name="blocking_state"/>
+				<field name="blocked_since" invisible="not blocked_since"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_task_tree2_dashboard" model="ir.ui.view">
+		<field name="name">project.task.list.inherit.primate.dashboard</field>
+		<field name="model">project.task</field>
+		<!-- Vista base de lista: así los campos aparecen en todas sus variantes. -->
+		<field name="inherit_id" ref="project.project_task_view_tree_base"/>
+		<field name="arch" type="xml">
+			<xpath expr="//list" position="inside">
+				<field name="area" optional="hide"/>
+				<field name="blocking_state" optional="hide"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_task_search_form_dashboard" model="ir.ui.view">
+		<field name="name">project.task.search.inherit.primate.dashboard</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_search_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//search" position="inside">
+				<separator/>
+				<filter string="Technical" name="primate_area_technical" domain="[('area', '=', 'technical')]"/>
+				<filter string="Functional" name="primate_area_functional" domain="[('area', '=', 'functional')]"/>
+				<filter string="Administrative" name="primate_area_admin" domain="[('area', '=', 'admin')]"/>
+				<separator/>
+				<filter string="Blocked" name="primate_blocked" domain="[('blocking_state', '=', 'blocked')]"/>
+				<filter string="Waiting for Customer" name="primate_waiting_customer"
+					domain="[('blocking_state', '=', 'waiting_customer')]"/>
+				<group>
+					<filter string="Area" name="primate_groupby_area" context="{'group_by': 'area'}"/>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>
