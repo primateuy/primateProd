@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="project_progress_snapshot_view_list" model="ir.ui.view">
+		<field name="name">project.progress.snapshot.list</field>
+		<field name="model">project.progress.snapshot</field>
+		<field name="arch" type="xml">
+			<list string="Progress History" create="0" sample="1">
+				<field name="date"/>
+				<field name="project_id"/>
+				<field name="progress_real"/>
+				<field name="progress_planned"/>
+				<field name="consumed_hours" sum="Consumed Hours"/>
+				<field name="health_state" widget="badge"
+					decoration-success="health_state == 'on_track'"
+					decoration-warning="health_state == 'at_risk'"
+					decoration-danger="health_state == 'critical'"/>
+				<field name="company_id" column_invisible="True"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="project_progress_snapshot_view_search" model="ir.ui.view">
+		<field name="name">project.progress.snapshot.search</field>
+		<field name="model">project.progress.snapshot</field>
+		<field name="arch" type="xml">
+			<search string="Progress History">
+				<field name="project_id"/>
+				<filter string="Date" name="filter_date" date="date"/>
+				<separator/>
+				<filter string="At Risk" name="critical" domain="[('health_state', '=', 'critical')]"/>
+				<group>
+					<filter string="Project" name="groupby_project" context="{'group_by': 'project_id'}"/>
+					<filter string="Date" name="groupby_date" context="{'group_by': 'date'}"/>
+					<filter string="Health" name="groupby_health" context="{'group_by': 'health_state'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record id="action_project_progress_snapshot" model="ir.actions.act_window">
+		<field name="name">Progress History</field>
+		<field name="res_model">project.progress.snapshot</field>
+		<field name="view_mode">list</field>
+		<field name="search_view_id" ref="project_progress_snapshot_view_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">No progress snapshot yet</p>
+			<p>The daily scheduled action stores one snapshot per active project.</p>
+		</field>
+	</record>
+
+	<menuitem
+		id="menu_project_progress_snapshot"
+		name="Progress History"
+		parent="project.menu_project_report"
+		action="action_project_progress_snapshot"
+		groups="primate_project_dashboard.group_dashboard_area_lead"
+		sequence="90"/>
+
+</odoo>
