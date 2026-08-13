@@ -254,10 +254,16 @@ class ProjectProject(models.Model):
 			domain.append(("date", "<=", date_to))
 		return domain
 
+	def _primate_can_read_timesheets(self):
+		"""Un usuario sin acceso a las líneas analíticas no tiene el dato, no tiene un cero."""
+		return self.env["account.analytic.line"].has_access("read")
+
 	def _primate_consumed_hours_map(self, date_from=None, date_to=None):
-		result = dict.fromkeys(self.ids, 0.0)
 		if not self.ids:
-			return result
+			return {}
+		if not self._primate_can_read_timesheets():
+			return dict.fromkeys(self.ids, None)
+		result = dict.fromkeys(self.ids, 0.0)
 		for project, unit_amount in self.env["account.analytic.line"]._read_group(
 			self._primate_timesheet_domain(date_from, date_to), ["project_id"], ["unit_amount:sum"]
 		):
@@ -266,9 +272,11 @@ class ProjectProject(models.Model):
 
 	def _primate_timesheet_cost_map(self):
 		"""Costo de las horas cargadas. `amount` ya trae unit_amount x costo horario, en negativo."""
-		result = dict.fromkeys(self.ids, 0.0)
 		if not self.ids:
-			return result
+			return {}
+		if not self._primate_can_read_timesheets():
+			return dict.fromkeys(self.ids, None)
+		result = dict.fromkeys(self.ids, 0.0)
 		for project, amount in self.env["account.analytic.line"]._read_group(
 			self._primate_timesheet_domain(), ["project_id"], ["amount:sum"]
 		):
@@ -295,9 +303,11 @@ class ProjectProject(models.Model):
 		return orphans
 
 	def _primate_sold_hours_map(self):
+		if not self.ids:
+			return {}
+		if not self.env["sale.order.line"].has_access("read"):
+			return dict.fromkeys(self.ids, None)
 		result = dict.fromkeys(self.ids, 0.0)
-		if not self.ids or not self.env["sale.order.line"].has_access("read"):
-			return result
 		uom_hour = self.env.ref("uom.product_uom_hour", raise_if_not_found=False)
 		if not uom_hour:
 			return result
@@ -315,9 +325,11 @@ class ProjectProject(models.Model):
 
 	def _primate_sold_amount_map(self):
 		"""Monto vendido sin impuestos imputable a cada proyecto."""
+		if not self.ids:
+			return {}
+		if not self.env["sale.order.line"].has_access("read"):
+			return dict.fromkeys(self.ids, None)
 		result = dict.fromkeys(self.ids, 0.0)
-		if not self.ids or not self.env["sale.order.line"].has_access("read"):
-			return result
 		for project, subtotal in self.env["sale.order.line"]._read_group(
 			self._primate_sale_line_domain(), ["project_id"], ["price_subtotal:sum"]
 		):
@@ -332,20 +344,24 @@ class ProjectProject(models.Model):
 	def _compute_sale_metrics(self):
 		sold_map = self._primate_sold_hours_map()
 		for project in self:
-			project.sold_hours = sold_map.get(project.id, 0.0)
+			project.sold_hours = sold_map.get(project.id) or 0.0
 
 	@api.depends("timesheet_ids.unit_amount")
 	def _compute_consumed_hours(self):
+		# Un Float no puede ser nulo: el campo queda en 0 y es el RPC el que distingue
+		# "sin permiso" de "cero real" mandando None.
 		consumed_map = self._primate_consumed_hours_map()
 		for project in self:
-			project.consumed_hours = consumed_map.get(project.id, 0.0)
+			project.consumed_hours = consumed_map.get(project.id) or 0.0
 
 	@api.depends("sale_line_id", "timesheet_ids.amount")
 	def _compute_margin_estimate(self):
 		revenue_map = self._primate_sold_amount_map()
 		cost_map = self._primate_timesheet_cost_map()
 		for project in self:
-			project.margin_estimate = revenue_map.get(project.id, 0.0) - cost_map.get(project.id, 0.0)
+			project.margin_estimate = (revenue_map.get(project.id) or 0.0) - (
+				cost_map.get(project.id) or 0.0
+			)
 
 	@api.depends("progress_real", "progress_planned", "date_start", "date")
 	def _compute_deviation_days(self):
@@ -404,6 +420,26 @@ class ProjectProject(models.Model):
 					soon_ratio[project_id] = max(ratios)
 		return overdue, soon_ratio
 
+	@api.model
+	def _primate_next_milestone(self, milestones, today):
+		"""Primer hito no alcanzado, ordenado por fecha (los hitos ya vienen ordenados).
+
+		No se usa el `next_milestone_id` del core porque ese ordena por secuencia antes
+		que por fecha; acá interesa el próximo vencimiento, que es lo que mira el semáforo.
+		"""
+		for milestone in milestones:
+			if milestone["is_reached"]:
+				continue
+			deadline = milestone["deadline"]
+			overdue_days = (today - deadline).days if deadline else 0
+			return {
+				"id": milestone["id"],
+				"name": milestone["name"],
+				"deadline": deadline,
+				"overdue_days": max(overdue_days, 0),
+			}
+		return None
+
 	def _primate_health_metrics(self, params=None, today=None):
 		"""Métricas por proyecto que alimentan el semáforo y el dashboard."""
 		if params is None:
@@ -419,12 +455,14 @@ class ProjectProject(models.Model):
 		for project in self:
 			planned, estimated, has_plan = planned_map.get(project.id, (0.0, True, False))
 			values = {
+				"next_milestone": self._primate_next_milestone(milestone_map.get(project.id, []), today),
 				"progress_real": real_map.get(project.id, 0.0),
 				"progress_planned": planned,
 				"progress_plan_is_estimated": estimated,
 				"has_plan": has_plan,
-				"sold_hours": sold_map.get(project.id, 0.0),
-				"consumed_hours": consumed_map.get(project.id, 0.0),
+				# None = el usuario no tiene permiso para ver el dato, distinto de cero.
+				"sold_hours": sold_map.get(project.id),
+				"consumed_hours": consumed_map.get(project.id),
 				"overdue_milestone_days": overdue_map.get(project.id, 0),
 				"milestone_soon_open_ratio": soon_ratio_map.get(project.id, 0.0),
 			}
@@ -437,8 +475,14 @@ class ProjectProject(models.Model):
 		"""Reglas de la sección 1.6, evaluadas en orden: la primera que aplica gana."""
 		progress_real = values["progress_real"]
 		progress_planned = values["progress_planned"]
-		sold_hours = values["sold_hours"]
-		hours_ratio = values["consumed_hours"] / sold_hours * 100.0 if sold_hours else 0.0
+		# Si el usuario no puede leer ventas o timesheets no hay dato de horas: las reglas
+		# que dependen de ellas se saltean en vez de evaluarse contra un cero inventado.
+		sold_hours = values["sold_hours"] or 0.0
+		consumed_hours = values["consumed_hours"]
+		if consumed_hours is None:
+			sold_hours = 0.0
+			consumed_hours = 0.0
+		hours_ratio = consumed_hours / sold_hours * 100.0 if sold_hours else 0.0
 		if progress_real < progress_planned - params["health_red_progress_gap"]:
 			return "critical"
 		if (
