@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+		<field name="name">res.config.settings.view.form.inherit.primate.dashboard</field>
+		<field name="model">res.config.settings</field>
+		<field name="priority" eval="90"/>
+		<field name="inherit_id" ref="base.res_config_settings_view_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//app[@name='project']" position="inside">
+				<block title="Executive Dashboard" name="primate_dashboard_thresholds"
+					groups="primate_project_dashboard.group_dashboard_manager">
+					<setting id="primate_progress_method_setting" string="Real progress method"
+						help="How the progress of each task is measured before weighting it by allocated hours">
+						<field name="progress_method" widget="radio"/>
+					</setting>
+					<setting id="primate_red_setting" string="At Risk thresholds"
+						help="A project turns red when any of these rules applies">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="health_red_progress_gap" class="col-lg-8 o_light_label"/>
+								<field name="health_red_progress_gap"/>
+							</div>
+							<div class="row">
+								<label for="health_red_hours_ratio" class="col-lg-8 o_light_label"/>
+								<field name="health_red_hours_ratio"/>
+							</div>
+							<div class="row">
+								<label for="health_red_progress_max" class="col-lg-8 o_light_label"/>
+								<field name="health_red_progress_max"/>
+							</div>
+							<div class="row">
+								<label for="health_milestone_overdue_days" class="col-lg-8 o_light_label"/>
+								<field name="health_milestone_overdue_days"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_yellow_setting" string="Attention thresholds"
+						help="A project turns yellow when any of these rules applies">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="health_yellow_progress_gap" class="col-lg-8 o_light_label"/>
+								<field name="health_yellow_progress_gap"/>
+							</div>
+							<div class="row">
+								<label for="health_yellow_hours_ratio" class="col-lg-8 o_light_label"/>
+								<field name="health_yellow_hours_ratio"/>
+							</div>
+							<div class="row">
+								<label for="health_yellow_progress_max" class="col-lg-8 o_light_label"/>
+								<field name="health_yellow_progress_max"/>
+							</div>
+							<div class="row">
+								<label for="health_milestone_soon_days" class="col-lg-8 o_light_label"/>
+								<field name="health_milestone_soon_days"/>
+							</div>
+							<div class="row">
+								<label for="health_milestone_open_ratio" class="col-lg-8 o_light_label"/>
+								<field name="health_milestone_open_ratio"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_alert_setting" string="Alerts"
+						help="Delays after which the dashboard raises an alert">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="alert_no_activity_days" class="col-lg-8 o_light_label"/>
+								<field name="alert_no_activity_days"/>
+							</div>
+							<div class="row">
+								<label for="alert_blocked_days" class="col-lg-8 o_light_label"/>
+								<field name="alert_blocked_days"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_blocking_tags_setting" string="Blocking tags"
+						help="A task is considered blocked by its own field, by the Waiting state or by these tags">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="blocked_tag_ids" class="col-lg-4 o_light_label"/>
+								<field name="blocked_tag_ids" widget="many2many_tags"
+									options="{'color_field': 'color'}"/>
+							</div>
+							<div class="row">
+								<label for="waiting_customer_tag_ids" class="col-lg-4 o_light_label"/>
+								<field name="waiting_customer_tag_ids" widget="many2many_tags"
+									options="{'color_field': 'color'}"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_capacity_setting" string="Workload"
+						help="Window used to compute the occupied capacity of each area">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="capacity_window_days" class="col-lg-8 o_light_label"/>
+								<field name="capacity_window_days"/>
+							</div>
+							<field name="is_planning_installed" invisible="1"/>
+							<div class="row" invisible="not is_planning_installed">
+								<field name="use_planning_capacity"/>
+								<label for="use_planning_capacity" class="o_light_label"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_refresh_setting" string="Auto-refresh"
+						help="Meant for an office screen showing the dashboard permanently">
+						<field name="auto_refresh_enabled"/>
+						<div class="content-group mt16" invisible="not auto_refresh_enabled">
+							<div class="row">
+								<label for="auto_refresh_interval" class="col-lg-8 o_light_label"/>
+								<field name="auto_refresh_interval"/>
+							</div>
+						</div>
+					</setting>
+				</block>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>
