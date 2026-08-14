@@ -47,6 +47,16 @@ Los 16 parámetros viven en `ir.config_parameter` con prefijo `primate_project_d
 - **`blocking_state` es un Selection**, así que una tarea no puede estar "bloqueada" y "esperando al cliente" a la vez. `blocked_since` se sella por cualquiera de las tres vías —campo propio, estado `04_waiting_normal` o etiqueta configurada— y se limpia al desbloquear; sin esa fecha la alerta de tarea bloqueada no se podría calcular.
 - **Las alertas se calculan al vuelo**, no son registros. Cada una se identifica con una clave reproducible `tipo:modelo:id`, así que el snooze por usuario sigue aplicando aunque el mensaje cambie de "vencido hace 5 días" a "6".
 
+## Idioma
+
+La interfaz está íntegramente traducida al **español rioplatense** (voseo: "cargá", "tenés"), que es el registro de Uruguay. Son 191 cadenas: etiquetas de campo, valores de selección, grupos, menús, acciones, crons, mensajes de error y todo el texto del dashboard OWL.
+
+El archivo es `i18n/es.po`, uno solo y a propósito: Odoo carga las traducciones en cascada `es.po` → `es_419.po` → `es_UY.po`, así que ese archivo ya aplica a `es_UY`, `es_419`, `es_AR` y cualquier variante. Duplicarlo en un `es_UY.po` solo agregaría dos archivos que hay que mantener sincronizados.
+
+Para que se vea en español hay que **activar el idioma en la base** (*Ajustes → Traducciones → Idiomas*, o `odoo-bin i18n loadlang -l es_UY`) y ponérselo al usuario. `docs/seed_demo.py` ya lo hace para los usuarios de prueba.
+
+Al agregar texto nuevo: los literales de JS visibles para el usuario van siempre dentro de `_t()` —si se arman con un template literal quedan en inglés aunque el resto esté traducido— y hay que regenerar el `.po` antes de cerrar la tarea.
+
 ## Correr los tests
 
 ```bash

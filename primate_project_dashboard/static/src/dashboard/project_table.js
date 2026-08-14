@@ -47,10 +47,12 @@ export class ProjectTable extends Component {
 		return value === null || value === undefined ? this.noData : `${Math.round(value)}%`;
 	}
 
+	/** Con _t: armado como template literal, "real" y "planned" quedaban en inglés. */
 	progressLabel(row) {
-		return `${this.percentage(row.progress_real)} real / ${this.percentage(
-			row.progress_planned
-		)} planned`;
+		return _t("%(real)s real / %(planned)s planned", {
+			real: this.percentage(row.progress_real),
+			planned: this.percentage(row.progress_planned),
+		});
 	}
 
 	/** Cada mitad se muestra por separado: el dato que falta puede ser uno solo. */

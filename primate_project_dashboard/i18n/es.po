@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 12:32+0000\n"
-"PO-Revision-Date: 2026-08-14 12:32+0000\n"
+"POT-Creation-Date: 2026-08-14 13:25+0000\n"
+"PO-Revision-Date: 2026-08-14 13:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -64,6 +64,12 @@ msgstr "%(project)s: sin plan cargado (falta la fecha de fin o los hitos con ava
 #: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
 msgid "%(project)s: no timesheet or stage change in the last %(days)s days"
 msgstr "%(project)s: sin timesheets ni cambios de etapa en los últimos %(days)s días"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
+msgid "%(real)s real / %(planned)s planned"
+msgstr "%(real)s real / %(planned)s planificado"
 
 #. module: primate_project_dashboard
 #. odoo-python
@@ -343,7 +349,7 @@ msgstr "Tareas cerradas, ponderadas por horas asignadas"
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__company_id
 msgid "Company"
-msgstr ""
+msgstr "Compañía"
 
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_res_config_settings
@@ -371,13 +377,13 @@ msgstr "Horas consumidas, con tope de 100% por tarea"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__create_uid
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__create_date
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_red_hours_ratio
@@ -429,7 +435,7 @@ msgstr "Área del dashboard"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__date
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.project_progress_snapshot_view_search
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -456,7 +462,7 @@ msgstr "Silenciar esta alerta por una semana"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_task__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nombre a mostrar"
 
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_hr_employee
@@ -615,13 +621,13 @@ msgstr "Planning instalado"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__write_uid
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Última modificación por"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__write_date
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última modificación el"
 
 #. module: primate_project_dashboard
 #. odoo-javascript
@@ -673,7 +679,7 @@ msgstr "Hito próximo a vencer en (días)"
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__res_model
 msgid "Model"
-msgstr ""
+msgstr "Modelo"
 
 #. module: primate_project_dashboard
 #. odoo-javascript
@@ -834,7 +840,7 @@ msgstr "Avance esperado hoy, interpolado entre hitos."
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__project_id
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.project_progress_snapshot_view_search
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #. module: primate_project_dashboard
 #: model:res.groups.privilege,name:primate_project_dashboard.res_groups_privilege_project_dashboard
@@ -1146,9 +1152,21 @@ msgstr "No tenés permiso para ver los timesheets de estos proyectos."
 
 #. module: primate_project_dashboard
 #. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "and"
+msgstr ""
+
+#. module: primate_project_dashboard
+#. odoo-javascript
 #: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
 msgid "blocked"
 msgstr "bloqueadas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "more alerts"
+msgstr ""
 
 #. module: primate_project_dashboard
 #. odoo-javascript

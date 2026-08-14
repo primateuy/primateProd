@@ -50,6 +50,14 @@ Users = env["res.users"]
 Partner = env["res.partner"]
 
 # ---------------------------------------------------------------------------
+# Idioma: español de Uruguay para todos los usuarios de prueba
+# ---------------------------------------------------------------------------
+LANG = "es_UY"
+lang = env["res.lang"].with_context(active_test=False).search([("code", "=", LANG)], limit=1)
+if lang and not lang.active:
+	env["base.language.install"].create({"lang_ids": [(6, 0, lang.ids)]}).lang_install()
+
+# ---------------------------------------------------------------------------
 # Usuarios, uno por perfil
 # ---------------------------------------------------------------------------
 BASE_GROUPS = [
@@ -72,6 +80,7 @@ for login, name, group in PROFILES:
 		"name": name,
 		"login": login,
 		"password": login,
+		"lang": LANG,
 		"group_ids": [(6, 0, BASE_GROUPS + [env.ref(group).id])],
 	}
 	if user:
@@ -91,6 +100,7 @@ restringido_values = {
 	"name": "Sin Permisos Demo",
 	"login": "restringido",
 	"password": "restringido",
+	"lang": LANG,
 	"group_ids": [(6, 0, [
 		env.ref("base.group_user").id,
 		env.ref("project.group_project_user").id,
@@ -311,7 +321,8 @@ for project in (verde, amarillo, rojo, sin_plan, sin_actividad):
 		f"horas={show(metrics['consumed_hours'])}/{show(metrics['sold_hours'])} "
 		f"plan_cargado={metrics['has_plan']}"
 	)
-print("\nUsuarios (contraseña = login): direccion / lider / pm / restringido")
+print(f"\nIdioma de los usuarios de prueba: {LANG}")
+print("Usuarios (contraseña = login): direccion / lider / pm / restringido")
 for login in ("direccion", "lider", "pm", "restringido"):
 	data = Project.with_user(users[login]).get_dashboard_data({"period": "all"})
 	print(
