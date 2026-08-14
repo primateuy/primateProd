@@ -26,6 +26,10 @@ PARAM_DEFAULTS = {
 	# Alertas
 	"alert_no_activity_days": 7,
 	"alert_blocked_days": 5,
+	"alert_hours_ratio": 90.0,
+	"alert_hours_progress_max": 90.0,
+	"alert_hours_red_ratio": 100.0,
+	"alert_hours_red_gap": 25.0,
 	# Carga por área
 	"capacity_window_days": 10,
 	"use_planning_capacity": False,
@@ -99,6 +103,10 @@ def get_params(env):
 		"health_milestone_open_ratio": get_float(env, "health_milestone_open_ratio"),
 		"alert_no_activity_days": get_int(env, "alert_no_activity_days"),
 		"alert_blocked_days": get_int(env, "alert_blocked_days"),
+		"alert_hours_ratio": get_float(env, "alert_hours_ratio"),
+		"alert_hours_progress_max": get_float(env, "alert_hours_progress_max"),
+		"alert_hours_red_ratio": get_float(env, "alert_hours_red_ratio"),
+		"alert_hours_red_gap": get_float(env, "alert_hours_red_gap"),
 		"capacity_window_days": get_int(env, "capacity_window_days"),
 		"use_planning_capacity": get_bool(env, "use_planning_capacity"),
 		"progress_method": get_str(env, "progress_method"),

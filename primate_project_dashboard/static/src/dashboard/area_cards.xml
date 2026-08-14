@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.AreaCards">
+		<div class="o_primate_area_row row g-3">
+			<div class="col-12 col-md-4" t-foreach="props.areas" t-as="area" t-key="area.area">
+				<div class="o_primate_card h-100 p-3">
+					<div class="o_primate_area_title" t-esc="area.name"/>
+					<div class="mt-2">
+						<a href="#" class="o_primate_area_link"
+							t-on-click.prevent="() => props.onOpenTasks(area.area, 'open')">
+							<t t-esc="area.open_tasks"/> open tasks
+						</a>
+					</div>
+					<div class="small mt-1">
+						<a href="#" class="o_primate_area_link text-danger"
+							t-on-click.prevent="() => props.onOpenTasks(area.area, 'blocked')">
+							<t t-esc="area.blocked_tasks"/> blocked
+						</a>
+						<span class="text-muted mx-1">·</span>
+						<a href="#" class="o_primate_area_link text-warning"
+							t-on-click.prevent="() => props.onOpenTasks(area.area, 'waiting')">
+							<t t-esc="area.waiting_tasks"/> waiting for customer
+						</a>
+						<span class="text-muted mx-1">·</span>
+						<a href="#" class="o_primate_area_link text-danger"
+							t-on-click.prevent="() => props.onOpenTasks(area.area, 'overdue')">
+							<t t-esc="area.overdue_tasks"/> overdue
+						</a>
+					</div>
+					<div class="text-muted small mt-2" t-att-title="capacityTooltip(area)">
+						Occupied capacity: <t t-esc="capacityLabel(area)"/>
+					</div>
+					<div class="o_primate_bar mt-1">
+						<div class="o_primate_bar_fill" t-att-class="capacityClass(area)"
+							t-att-style="'width: ' + barWidth(area)"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

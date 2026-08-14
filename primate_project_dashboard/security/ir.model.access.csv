@@ -3,3 +3,4 @@ access_project_progress_snapshot_pm,project.progress.snapshot.pm,model_project_p
 access_project_progress_snapshot_area_lead,project.progress.snapshot.area.lead,model_project_progress_snapshot,group_dashboard_area_lead,1,0,0,0
 access_project_progress_snapshot_manager,project.progress.snapshot.manager,model_project_progress_snapshot,group_dashboard_manager,1,1,1,1
 access_project_progress_snapshot_project_manager,project.progress.snapshot.project.manager,model_project_progress_snapshot,project.group_project_manager,1,1,1,1
+access_dashboard_alert_snooze_user,project.dashboard.alert.snooze.user,model_project_dashboard_alert_snooze,group_dashboard_pm,1,1,1,1

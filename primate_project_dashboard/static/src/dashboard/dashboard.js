@@ -5,6 +5,8 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
+import { AlertsPanel } from "./alerts_panel";
+import { AreaCards } from "./area_cards";
 import { KpiCards } from "./kpi_cards";
 import { ProjectTable } from "./project_table";
 
@@ -13,7 +15,7 @@ const URL_FILTERS = ["period", "date_from", "date_to", "area", "user_id", "partn
 
 export class ProjectDashboard extends Component {
 	static template = "primate_project_dashboard.ProjectDashboard";
-	static components = { Layout, KpiCards, ProjectTable };
+	static components = { Layout, KpiCards, ProjectTable, AreaCards, AlertsPanel };
 	static props = { ...standardActionServiceProps };
 	static path = "primate-project-dashboard";
 	static displayName = _t("Executive Dashboard");
@@ -26,6 +28,10 @@ export class ProjectDashboard extends Component {
 			error: false,
 			data: null,
 			filters: this.readFiltersFromUrl(),
+			// Las filas se acumulan al cargar más; los KPIs y las áreas llegan enteros.
+			rows: [],
+			offset: 0,
+			loadingMore: false,
 		});
 		onWillStart(() => this.load());
 		onWillUnmount(() => this.stopAutoRefresh());
@@ -94,19 +100,60 @@ export class ProjectDashboard extends Component {
 		router.pushState(state, { replace: true });
 	}
 
-	async load() {
-		this.state.loading = true;
+	async load(offset = 0) {
+		const loadingMore = offset > 0;
+		this.state[loadingMore ? "loadingMore" : "loading"] = true;
 		this.state.error = false;
 		try {
-			this.state.data = await this.orm.call("project.project", "get_dashboard_data", [
-				this.state.filters,
+			const data = await this.orm.call("project.project", "get_dashboard_data", [
+				{ ...this.state.filters, offset },
 			]);
+			this.state.data = data;
+			this.state.offset = offset;
+			this.state.rows = loadingMore ? [...this.state.rows, ...data.projects] : data.projects;
 			this.restartAutoRefresh();
 		} catch {
 			this.state.error = true;
 		} finally {
-			this.state.loading = false;
+			this.state[loadingMore ? "loadingMore" : "loading"] = false;
 		}
+	}
+
+	get hasMoreRows() {
+		return this.state.rows.length < (this.state.data?.projects_total || 0);
+	}
+
+	loadMore() {
+		return this.load(this.state.rows.length);
+	}
+
+	openAlertRecord(alert) {
+		this.action.doAction({
+			type: "ir.actions.act_window",
+			res_model: alert.res_model,
+			res_id: alert.res_id,
+			views: [[false, "form"]],
+			target: "current",
+		});
+	}
+
+	async snoozeAlert(alert) {
+		await this.orm.call("project.dashboard.alert.snooze", "action_snooze_alert", [
+			alert.type,
+			alert.res_model,
+			alert.res_id,
+		]);
+		// Se saca del panel sin recargar todo el dashboard.
+		this.state.data.alerts = this.state.data.alerts.filter((item) => item.key !== alert.key);
+	}
+
+	async openAreaTasks(area, metric) {
+		const action = await this.orm.call("project.project", "action_open_area_tasks", [
+			area,
+			metric,
+			this.state.filters,
+		]);
+		this.action.doAction(action);
 	}
 
 	async onFilterChange(key, value) {
@@ -116,7 +163,7 @@ export class ProjectDashboard extends Component {
 			this.state.filters.date_to = undefined;
 		}
 		this.writeFiltersToUrl();
-		await this.load();
+		await this.load();  // vuelve a la primera página: los filtros cambiaron
 	}
 
 	/**

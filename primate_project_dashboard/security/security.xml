@@ -50,6 +50,13 @@
 		<field name="groups" eval="[Command.link(ref('group_dashboard_area_lead'))]"/>
 	</record>
 
+	<!-- Cada usuario solo ve y borra sus propios snoozes. -->
+	<record id="rule_alert_snooze_own" model="ir.rule">
+		<field name="name">Alert snooze: own only</field>
+		<field name="model_id" ref="model_project_dashboard_alert_snooze"/>
+		<field name="domain_force">[('user_id', '=', user.id)]</field>
+	</record>
+
 	<!-- Regla global (sin grupos): aísla por compañía. -->
 	<record id="rule_progress_snapshot_company" model="ir.rule">
 		<field name="name">Progress snapshot: multi-company</field>

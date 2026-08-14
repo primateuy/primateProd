@@ -21,6 +21,7 @@
 		"views/project_project_views.xml",
 		"views/project_task_views.xml",
 		"views/project_milestone_views.xml",
+		"views/hr_employee_views.xml",
 		"views/project_progress_snapshot_views.xml",
 		"views/res_config_settings_views.xml",
 		"views/dashboard_views.xml",

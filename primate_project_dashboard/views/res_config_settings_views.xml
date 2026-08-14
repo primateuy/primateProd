@@ -9,79 +9,117 @@
 		<field name="inherit_id" ref="base.res_config_settings_view_form"/>
 		<field name="arch" type="xml">
 			<xpath expr="//app[@name='project']" position="inside">
-				<block title="Executive Dashboard" name="primate_dashboard_thresholds"
+
+				<!-- 1. Semáforo. Cada regla en su propio setting: son siete umbrales y
+				     agrupados por color se leen; en una sola lista son una pared. -->
+				<block title="Executive Dashboard: Health Rules" name="primate_dashboard_health"
 					groups="primate_project_dashboard.group_dashboard_manager">
-					<setting id="primate_progress_method_setting" string="Real progress method"
-						help="How the progress of each task is measured before weighting it by allocated hours">
+					<setting id="primate_progress_method_setting" string="How progress is measured"
+						help="Task progress is weighted by allocated hours; this chooses what counts as progress">
 						<field name="progress_method" widget="radio"/>
-						<div class="content-group mt16">
-							<div class="row">
-								<label for="deviation_min_elapsed_days" class="col-lg-8 o_light_label"/>
-								<field name="deviation_min_elapsed_days"/>
-							</div>
-						</div>
 					</setting>
-					<setting id="primate_red_setting" string="At Risk thresholds"
+					<setting id="primate_red_setting" string="At Risk (red)"
 						help="A project turns red when any of these rules applies">
 						<div class="content-group mt16">
 							<div class="row">
-								<label for="health_red_progress_gap" class="col-lg-8 o_light_label"/>
+								<label for="health_red_progress_gap" class="col-lg-9 o_light_label"
+									string="Real progress falls behind the plan by (pp)"/>
 								<field name="health_red_progress_gap"/>
 							</div>
 							<div class="row">
-								<label for="health_red_hours_ratio" class="col-lg-8 o_light_label"/>
+								<label for="health_red_hours_ratio" class="col-lg-9 o_light_label"
+									string="Consumed hours reach (%)"/>
 								<field name="health_red_hours_ratio"/>
 							</div>
 							<div class="row">
-								<label for="health_red_progress_max" class="col-lg-8 o_light_label"/>
+								<label for="health_red_progress_max" class="col-lg-9 o_light_label"
+									string="...while progress is still below (%)"/>
 								<field name="health_red_progress_max"/>
 							</div>
 							<div class="row">
-								<label for="health_milestone_overdue_days" class="col-lg-8 o_light_label"/>
+								<label for="health_milestone_overdue_days" class="col-lg-9 o_light_label"
+									string="A milestone is overdue by more than (days)"/>
 								<field name="health_milestone_overdue_days"/>
 							</div>
 						</div>
 					</setting>
-					<setting id="primate_yellow_setting" string="Attention thresholds"
+					<setting id="primate_yellow_setting" string="Attention (yellow)"
 						help="A project turns yellow when any of these rules applies">
 						<div class="content-group mt16">
 							<div class="row">
-								<label for="health_yellow_progress_gap" class="col-lg-8 o_light_label"/>
+								<label for="health_yellow_progress_gap" class="col-lg-9 o_light_label"
+									string="Real progress falls behind the plan by (pp)"/>
 								<field name="health_yellow_progress_gap"/>
 							</div>
 							<div class="row">
-								<label for="health_yellow_hours_ratio" class="col-lg-8 o_light_label"/>
+								<label for="health_yellow_hours_ratio" class="col-lg-9 o_light_label"
+									string="Consumed hours reach (%)"/>
 								<field name="health_yellow_hours_ratio"/>
 							</div>
 							<div class="row">
-								<label for="health_yellow_progress_max" class="col-lg-8 o_light_label"/>
+								<label for="health_yellow_progress_max" class="col-lg-9 o_light_label"
+									string="...while progress is still below (%)"/>
 								<field name="health_yellow_progress_max"/>
 							</div>
 							<div class="row">
-								<label for="health_milestone_soon_days" class="col-lg-8 o_light_label"/>
+								<label for="health_milestone_soon_days" class="col-lg-9 o_light_label"
+									string="A milestone is due within (days)"/>
 								<field name="health_milestone_soon_days"/>
 							</div>
 							<div class="row">
-								<label for="health_milestone_open_ratio" class="col-lg-8 o_light_label"/>
+								<label for="health_milestone_open_ratio" class="col-lg-9 o_light_label"
+									string="...with open tasks above (%)"/>
 								<field name="health_milestone_open_ratio"/>
 							</div>
 						</div>
 					</setting>
-					<setting id="primate_alert_setting" string="Alerts"
-						help="Delays after which the dashboard raises an alert">
+				</block>
+
+				<!-- 2. Alertas. -->
+				<block title="Executive Dashboard: Alerts" name="primate_dashboard_alerts"
+					groups="primate_project_dashboard.group_dashboard_manager">
+					<setting id="primate_alert_hours_setting" string="Hours budget running out"
+						help="Raised when hours are consumed faster than progress is made">
 						<div class="content-group mt16">
 							<div class="row">
-								<label for="alert_no_activity_days" class="col-lg-8 o_light_label"/>
+								<label for="alert_hours_ratio" class="col-lg-9 o_light_label"
+									string="Warn when consumed hours reach (%)"/>
+								<field name="alert_hours_ratio"/>
+							</div>
+							<div class="row">
+								<label for="alert_hours_progress_max" class="col-lg-9 o_light_label"
+									string="...while progress is still below (%)"/>
+								<field name="alert_hours_progress_max"/>
+							</div>
+							<div class="row">
+								<label for="alert_hours_red_ratio" class="col-lg-9 o_light_label"
+									string="Turn the alert red when consumption reaches (%)"/>
+								<field name="alert_hours_red_ratio"/>
+							</div>
+							<div class="row">
+								<label for="alert_hours_red_gap" class="col-lg-9 o_light_label"
+									string="...or when consumption exceeds progress by (pp)"/>
+								<field name="alert_hours_red_gap"/>
+							</div>
+						</div>
+					</setting>
+					<setting id="primate_alert_delays_setting" string="Delays"
+						help="How long a situation has to last before the dashboard raises it">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="alert_no_activity_days" class="col-lg-9 o_light_label"
+									string="No timesheet or stage change for (days)"/>
 								<field name="alert_no_activity_days"/>
 							</div>
 							<div class="row">
-								<label for="alert_blocked_days" class="col-lg-8 o_light_label"/>
+								<label for="alert_blocked_days" class="col-lg-9 o_light_label"
+									string="A task stays blocked for (days)"/>
 								<field name="alert_blocked_days"/>
 							</div>
 						</div>
 					</setting>
 					<setting id="primate_blocking_tags_setting" string="Blocking tags"
-						help="A task is considered blocked by its own field, by the Waiting state or by these tags">
+						help="A task counts as blocked by its own field, by the Waiting state or by these tags">
 						<div class="content-group mt16">
 							<div class="row">
 								<label for="blocked_tag_ids" class="col-lg-4 o_light_label"/>
@@ -95,11 +133,17 @@
 							</div>
 						</div>
 					</setting>
-					<setting id="primate_capacity_setting" string="Workload"
-						help="Window used to compute the occupied capacity of each area">
+				</block>
+
+				<!-- 3. Capacidad. -->
+				<block title="Executive Dashboard: Workload" name="primate_dashboard_capacity"
+					groups="primate_project_dashboard.group_dashboard_manager">
+					<setting id="primate_capacity_setting" string="Capacity window"
+						help="The occupied capacity of each area is measured over this window. The denominator is the working time of the employees whose area is set.">
 						<div class="content-group mt16">
 							<div class="row">
-								<label for="capacity_window_days" class="col-lg-8 o_light_label"/>
+								<label for="capacity_window_days" class="col-lg-9 o_light_label"
+									string="Working days ahead"/>
 								<field name="capacity_window_days"/>
 							</div>
 							<field name="is_planning_installed" invisible="1"/>
@@ -109,17 +153,34 @@
 							</div>
 						</div>
 					</setting>
+				</block>
+
+				<!-- 4. Comportamiento del dashboard. -->
+				<block title="Executive Dashboard: Behaviour" name="primate_dashboard_behaviour"
+					groups="primate_project_dashboard.group_dashboard_manager">
+					<setting id="primate_deviation_setting" string="Estimated deviation"
+						help="A pace measured over too few days projects absurd delays, so the estimate is hidden until the project has run long enough">
+						<div class="content-group mt16">
+							<div class="row">
+								<label for="deviation_min_elapsed_days" class="col-lg-9 o_light_label"
+									string="Only estimate after (days of project)"/>
+								<field name="deviation_min_elapsed_days"/>
+							</div>
+						</div>
+					</setting>
 					<setting id="primate_refresh_setting" string="Auto-refresh"
 						help="Meant for an office screen showing the dashboard permanently">
 						<field name="auto_refresh_enabled"/>
 						<div class="content-group mt16" invisible="not auto_refresh_enabled">
 							<div class="row">
-								<label for="auto_refresh_interval" class="col-lg-8 o_light_label"/>
+								<label for="auto_refresh_interval" class="col-lg-9 o_light_label"
+									string="Refresh every (minutes)"/>
 								<field name="auto_refresh_interval"/>
 							</div>
 						</div>
 					</setting>
 				</block>
+
 			</xpath>
 		</field>
 	</record>

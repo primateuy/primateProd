@@ -10,6 +10,9 @@ from . import dashboard_params
 MANAGER_GROUP = "primate_project_dashboard.group_dashboard_manager"
 AREA_LEAD_GROUP = "primate_project_dashboard.group_dashboard_area_lead"
 
+# Filas por página. Los KPIs y las áreas siguen agregando sobre el total.
+DEFAULT_PAGE_SIZE = 30
+
 # Orden de la tabla: primero lo que arde; los sin plan al final, no son un riesgo
 # medido sino un dato faltante.
 HEALTH_ORDER = {"critical": 0, "at_risk": 1, "on_track": 2, "no_plan": 3}
@@ -115,6 +118,7 @@ class ProjectProject(models.Model):
 
 		projects = self.search(self._primate_dashboard_domain(options, today))
 		metrics = projects._primate_health_metrics(params, today)
+		milestone_map = projects._primate_milestone_map()
 		margin_map = {}
 		if can_see_margin and can_read_sale and can_read_timesheet:
 			margin_map = {project.id: project.margin_estimate for project in projects}
@@ -155,11 +159,20 @@ class ProjectProject(models.Model):
 			rows = [row for row in rows if row["health_state"] == "critical"]
 		rows.sort(key=lambda row: (HEALTH_ORDER.get(row["health_state"], 9), row["name"]))
 
+		# Los KPIs y las tarjetas de área agregan sobre el total, nunca sobre la página
+		# visible: paginar no puede cambiar lo que dice el portafolio.
+		kpis = self._primate_dashboard_kpis(rows, can_read_sale, can_see_margin)
+		limit = int(options.get("limit") or DEFAULT_PAGE_SIZE)
+		offset = int(options.get("offset") or 0)
+		page = rows[offset : offset + limit] if limit else rows
+
 		return {
-			"kpis": self._primate_dashboard_kpis(rows, can_read_sale, can_see_margin),
-			"projects": rows,
-			"areas": [],
-			"alerts": [],
+			"kpis": kpis,
+			"projects": page,
+			"projects_total": len(rows),
+			"projects_offset": offset,
+			"areas": projects._primate_dashboard_areas(params, today),
+			"alerts": projects._primate_dashboard_alerts(metrics, milestone_map, params, today),
 			"selectors": self._primate_dashboard_selectors(options, today),
 			"config": {
 				"can_see_margin": can_see_margin,
@@ -169,6 +182,7 @@ class ProjectProject(models.Model):
 				"currency_id": self.env.company.currency_id.id,
 				"auto_refresh_enabled": params["auto_refresh_enabled"],
 				"auto_refresh_interval": params["auto_refresh_interval"],
+				"page_size": DEFAULT_PAGE_SIZE,
 				"today": fields.Date.to_string(today),
 			},
 		}

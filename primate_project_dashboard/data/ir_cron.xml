@@ -17,7 +17,8 @@
 		<field name="name">Project Dashboard: daily progress snapshot</field>
 		<field name="model_id" ref="model_project_progress_snapshot"/>
 		<field name="state">code</field>
-		<field name="code">model._cron_take_snapshot()</field>
+		<field name="code">model._cron_take_snapshot()
+env['project.dashboard.alert.snooze']._gc_expired_snoozes()</field>
 		<field name="interval_number">1</field>
 		<field name="interval_type">days</field>
 		<field name="nextcall" eval="(DateTime.now().replace(hour=6, minute=0, second=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.AlertsPanel">
+		<div class="o_primate_alerts">
+			<t t-if="!props.alerts.length">
+				<div class="o_primate_card text-center text-muted py-4">
+					No alert. Everything under control.
+				</div>
+			</t>
+			<div t-else="" class="d-flex flex-column gap-2">
+				<div t-foreach="props.alerts" t-as="alert" t-key="alert.key"
+					class="o_primate_alert d-flex align-items-center"
+					t-att-class="severityClass(alert)">
+					<span class="o_primate_alert_dot"/>
+					<span class="flex-grow-1" t-esc="alert.message"/>
+					<button class="btn btn-sm btn-link o_primate_alert_action"
+						t-att-title="openTooltip"
+						t-on-click="() => props.onOpenRecord(alert)">
+						<i class="fa fa-external-link" role="img" aria-label="Open"/>
+					</button>
+					<button class="btn btn-sm btn-link o_primate_alert_action"
+						t-att-title="snoozeTooltip"
+						t-on-click="() => props.onSnooze(alert)">
+						<i class="fa fa-bell-slash-o" role="img" aria-label="Snooze"/>
+					</button>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

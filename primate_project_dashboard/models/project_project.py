@@ -555,7 +555,21 @@ class ProjectProject(models.Model):
 
 	@api.model
 	def _primate_health_state(self, values, params):
-		"""Reglas de la sección 1.6, evaluadas en orden: la primera que aplica gana."""
+		"""Reglas de la sección 1.6, evaluadas en orden: la primera que aplica gana.
+
+		Orden y por qué:
+
+		1. Reglas que NO dependen del plan —horas consumidas e hito vencido—. Se evalúan
+		   siempre, tenga el proyecto plan o no. Un proyecto quemando el presupuesto tiene
+		   que marcar rojo aunque nadie haya cargado el cronograma.
+		2. Reglas de brecha contra el plan. Se saltean cuando no hay curva que interpolar,
+		   en vez de compararse contra un plan inexistente.
+		3. Si nada aplicó: verde solo si hubo un plan contra el cual medir; si no, `no_plan`.
+		   Un verde sin plan sería un falso verde, y el gris es la señal de que falta el dato.
+
+		`no_plan` no tiene prioridad sobre las reglas del punto 1: no esconde un problema
+		real detrás de un dato faltante. Su presión activa es la alerta de la sección 1.9.
+		"""
 		progress_real = values["progress_real"]
 		progress_planned = values["progress_planned"]
 		# Si el usuario no puede leer ventas o timesheets no hay dato de horas: las reglas

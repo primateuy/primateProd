@@ -70,6 +70,26 @@ class ResConfigSettings(models.TransientModel):
 		default=5,
 		config_parameter=PARAM_PREFIX + "alert_blocked_days",
 	)
+	alert_hours_ratio = fields.Float(
+		string="Hours budget warning at (%)",
+		default=90.0,
+		config_parameter=PARAM_PREFIX + "alert_hours_ratio",
+	)
+	alert_hours_progress_max = fields.Float(
+		string="Hours budget warning below progress (%)",
+		default=90.0,
+		config_parameter=PARAM_PREFIX + "alert_hours_progress_max",
+	)
+	alert_hours_red_ratio = fields.Float(
+		string="Hours budget critical at (%)",
+		default=100.0,
+		config_parameter=PARAM_PREFIX + "alert_hours_red_ratio",
+	)
+	alert_hours_red_gap = fields.Float(
+		string="Hours budget critical gap (pp)",
+		default=25.0,
+		config_parameter=PARAM_PREFIX + "alert_hours_red_gap",
+	)
 	# Carga por área
 	capacity_window_days = fields.Integer(
 		string="Capacity window (working days)",

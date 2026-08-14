@@ -77,8 +77,22 @@
 					<KpiCards kpis="state.data.kpis" config="state.data.config"/>
 
 					<h2 class="o_primate_section_title mt-4 mb-2">Status by project</h2>
-					<ProjectTable projects="state.data.projects" config="state.data.config"
+					<ProjectTable projects="state.rows" config="state.data.config"
 						onOpenProject.bind="openProject"/>
+					<div t-if="hasMoreRows" class="text-center mt-2">
+						<button class="btn btn-sm btn-outline-secondary" t-on-click="loadMore"
+							t-att-disabled="state.loadingMore">
+							<span>Load more</span>
+							<span class="ms-1" t-esc="'(' + state.rows.length + '/' + state.data.projects_total + ')'"/>
+						</button>
+					</div>
+
+					<h2 class="o_primate_section_title mt-4 mb-2">Workload by area</h2>
+					<AreaCards areas="state.data.areas" onOpenTasks.bind="openAreaTasks"/>
+
+					<h2 class="o_primate_section_title mt-4 mb-2">Alerts</h2>
+					<AlertsPanel alerts="state.data.alerts" onOpenRecord.bind="openAlertRecord"
+						onSnooze.bind="snoozeAlert"/>
 				</t>
 			</div>
 		</Layout>

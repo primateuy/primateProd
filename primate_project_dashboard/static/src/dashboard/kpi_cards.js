@@ -18,7 +18,7 @@ export class KpiCards extends Component {
 		if (value === null || value === undefined) {
 			return this.noData;
 		}
-		return `${value.toFixed(0)}%`;
+		return `${Math.round(value)}%`;
 	}
 
 	formatSignedPercentage(value) {
@@ -26,7 +26,7 @@ export class KpiCards extends Component {
 			return this.noData;
 		}
 		const sign = value > 0 ? "+" : "";
-		return `${sign}${value.toFixed(0)}%`;
+		return `${sign}${Math.round(value)}%`;
 	}
 
 	formatMargin(value) {
