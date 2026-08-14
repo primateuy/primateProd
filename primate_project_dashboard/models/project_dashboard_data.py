@@ -10,8 +10,9 @@ from . import dashboard_params
 MANAGER_GROUP = "primate_project_dashboard.group_dashboard_manager"
 AREA_LEAD_GROUP = "primate_project_dashboard.group_dashboard_area_lead"
 
-# Orden de la tabla: primero lo que arde.
-HEALTH_ORDER = {"critical": 0, "at_risk": 1, "on_track": 2}
+# Orden de la tabla: primero lo que arde; los sin plan al final, no son un riesgo
+# medido sino un dato faltante.
+HEALTH_ORDER = {"critical": 0, "at_risk": 1, "on_track": 2, "no_plan": 3}
 
 
 class ProjectProject(models.Model):
@@ -122,6 +123,8 @@ class ProjectProject(models.Model):
 		for project in projects:
 			values = metrics.get(project.id, {})
 			next_milestone = values.get("next_milestone") if can_read_milestone else None
+			# Sin SO vinculada no hay horas vendidas ni margen que mostrar (sección 1.10).
+			has_sale_order = values.get("sold_hours") is not None
 			rows.append(
 				{
 					"id": project.id,
@@ -129,16 +132,20 @@ class ProjectProject(models.Model):
 					"partner_name": project.partner_id.display_name or "",
 					"user_id": project.user_id.id or False,
 					"user_name": project.user_id.display_name or "",
-					"health_state": values.get("health_state", "on_track"),
+					"health_state": values.get("health_state", "no_plan"),
 					"progress_real": round(values.get("progress_real", 0.0), 1),
-					"progress_planned": round(values.get("progress_planned", 0.0), 1),
+					"progress_planned": self._primate_round(values.get("progress_planned")),
 					"plan_is_estimated": values.get("progress_plan_is_estimated", True),
 					"has_plan": values.get("has_plan", False),
+					"has_plan_curve": values.get("has_plan_curve", False),
+					"has_sale_order": has_sale_order,
 					"consumed_hours": self._primate_round(values.get("consumed_hours")),
 					"sold_hours": self._primate_round(values.get("sold_hours")),
 					# None = no calculable (proyecto muy nuevo o sin plan), no cero días.
 					"deviation_days": values.get("deviation_days"),
-					"margin_estimate": margin_map.get(project.id) if can_see_margin else None,
+					"margin_estimate": (
+						margin_map.get(project.id) if can_see_margin and has_sale_order else None
+					),
 					"next_milestone": self._primate_serialize_milestone(next_milestone),
 				}
 			)
@@ -188,39 +195,45 @@ class ProjectProject(models.Model):
 		compliance_weighted = 0.0
 		compliance_weight = 0.0
 		compliance_plain = 0.0
+		compliance_rows = 0
 		consumed_total = 0.0
 		expected_total = 0.0
 		margin_total = 0.0
-		has_hours_data = True
+		margin_rows = 0
+		hours_rows = 0
 		for row in rows:
 			planned = row["progress_planned"]
-			# Sin plan cargado no hay incumplimiento posible: cuenta como 100%.
-			ratio = min(row["progress_real"] / planned, 1.0) if planned > 0 else 1.0
-			compliance_plain += ratio
-			sold_hours = row["sold_hours"] or 0.0
-			compliance_weighted += ratio * sold_hours
-			compliance_weight += sold_hours
-			if row["consumed_hours"] is None or row["sold_hours"] is None:
-				has_hours_data = False
-			else:
-				consumed_total += row["consumed_hours"]
-				expected_total += sold_hours * planned / 100.0
-			if row["margin_estimate"]:
+			# Un proyecto sin curva de plan no entra en el cumplimiento: no hay contra qué
+			# medirlo. Contarlo como 100% inflaba el KPI con proyectos sin plan cargado.
+			if planned is not None:
+				ratio = min(row["progress_real"] / planned, 1.0) if planned > 0 else 1.0
+				compliance_plain += ratio
+				compliance_rows += 1
+				sold_hours = row["sold_hours"] or 0.0
+				compliance_weighted += ratio * sold_hours
+				compliance_weight += sold_hours
+				# El desvío de horas necesita las dos mitades y una expectativa real.
+				if row["consumed_hours"] is not None and row["sold_hours"] is not None:
+					consumed_total += row["consumed_hours"]
+					expected_total += sold_hours * planned / 100.0
+					hours_rows += 1
+			if row["margin_estimate"] is not None:
 				margin_total += row["margin_estimate"]
+				margin_rows += 1
 		if compliance_weight:
 			compliance = compliance_weighted / compliance_weight * 100.0
-		elif rows:
+		elif compliance_rows:
 			# Desvío deliberado de la spec 1.4, que pide ponderar siempre por horas
 			# vendidas: un portafolio de proyectos internos no tiene ninguna, y ponderar
 			# por cero daría siempre vacío. Se cae a promedio simple, que es un dato real.
-			compliance = compliance_plain / len(rows) * 100.0
+			compliance = compliance_plain / compliance_rows * 100.0
 		else:
 			compliance = None
 		hours_deviation = None
-		if has_hours_data and expected_total:
+		if hours_rows and expected_total:
 			hours_deviation = (consumed_total - expected_total) / expected_total * 100.0
 		margin = None
-		if can_see_margin and can_read_sale and any(row["margin_estimate"] is not None for row in rows):
+		if can_see_margin and can_read_sale and margin_rows:
 			margin = round(margin_total, 2)
 		return {
 			"active_projects": len(rows),

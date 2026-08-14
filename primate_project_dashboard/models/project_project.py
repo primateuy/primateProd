@@ -18,6 +18,8 @@ HEALTH_SELECTION = [
 	("on_track", "On Track"),
 	("at_risk", "Attention"),
 	("critical", "At Risk"),
+	# Sin plan no hay contra qué medir: un verde sin plan sería un falso verde.
+	("no_plan", "No Plan"),
 ]
 
 
@@ -222,11 +224,14 @@ class ProjectProject(models.Model):
 				points = [(project.date_start, 0.0), (project.date, 100.0)]
 			else:
 				points = []
-			result[project.id] = (
-				self._primate_interpolate(points, today),
-				not has_plan,
-				has_plan,
-			)
+			result[project.id] = {
+				# Sin puntos no hay nada que interpolar: el avance planificado es "sin
+				# dato", no un cero. Un cero se leería como "el plan pedía 0%".
+				"planned": self._primate_interpolate(points, today) if points else None,
+				"estimated": not has_plan,
+				"has_plan": has_plan,
+				"has_curve": bool(points),
+			}
 		return result
 
 	@api.depends(
@@ -242,11 +247,12 @@ class ProjectProject(models.Model):
 		real_map = self._primate_progress_real_map()
 		planned_map = self._primate_progress_planned_map()
 		for project in self:
-			planned, estimated, has_plan = planned_map.get(project.id, (0.0, True, False))
+			plan = planned_map.get(project.id) or {}
 			project.progress_real = real_map.get(project._origin.id, 0.0)
-			project.progress_planned = planned
-			project.progress_plan_is_estimated = estimated
-			project.has_dashboard_plan = has_plan
+			# El campo es Float y no admite nulo; el RPC es el que manda None.
+			project.progress_planned = plan.get("planned") or 0.0
+			project.progress_plan_is_estimated = plan.get("estimated", True)
+			project.has_dashboard_plan = plan.get("has_plan", False)
 
 	# ------------------------------------------------------------------
 	# Horas y economía
@@ -335,11 +341,16 @@ class ProjectProject(models.Model):
 		return orphans
 
 	def _primate_sold_hours_map(self):
+		"""{project_id: horas vendidas}. None = no hay dato, ni por permiso ni por SO.
+
+		Un proyecto sin orden de venta vinculada no vendió cero horas: no tiene el dato
+		(sección 1.10, los proyectos internos se muestran sin métricas de horas vendidas).
+		"""
 		if not self.ids:
 			return {}
 		if not self.env["sale.order.line"].has_access("read"):
 			return dict.fromkeys(self.ids, None)
-		result = dict.fromkeys(self.ids, 0.0)
+		result = dict.fromkeys(self.ids, None)
 		uom_hour = self.env.ref("uom.product_uom_hour", raise_if_not_found=False)
 		if not uom_hour:
 			return result
@@ -347,33 +358,35 @@ class ProjectProject(models.Model):
 			self._primate_sale_line_domain(), ["project_id", "product_uom_id"], ["product_uom_qty:sum"]
 		):
 			if project and uom and uom._has_common_reference(uom_hour):
-				result[project.id] = result.get(project.id, 0.0) + uom._compute_quantity(
+				result[project.id] = (result.get(project.id) or 0.0) + uom._compute_quantity(
 					qty, uom_hour, round=False
 				)
 		for line, project_id in self._primate_orphan_sale_lines().items():
 			if line.product_uom_id and line.product_uom_id._has_common_reference(uom_hour):
 				qty = line.product_uom_id._compute_quantity(line.product_uom_qty, uom_hour, round=False)
-				result[project_id] = result.get(project_id, 0.0) + qty
+				result[project_id] = (result.get(project_id) or 0.0) + qty
 		return result
 
 	def _primate_sold_amount_map(self):
-		"""Monto vendido sin impuestos imputable a cada proyecto."""
+		"""Monto vendido sin impuestos imputable a cada proyecto. None = sin SO vinculada."""
 		if not self.ids:
 			return {}
 		if not self.env["sale.order.line"].has_access("read"):
 			return dict.fromkeys(self.ids, None)
-		result = dict.fromkeys(self.ids, 0.0)
+		result = dict.fromkeys(self.ids, None)
 		for project, subtotal in self.env["sale.order.line"]._read_group(
 			self._primate_sale_line_domain(), ["project_id"], ["price_subtotal:sum"]
 		):
 			if project:
 				result[project.id] = subtotal
 		for line, project_id in self._primate_orphan_sale_lines().items():
-			result[project_id] = result.get(project_id, 0.0) + line.price_subtotal
+			result[project_id] = (result.get(project_id) or 0.0) + line.price_subtotal
 		return result
 
 	@api.depends("sale_line_id")
 	def _compute_sale_metrics(self):
+		# El campo es Float y no admite nulo: "sin SO" queda en 0 acá y viaja como None
+		# en el RPC, que es donde el usuario lo lee.
 		sold_map = self._primate_sold_hours_map()
 		for project in self:
 			project.sold_hours = sold_map.get(project._origin.id) or 0.0
@@ -520,13 +533,15 @@ class ProjectProject(models.Model):
 		metrics = {}
 		for project in self:
 			origin_id = project._origin.id
-			planned, estimated, has_plan = planned_map.get(project.id, (0.0, True, False))
+			plan = planned_map.get(project.id) or {}
 			values = {
 				"next_milestone": self._primate_next_milestone(milestone_map.get(origin_id, []), today),
 				"progress_real": real_map.get(origin_id, 0.0),
-				"progress_planned": planned,
-				"progress_plan_is_estimated": estimated,
-				"has_plan": has_plan,
+				# None = no hay curva de plan que interpolar, distinto de "el plan pedía 0%".
+				"progress_planned": plan.get("planned"),
+				"progress_plan_is_estimated": plan.get("estimated", True),
+				"has_plan": plan.get("has_plan", False),
+				"has_plan_curve": plan.get("has_curve", False),
 				# None = el usuario no tiene permiso para ver el dato, distinto de cero.
 				"sold_hours": sold_map.get(origin_id),
 				"consumed_hours": consumed_map.get(origin_id),
@@ -551,7 +566,11 @@ class ProjectProject(models.Model):
 			sold_hours = 0.0
 			consumed_hours = 0.0
 		hours_ratio = consumed_hours / sold_hours * 100.0 if sold_hours else 0.0
-		if progress_real < progress_planned - params["health_red_progress_gap"]:
+		# Sin curva de plan las reglas de brecha no se pueden evaluar, pero las que no
+		# dependen del plan sí: un proyecto quemando horas o con un hito vencido tiene
+		# que seguir marcando rojo aunque nadie haya cargado el plan.
+		has_curve = values.get("has_plan_curve") and progress_planned is not None
+		if has_curve and progress_real < progress_planned - params["health_red_progress_gap"]:
 			return "critical"
 		if (
 			sold_hours
@@ -561,7 +580,7 @@ class ProjectProject(models.Model):
 			return "critical"
 		if values["overdue_milestone_days"] > params["health_milestone_overdue_days"]:
 			return "critical"
-		if progress_real < progress_planned - params["health_yellow_progress_gap"]:
+		if has_curve and progress_real < progress_planned - params["health_yellow_progress_gap"]:
 			return "at_risk"
 		if (
 			sold_hours
@@ -571,7 +590,8 @@ class ProjectProject(models.Model):
 			return "at_risk"
 		if values["milestone_soon_open_ratio"] > params["health_milestone_open_ratio"]:
 			return "at_risk"
-		return "on_track"
+		# El verde exige haber sido medido contra un plan.
+		return "on_track" if has_curve else "no_plan"
 
 	@api.depends(
 		"task_ids.state",

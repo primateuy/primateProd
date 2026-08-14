@@ -16,7 +16,7 @@ export class ProjectDashboard extends Component {
 	static components = { Layout, KpiCards, ProjectTable };
 	static props = { ...standardActionServiceProps };
 	static path = "primate-project-dashboard";
-	static displayName = _t("Project Dashboard");
+	static displayName = _t("Executive Dashboard");
 
 	setup() {
 		this.orm = useService("orm");

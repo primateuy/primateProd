@@ -5,7 +5,7 @@
 		<Layout className="'o_primate_dashboard'">
 			<div class="o_primate_dashboard_content p-3">
 				<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
-					<h1 class="o_primate_dashboard_title mb-0">Project Dashboard</h1>
+					<h1 class="o_primate_dashboard_title mb-0">Executive Dashboard</h1>
 					<div class="d-flex flex-wrap gap-2 align-items-center">
 						<select class="form-select form-select-sm w-auto"
 							t-att-title="periodTooltip"

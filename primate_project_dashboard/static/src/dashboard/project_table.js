@@ -7,12 +7,14 @@ const HEALTH_LABELS = {
 	on_track: _t("On Track"),
 	at_risk: _t("Attention"),
 	critical: _t("At Risk"),
+	no_plan: _t("No Plan"),
 };
 
 const HEALTH_CLASSES = {
 	on_track: "o_primate_health_on_track",
 	at_risk: "o_primate_health_at_risk",
 	critical: "o_primate_health_critical",
+	no_plan: "o_primate_health_no_plan",
 };
 
 export class ProjectTable extends Component {
@@ -40,7 +42,18 @@ export class ProjectTable extends Component {
 		return `${Math.min(Math.max(value || 0, 0), 100)}%`;
 	}
 
-	/** Cada mitad se muestra por separado: el permiso que falta puede ser uno solo. */
+	/** A nivel ejecutivo el decimal no aporta y ensucia: el cálculo interno lo conserva. */
+	percentage(value) {
+		return value === null || value === undefined ? this.noData : `${Math.round(value)}%`;
+	}
+
+	progressLabel(row) {
+		return `${this.percentage(row.progress_real)} real / ${this.percentage(
+			row.progress_planned
+		)} planned`;
+	}
+
+	/** Cada mitad se muestra por separado: el dato que falta puede ser uno solo. */
 	hoursLabel(row) {
 		const consumed = row.consumed_hours ?? this.noData;
 		const sold = row.sold_hours ?? this.noData;
@@ -48,14 +61,13 @@ export class ProjectTable extends Component {
 	}
 
 	hoursTooltip(row) {
-		if (row.consumed_hours === null && row.sold_hours === null) {
-			return _t("You do not have access to the timesheets or the sales data of these projects.");
-		}
-		if (row.consumed_hours === null) {
+		if (row.consumed_hours === null && !this.props.config.can_see_timesheet_data) {
 			return _t("You do not have access to the timesheets of these projects.");
 		}
 		if (row.sold_hours === null) {
-			return _t("You do not have access to the sales data of these projects.");
+			return this.props.config.can_see_sale_data
+				? _t("No sales order linked to this project.")
+				: _t("You do not have access to the sales data of these projects.");
 		}
 		return "";
 	}
@@ -64,7 +76,10 @@ export class ProjectTable extends Component {
 		return _t("You do not have access to the milestones of these projects.");
 	}
 
-	get estimatedPlanTooltip() {
+	planTooltip(row) {
+		if (!row.has_plan_curve) {
+			return _t("No plan loaded: the project is missing an end date or milestones.");
+		}
 		return _t(
 			"Approximate plan: this project has no milestones with a planned progress, " +
 				"so the expected progress is interpolated between its start and end dates."
@@ -88,5 +103,19 @@ export class ProjectTable extends Component {
 			return this.noData;
 		}
 		return formatMonetary(row.margin_estimate, { currencyId: this.props.config.currency_id });
+	}
+
+	marginTooltip(row) {
+		if (row.margin_estimate !== null) {
+			return "";
+		}
+		return this.props.config.can_see_sale_data
+			? _t("No sales order linked to this project.")
+			: _t("You do not have access to the sales data of these projects.");
+	}
+
+	/** Solo color: el semáforo mide cronograma, no economía. */
+	marginClass(row) {
+		return row.margin_estimate < 0 ? "text-danger" : "";
 	}
 }

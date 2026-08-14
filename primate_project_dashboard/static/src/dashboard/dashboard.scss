@@ -114,6 +114,16 @@
 		}
 	}
 
+	// Sin plan: gris, deliberadamente apagado. No es un riesgo medido, es un dato que falta.
+	.o_primate_health_no_plan {
+		background-color: rgba($o-main-text-color, 0.08);
+		color: $text-muted;
+
+		&.o_primate_bar_fill {
+			background-color: $gray-400;
+		}
+	}
+
 	.o_primate_health_critical {
 		background-color: rgba($o-danger, 0.12);
 		color: shade-color($o-danger, 10%);

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 19:13+0000\n"
-"PO-Revision-Date: 2026-08-13 19:13+0000\n"
+"POT-Creation-Date: 2026-08-14 12:07+0000\n"
+"PO-Revision-Date: 2026-08-14 12:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,18 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: primate_project_dashboard
-#. odoo-javascript
-#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
-msgid "% planned"
-msgstr "% planificado"
-
-#. module: primate_project_dashboard
-#. odoo-javascript
-#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
-msgid "% real /"
-msgstr "% real /"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -90,12 +78,6 @@ msgstr "Todo el período"
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__progress_plan_is_estimated
 msgid "Approximate Plan"
-msgstr "Plan aproximado"
-
-#. module: primate_project_dashboard
-#. odoo-javascript
-#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
-msgid "Approximate plan"
 msgstr "Plan aproximado"
 
 #. module: primate_project_dashboard
@@ -359,6 +341,9 @@ msgid "Estimated margin"
 msgstr "Margen estimado"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
 #: model:ir.actions.client,name:primate_project_dashboard.action_project_dashboard
 #: model:ir.ui.menu,name:primate_project_dashboard.menu_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -484,9 +469,23 @@ msgid "Next milestone"
 msgstr "Próximo hito"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
+#: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_progress_snapshot__health_state__no_plan
+#: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_project__health_state__no_plan
+msgid "No Plan"
+msgstr "Sin plan"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__alert_no_activity_days
 msgid "No activity after (days)"
 msgstr "Sin actividad hace más de (días)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
+msgid "No plan loaded: the project is missing an end date or milestones."
+msgstr "Sin plan cargado: al proyecto le falta la fecha de fin o los hitos."
 
 #. module: primate_project_dashboard
 #: model_terms:ir.actions.act_window,help:primate_project_dashboard.action_project_progress_snapshot
@@ -504,6 +503,12 @@ msgstr "Ningún proyecto de esta selección tiene horas vendidas contra las cual
 #: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
 msgid "No project matches the current filters."
 msgstr "Ningún proyecto coincide con los filtros actuales."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
+msgid "No sales order linked to this project."
+msgstr "Sin orden de venta vinculada."
 
 #. module: primate_project_dashboard
 #. odoo-javascript
@@ -529,6 +534,12 @@ msgstr "Plan cargado"
 #: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
 msgid "Plan compliance"
 msgstr "Cumplimiento de plan"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Plan information"
+msgstr "Información del plan"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_milestone__planned_progress
@@ -571,9 +582,6 @@ msgid "Project"
 msgstr ""
 
 #. module: primate_project_dashboard
-#. odoo-javascript
-#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
-#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
 #: model:res.groups.privilege,name:primate_project_dashboard.res_groups_privilege_project_dashboard
 msgid "Project Dashboard"
 msgstr "Dashboard de proyectos"
@@ -819,14 +827,6 @@ msgstr "No tenés permiso para ver los datos de venta de estos proyectos."
 #: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
 msgid "You do not have access to the timesheets of these projects."
 msgstr "No tenés permiso para ver los timesheets de estos proyectos."
-
-#. module: primate_project_dashboard
-#. odoo-javascript
-#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.js:0
-msgid ""
-"You do not have access to the timesheets or the sales data of these "
-"projects."
-msgstr "No tenés permiso para ver los timesheets ni los datos de venta de estos proyectos."
 
 #. module: primate_project_dashboard
 #. odoo-javascript

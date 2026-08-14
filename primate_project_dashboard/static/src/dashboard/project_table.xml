@@ -35,16 +35,16 @@
 							<div class="o_primate_bar">
 								<div class="o_primate_bar_fill" t-att-class="healthClass(row)"
 									t-att-style="'width: ' + barWidth(row.progress_real)"/>
-								<div class="o_primate_bar_marker"
+								<!-- Sin curva de plan no hay marcador: no hay nada que marcar. -->
+								<div t-if="row.progress_planned !== null" class="o_primate_bar_marker"
 									t-att-style="'left: ' + barWidth(row.progress_planned)"
 									title="Planned progress"/>
 							</div>
 							<div class="text-muted small mt-1">
-								<t t-esc="row.progress_real"/>% real /
-								<t t-esc="row.progress_planned"/>% planned
+								<t t-esc="progressLabel(row)"/>
 								<i t-if="row.plan_is_estimated" class="fa fa-info-circle ms-1"
-									t-att-title="estimatedPlanTooltip" role="img"
-									aria-label="Approximate plan"/>
+									t-att-title="planTooltip(row)" role="img"
+									aria-label="Plan information"/>
 							</div>
 						</td>
 						<td class="text-end">
@@ -71,6 +71,7 @@
 							<span t-else="" class="text-muted" t-esc="noData"/>
 						</td>
 						<td class="text-end" t-if="props.config.can_see_margin"
+							t-att-class="marginClass(row)" t-att-title="marginTooltip(row)"
 							t-esc="formatMargin(row)"/>
 					</tr>
 				</tbody>
