@@ -1,9 +1,15 @@
 // Dashboard ejecutivo de proyectos.
 // Se usan las variables de color estándar de Odoo para respetar el theming.
 
+// Layout aplica esta clase sobre el propio <main class="o_content">. En un client
+// action ese elemento solo hereda `flex: 1 1 auto` del core, sin overflow, así que
+// el scroll hay que declararlo acá: en el div de adentro no sirve de nada.
 .o_primate_dashboard {
+	height: 100%;
+	overflow: auto;
+
 	.o_primate_dashboard_content {
-		overflow: auto;
+		min-height: 0;
 	}
 
 	.o_primate_dashboard_title {
