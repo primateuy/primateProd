@@ -247,6 +247,8 @@ class TestDashboardData(DashboardCommon):
 			"technical", "blocked", {"period": "all"}
 		)
 		self.assertEqual(action["res_model"], "project.task")
+		# doAction recibe este diccionario tal cual y explota sin `views`.
+		self.assertTrue(action.get("views"), "la acción necesita views, no solo view_mode")
 		encontradas = self.env["project.task"].search(action["domain"])
 		self.assertIn(tareas[0], encontradas)
 		self.assertNotIn(tareas[1], encontradas)

@@ -194,6 +194,9 @@ class ProjectProject(models.Model):
 			"type": "ir.actions.act_window",
 			"name": _("%(area)s tasks", area=labels.get(area, area)),
 			"res_model": "project.task",
+			# `views` explícito: el diccionario va directo a doAction, que no expande
+			# `view_mode` por su cuenta como sí lo hace una ir.actions.act_window leída.
+			"views": [(False, "list"), (False, "kanban"), (False, "form")],
 			"view_mode": "list,kanban,form",
 			"domain": domain,
 			"target": "current",

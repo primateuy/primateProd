@@ -301,6 +301,8 @@ class ProjectProject(models.Model):
 			return {
 				"type": "ir.actions.act_window",
 				"res_model": res_model,
+				# Ídem: doAction necesita `views`, no le alcanza con `view_mode`.
+				"views": [(False, "list"), (False, "form")],
 				"view_mode": "list,form",
 				"domain": [("id", "in", [int(value) for value in res_ids])],
 				"target": "current",

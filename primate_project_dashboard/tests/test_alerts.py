@@ -96,7 +96,19 @@ class TestAlerts(DashboardCommon):
 			agregada["res_model"], agregada["res_id"], agregada["res_ids"]
 		)
 		self.assertEqual(action["view_mode"], "list,form")
+		self.assertTrue(action.get("views"), "la acción necesita views, no solo view_mode")
 		self.assertEqual(action["domain"], [("id", "in", agregada["res_ids"])])
+
+	def test_alerta_de_un_solo_registro_abre_formulario(self):
+		project = self._make_project("Hito")
+		self._make_milestones(project, [(-10, 50.0, False)])
+		alerts, _total = self._alerts()
+		alerta = [a for a in alerts if a["type"] == "milestone_overdue"][0]
+		action = self.env["project.project"].action_open_alert_record(
+			alerta["res_model"], alerta["res_id"], alerta["res_ids"]
+		)
+		self.assertEqual(action["res_id"], alerta["res_id"])
+		self.assertTrue(action.get("views"))
 
 	def test_alerta_sin_plan_cubre_gris_y_aproximado(self):
 		gris = self._make_project("Sin fechas", start=None, end=None)
