@@ -88,9 +88,8 @@ class ProjectProject(models.Model):
 	def _primate_planning_committed_hours(self, areas, date_from, date_to):
 		"""Soporte opcional de Planning, detectado en runtime y nunca en el manifest."""
 		committed = dict.fromkeys(areas, 0.0)
-		Slot = self.env["planning.slot"]
-		if not Slot.has_access("read"):
-			return committed
+		# Mismo criterio que el denominador: el resultado es una suma por área.
+		Slot = self.env["planning.slot"].sudo()
 		employees_by_area = self._primate_employees_by_area(areas)
 		for area, employees in employees_by_area.items():
 			if not employees:
@@ -105,11 +104,19 @@ class ProjectProject(models.Model):
 		return committed
 
 	def _primate_employees_by_area(self, areas):
-		"""{área: empleados}. El área del empleado es la que da el denominador."""
-		Employee = self.env["hr.employee"]
+		"""{área: empleados} para el denominador de capacidad.
+
+		SUDO DE AGREGACIÓN — única excepción a la regla de sin-sudo del módulo. El campo
+		`hr.employee.area` sigue protegido con `groups="hr.group_hr_user"` a nivel de
+		registro: el área de una persona concreta es dato de RRHH. Pero lo que sale de
+		acá alimenta una suma por área (X horas comprometidas sobre Y de calendario) que
+		no expone el área de ningún empleado individual, y los líderes de área son la
+		audiencia principal de esas tarjetas: sin esto verían "—" siempre.
+
+		Quien llame a este método SOLO puede agregar. Nada por empleado va al payload.
+		"""
+		Employee = self.env["hr.employee"].sudo()
 		result = {area: Employee for area in areas}
-		if not Employee.has_access("read"):
-			return result
 		for area, employees in Employee._read_group(
 			[("area", "in", areas)], ["area"], ["id:recordset"]
 		):

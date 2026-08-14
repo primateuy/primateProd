@@ -127,14 +127,13 @@ export class ProjectDashboard extends Component {
 		return this.load(this.state.rows.length);
 	}
 
-	openAlertRecord(alert) {
-		this.action.doAction({
-			type: "ir.actions.act_window",
-			res_model: alert.res_model,
-			res_id: alert.res_id,
-			views: [[false, "form"]],
-			target: "current",
-		});
+	async openAlertRecord(alert) {
+		const action = await this.orm.call("project.project", "action_open_alert_record", [
+			alert.res_model,
+			alert.res_id,
+			alert.res_ids,
+		]);
+		this.action.doAction(action);
 	}
 
 	async snoozeAlert(alert) {

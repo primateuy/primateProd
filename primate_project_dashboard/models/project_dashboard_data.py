@@ -162,6 +162,9 @@ class ProjectProject(models.Model):
 		# Los KPIs y las tarjetas de área agregan sobre el total, nunca sobre la página
 		# visible: paginar no puede cambiar lo que dice el portafolio.
 		kpis = self._primate_dashboard_kpis(rows, can_read_sale, can_see_margin)
+		alerts, alerts_total = projects._primate_dashboard_alerts(
+			metrics, milestone_map, params, today
+		)
 		limit = int(options.get("limit") or DEFAULT_PAGE_SIZE)
 		offset = int(options.get("offset") or 0)
 		page = rows[offset : offset + limit] if limit else rows
@@ -172,7 +175,8 @@ class ProjectProject(models.Model):
 			"projects_total": len(rows),
 			"projects_offset": offset,
 			"areas": projects._primate_dashboard_areas(params, today),
-			"alerts": projects._primate_dashboard_alerts(metrics, milestone_map, params, today),
+			"alerts": alerts,
+			"alerts_total": alerts_total,
 			"selectors": self._primate_dashboard_selectors(options, today),
 			"config": {
 				"can_see_margin": can_see_margin,

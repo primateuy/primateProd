@@ -14,6 +14,9 @@ CLOSED_TASK_STATES = [DONE_STATE, CANCELED_STATE]
 SEVERITY_DANGER = "danger"
 SEVERITY_WARNING = "warning"
 
+# Tope de alertas devueltas por el RPC.
+ALERT_LIMIT = 50
+
 
 class ProjectProject(models.Model):
 	_inherit = "project.project"
@@ -23,8 +26,15 @@ class ProjectProject(models.Model):
 	# ------------------------------------------------------------------
 
 	@api.model
-	def _primate_alert(self, alert_type, severity, message, res_model, res_id, project_id=None):
-		"""Una alerta. La clave es reproducible: sobrevive a que cambie el mensaje."""
+	def _primate_alert(
+		self, alert_type, severity, message, res_model, res_id,
+		project_id=None, age_days=0, res_ids=None,
+	):
+		"""Una alerta. La clave es reproducible: sobrevive a que cambie el mensaje.
+
+		`res_ids` es para las alertas agregadas: el botón abre la lista completa de los
+		registros involucrados en vez de uno solo.
+		"""
 		return {
 			"key": self.env["project.dashboard.alert.snooze"]._primate_alert_key(
 				alert_type, res_model, res_id
@@ -34,7 +44,10 @@ class ProjectProject(models.Model):
 			"message": message,
 			"res_model": res_model,
 			"res_id": res_id,
+			"res_ids": res_ids or [],
 			"project_id": project_id,
+			# Ordena dentro de cada severidad: primero lo que lleva más tiempo pudriéndose.
+			"age_days": age_days,
 		}
 
 	# ------------------------------------------------------------------
@@ -65,6 +78,7 @@ class ProjectProject(models.Model):
 						"project.milestone",
 						milestone["id"],
 						project_id,
+						age_days=overdue_days,
 					)
 				)
 		return alerts
@@ -118,16 +132,24 @@ class ProjectProject(models.Model):
 			):
 				if project:
 					last_timesheet[project.id] = last_date
-		last_stage_change = {}
-		for project, last_update in self.env["project.task"]._read_group(
-			[("project_id", "in", self.ids)], ["project_id"], ["date_last_stage_update:max"]
+		# El cambio de etapa es la señal de la spec, pero un proyecto sin etapas
+		# configuradas no la tiene nunca: se toma también la última escritura de sus
+		# tareas, que es actividad igual y siempre está.
+		last_task_change = {}
+		for project, last_stage, last_write in self.env["project.task"]._read_group(
+			[("project_id", "in", self.ids)],
+			["project_id"],
+			["date_last_stage_update:max", "write_date:max"],
 		):
-			if project and last_update:
-				last_stage_change[project.id] = fields.Date.to_date(last_update)
+			if not project:
+				continue
+			marks = [fields.Date.to_date(value) for value in (last_stage, last_write) if value]
+			if marks:
+				last_task_change[project.id] = max(marks)
 		for project in self:
 			dates = [
 				value
-				for value in (last_timesheet.get(project.id), last_stage_change.get(project.id))
+				for value in (last_timesheet.get(project.id), last_task_change.get(project.id))
 				if value
 			]
 			last_activity = max(dates) if dates else None
@@ -145,6 +167,7 @@ class ProjectProject(models.Model):
 					"project.project",
 					project.id,
 					project.id,
+					age_days=(today - last_activity).days if last_activity else limit_days,
 				)
 			)
 		return alerts
@@ -184,6 +207,7 @@ class ProjectProject(models.Model):
 				),
 				"res.users",
 				sorted(missing)[0],
+				res_ids=sorted(missing),
 			)
 		]
 
@@ -238,6 +262,7 @@ class ProjectProject(models.Model):
 					"project.task",
 					task.id,
 					task.project_id.id,
+					age_days=days,
 				)
 			)
 		return alerts
@@ -257,13 +282,29 @@ class ProjectProject(models.Model):
 		alerts += self._primate_alerts_missing_timesheets(today)
 		snoozed = self.env["project.dashboard.alert.snooze"]._primate_active_keys()
 		alerts = [alert for alert in alerts if alert["key"] not in snoozed]
-		# Primero las rojas, y dentro de cada severidad el orden del catálogo.
-		alerts.sort(key=lambda alert: 0 if alert["severity"] == SEVERITY_DANGER else 1)
-		return alerts
+		# Primero las rojas y, dentro de cada severidad, lo que lleva más tiempo abierto.
+		alerts.sort(
+			key=lambda alert: (
+				0 if alert["severity"] == SEVERITY_DANGER else 1,
+				-alert["age_days"],
+			)
+		)
+		# Cap defensivo: el panel no se pagina en v1, pero tampoco puede devolver mil
+		# alertas. El lazy-load real queda anotado como pendiente de v2 en el README.
+		total = len(alerts)
+		return alerts[:ALERT_LIMIT], total
 
 	@api.model
-	def action_open_alert_record(self, res_model, res_id):
-		"""Abre el registro detrás de la alerta."""
+	def action_open_alert_record(self, res_model, res_id, res_ids=None):
+		"""Abre lo que hay detrás de la alerta: un registro, o la lista si son varios."""
+		if res_ids and len(res_ids) > 1:
+			return {
+				"type": "ir.actions.act_window",
+				"res_model": res_model,
+				"view_mode": "list,form",
+				"domain": [("id", "in", [int(value) for value in res_ids])],
+				"target": "current",
+			}
 		return {
 			"type": "ir.actions.act_window",
 			"res_model": res_model,

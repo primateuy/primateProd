@@ -91,7 +91,8 @@
 					<AreaCards areas="state.data.areas" onOpenTasks.bind="openAreaTasks"/>
 
 					<h2 class="o_primate_section_title mt-4 mb-2">Alerts</h2>
-					<AlertsPanel alerts="state.data.alerts" onOpenRecord.bind="openAlertRecord"
+					<AlertsPanel alerts="state.data.alerts" total="state.data.alerts_total"
+						onOpenRecord.bind="openAlertRecord"
 						onSnooze.bind="snoozeAlert"/>
 				</t>
 			</div>

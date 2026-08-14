@@ -30,6 +30,9 @@
 		"web.assets_backend": [
 			"primate_project_dashboard/static/src/dashboard/**/*",
 		],
+		"web.assets_tests": [
+			"primate_project_dashboard/static/tests/tours/**/*",
+		],
 	},
 	"installable": True,
 	"application": False,

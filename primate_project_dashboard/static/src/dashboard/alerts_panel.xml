@@ -26,6 +26,9 @@
 					</button>
 				</div>
 			</div>
+			<div t-if="hiddenCount" class="text-muted small text-center mt-2">
+				and <t t-esc="hiddenCount"/> more alerts
+			</div>
 		</div>
 	</t>
 
