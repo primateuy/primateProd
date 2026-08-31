@@ -110,13 +110,18 @@ class ProjectProject(models.Model):
 		params = dashboard_params.get_params(self.env)
 		today = fields.Date.context_today(self)
 		can_see_margin = self.env.user.has_group(MANAGER_GROUP)
-		# "Sin dato" no es cero: sin lectura sobre las líneas de venta, las horas vendidas
-		# y el margen viajan en None y el front muestra "—".
-		can_read_sale = self.env["sale.order.line"].has_access("read")
-		can_read_timesheet = self.env["account.analytic.line"].has_access("read")
 		can_read_milestone = self.env.user.has_group("project.group_project_milestone")
 
 		projects = self.search(self._primate_dashboard_domain(options, today))
+		# "Sin dato" no es cero: sin lectura sobre las líneas de venta, las horas vendidas
+		# y el margen viajan en None y el front muestra "—".
+		#
+		# Se preguntan SOBRE LOS PROYECTOS ya buscados y no sobre el modelo, porque la
+		# pregunta no es "¿puede leer este modelo?" sino "¿ve todo lo que estoy por sumar?".
+		# Una record rule puede dejarle ver una parte, y media suma presentada como total
+		# es peor que un guion.
+		can_read_sale = projects._primate_can_read_sale_lines()
+		can_read_timesheet = projects._primate_can_read_timesheets()
 		metrics = projects._primate_health_metrics(params, today)
 		milestone_map = projects._primate_milestone_map()
 		margin_map = {}

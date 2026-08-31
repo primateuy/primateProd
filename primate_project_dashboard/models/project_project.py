@@ -273,8 +273,45 @@ class ProjectProject(models.Model):
 		return domain
 
 	def _primate_can_read_timesheets(self):
-		"""Un usuario sin acceso a las líneas analíticas no tiene el dato, no tiene un cero."""
-		return self.env["account.analytic.line"].has_access("read")
+		"""¿El usuario ve TODAS las horas cargadas de estos proyectos?
+
+		Mismo problema que con las líneas de venta: `has_access` mira la ACL del MODELO y
+		el grupo "Usuario: solo sus hojas de horas" pasa esa ACL, pero la record rule
+		`account.analytic.line.timesheet.user` le tapa las horas de sus compañeros.
+
+		Sin este chequeo el PM veía las horas consumidas del proyecto contando SOLO las
+		suyas, presentadas como el total. No reventaba —acá todo pasa por `_read_group`,
+		que filtra en silencio— y por eso es más peligroso que el AccessError: un número
+		incompleto que se lee como completo.
+
+		Se compara por COUNT y no trayendo los registros: un proyecto con años de horas
+		cargadas puede tener miles de líneas y no hay por qué materializarlas para saber
+		si falta alguna.
+		"""
+		Line = self.env["account.analytic.line"]
+		if not Line.has_access("read"):
+			return False
+		if not self.ids:
+			return True
+		domain = self._primate_timesheet_domain()
+		# OJO CON EL sudo(): no solo saltea las reglas de grupo, también la regla GLOBAL de
+		# multi-compañía. Comparando contra un sudo pelado, en una base con varias compañías
+		# cualquier usuario normal daba "visibilidad parcial" solo por no ver las líneas de
+		# otra compañía, y el dashboard le escondía datos que sí le corresponden. El lado
+		# sudo se acota a las mismas compañías del usuario, así lo único que puede diferir
+		# son las reglas por grupo, que es lo que se quiere detectar.
+		return Line.search_count(domain) == Line.sudo().search_count(
+			domain + self._primate_company_domain()
+		)
+
+	def _primate_company_domain(self):
+		"""Recorta al universo de compañías del usuario.
+
+		Se usa del lado `sudo()` de los chequeos de visibilidad: sin esto el sudo ve
+		también las otras compañías y la comparación acusa de "parcial" lo que en realidad
+		es el aislamiento normal de multi-compañía.
+		"""
+		return ["|", ("company_id", "=", False), ("company_id", "in", self.env.companies.ids)]
 
 	def _primate_sale_lines_involved(self):
 		"""Todas las líneas de venta que entran en el cálculo, vistas SIN restricciones.
@@ -284,8 +321,11 @@ class ProjectProject(models.Model):
 		búsquedas en vez de un dominio con OR para no equivocar la precedencia.
 		"""
 		Line = self.env["sale.order.line"].sudo()
-		por_proyecto = Line.search(self._primate_sale_line_domain())
-		apuntadas = self.sudo().mapped("sale_line_id")
+		# Acotado a las compañías del usuario: ver `_primate_company_domain`.
+		por_proyecto = Line.search(self._primate_sale_line_domain() + self._primate_company_domain())
+		apuntadas = self.sudo().mapped("sale_line_id").filtered(
+			lambda line: not line.company_id or line.company_id in self.env.companies
+		)
 		return por_proyecto | apuntadas
 
 	def _primate_can_read_sale_lines(self):
