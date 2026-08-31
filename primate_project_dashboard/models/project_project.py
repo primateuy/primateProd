@@ -276,6 +276,39 @@ class ProjectProject(models.Model):
 		"""Un usuario sin acceso a las líneas analíticas no tiene el dato, no tiene un cero."""
 		return self.env["account.analytic.line"].has_access("read")
 
+	def _primate_sale_lines_involved(self):
+		"""Todas las líneas de venta que entran en el cálculo, vistas SIN restricciones.
+
+		Son dos conjuntos y se unen: las que apuntan al proyecto por `project_id` -las que
+		agrupa el cálculo- y las que el proyecto apunta por `sale_line_id`. Se hacen dos
+		búsquedas en vez de un dominio con OR para no equivocar la precedencia.
+		"""
+		Line = self.env["sale.order.line"].sudo()
+		por_proyecto = Line.search(self._primate_sale_line_domain())
+		apuntadas = self.sudo().mapped("sale_line_id")
+		return por_proyecto | apuntadas
+
+	def _primate_can_read_sale_lines(self):
+		"""¿El usuario ve TODAS las líneas de venta que entran en el cálculo?
+
+		No alcanza con `has_access`: eso mira la ACL del MODELO y una record rule puede
+		negar registros concretos igual. El grupo de ventas "Solo documentos propios" es
+		exactamente ese caso — pasa la ACL y después la regla `Personal Order Lines` tapa
+		las líneas de órdenes ajenas.
+
+		Con visibilidad parcial la respuesta correcta NO es sumar lo que se ve: sería un
+		número más chico presentado como si fuera el total. Es "sin dato", el mismo
+		criterio que el módulo aplica cuando falta el permiso entero.
+		"""
+		Line = self.env["sale.order.line"]
+		if not Line.has_access("read"):
+			return False
+		involved = self._primate_sale_lines_involved()
+		if not involved:
+			return True
+		visibles = Line.browse(involved.ids)._filtered_access("read")
+		return len(visibles) == len(involved)
+
 	def _primate_consumed_hours_map(self, date_from=None, date_to=None):
 		if not self.ids:
 			return {}
@@ -318,10 +351,17 @@ class ProjectProject(models.Model):
 		KPIs del portafolio.
 		"""
 		candidates = defaultdict(list)
+		# Se leen SOLO las líneas que el usuario puede leer de verdad. Antes se accedía a
+		# `line.state` sin filtrar y una línea negada por una record rule tiraba AccessError,
+		# que se comía la carga entera del dashboard.
+		legibles = self.sudo().mapped("sale_line_id")
+		legibles = self.env["sale.order.line"].browse(legibles.ids)._filtered_access("read")
 		for project in self:
 			project_id = project._origin.id
 			line = project.sale_line_id
-			if not project_id or not line or line.state != "sale" or line.project_id:
+			if not project_id or not line or line not in legibles:
+				continue
+			if line.state != "sale" or line.project_id:
 				continue
 			candidates[line].append(project_id)
 		orphans = {}
@@ -348,7 +388,7 @@ class ProjectProject(models.Model):
 		"""
 		if not self.ids:
 			return {}
-		if not self.env["sale.order.line"].has_access("read"):
+		if not self._primate_can_read_sale_lines():
 			return dict.fromkeys(self.ids, None)
 		result = dict.fromkeys(self.ids, None)
 		uom_hour = self.env.ref("uom.product_uom_hour", raise_if_not_found=False)
@@ -371,7 +411,7 @@ class ProjectProject(models.Model):
 		"""Monto vendido sin impuestos imputable a cada proyecto. None = sin SO vinculada."""
 		if not self.ids:
 			return {}
-		if not self.env["sale.order.line"].has_access("read"):
+		if not self._primate_can_read_sale_lines():
 			return dict.fromkeys(self.ids, None)
 		result = dict.fromkeys(self.ids, None)
 		for project, subtotal in self.env["sale.order.line"]._read_group(
