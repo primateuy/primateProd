@@ -137,17 +137,21 @@ if not employee:
 	})
 else:
 	employee.hourly_cost = 25.0
-employee.area = "technical"
+# El área es `primate.area` (primate_project_area): se resuelve por CODE, nunca por id.
+def area(code):
+	return env.ref("primate_project_area.area_%s" % code)
+
+employee.area_id = area("technical")
 
 # Un empleado por area, para que las tres tarjetas tengan denominador.
-for login, name, area in (
+for login, name, area_code in (
 	("lider", "Líder de Área Demo", "functional"),
 	("direccion", "Dirección Demo", "admin"),
 ):
 	other = env["hr.employee"].search([("user_id", "=", users[login].id)], limit=1)
 	if not other:
 		other = env["hr.employee"].create({"name": name, "user_id": users[login].id})
-	other.write({"area": area, "hourly_cost": 30.0})
+	other.write({"area_id": area(area_code).id, "hourly_cost": 30.0})
 
 
 def get_partner(name):
@@ -181,14 +185,14 @@ def add_timesheet(project, hours, days_ago=1):
 	})
 
 
-def make_tasks(project, total, done, area, allocated=10.0, deadline_days=None):
+def make_tasks(project, total, done, area_code, allocated=10.0, deadline_days=None):
 	values = []
 	for index in range(total):
 		task = {
 			"name": f"{project.name} - tarea {index + 1}",
 			"project_id": project.id,
 			"allocated_hours": allocated,
-			"area": area,
+			"area_id": area(area_code).id,
 		}
 		# Con deadline dentro de la ventana, las horas restantes cuentan como capacidad
 		# comprometida; sin deadline, la tarjeta del área mostraría 0% ocupado.
@@ -218,7 +222,7 @@ Milestone.create([
 	{"project_id": verde.id, "name": "Go-live", "deadline": today + timedelta(days=20),
 	 "planned_progress": 90.0},
 ])
-make_tasks(verde, total=10, done=8, area="technical", deadline_days=4)
+make_tasks(verde, total=10, done=8, area_code="technical", deadline_days=4)
 make_sale_order(get_partner("Agrosiembra"), verde, hours=400)
 add_timesheet(verde, 310)
 
@@ -243,7 +247,7 @@ Milestone.create([
 	{"project_id": amarillo.id, "name": "UAT", "deadline": today + timedelta(days=10),
 	 "planned_progress": 80.0},
 ])
-make_tasks(amarillo, total=10, done=5, area="functional", deadline_days=6)
+make_tasks(amarillo, total=10, done=5, area_code="functional", deadline_days=6)
 make_sale_order(get_partner("New Age Data"), amarillo, hours=200)
 add_timesheet(amarillo, 120)
 
@@ -265,7 +269,7 @@ Milestone.create([
 	{"project_id": rojo.id, "name": "Entrega fase 2", "deadline": today - timedelta(days=5),
 	 "planned_progress": 70.0},
 ])
-make_tasks(rojo, total=10, done=3, area="technical", deadline_days=2)
+make_tasks(rojo, total=10, done=3, area_code="technical", deadline_days=2)
 make_sale_order(get_partner("Cliente Retail"), rojo, hours=250)
 add_timesheet(rojo, 240)
 
@@ -279,17 +283,17 @@ sin_plan = Project.create({
 	"date_start": today - timedelta(days=15),
 	"allow_billable": True,
 })
-make_tasks(sin_plan, total=4, done=1, area="admin", deadline_days=3)
+make_tasks(sin_plan, total=4, done=1, area_code="admin", deadline_days=3)
 add_timesheet(sin_plan, 18)
 
 # Una tarea bloqueada y una esperando al cliente, para la Fase 3.
 bloqueada = Task.create({
 	"name": "Esperando definición del cliente", "project_id": rojo.id,
-	"allocated_hours": 8.0, "area": "functional", "blocking_state": "waiting_customer",
+	"allocated_hours": 8.0, "area_id": area("functional").id, "blocking_state": "waiting_customer",
 })
 Task.create({
 	"name": "Bloqueada por infraestructura", "project_id": rojo.id,
-	"allocated_hours": 6.0, "area": "technical", "blocking_state": "blocked",
+	"allocated_hours": 6.0, "area_id": area("technical").id, "blocking_state": "blocked",
 })
 
 # La alerta de bloqueo mira blocked_since: se retrocede para superar el umbral.

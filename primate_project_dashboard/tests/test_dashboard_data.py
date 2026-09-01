@@ -228,7 +228,7 @@ class TestDashboardData(DashboardCommon):
 
 	def test_capacidad_visible_sin_permisos_de_rrhh(self):
 		"""El agregado por área no expone datos individuales: el líder tiene que verlo."""
-		self.employee.area = "technical"
+		self.employee.area_id = self._area("technical")
 		project = self._make_project("Con equipo", user=self.pm_user)
 		self._make_tasks(project, total=2, area="technical", allocated=4.0, deadline=2)
 		self.assertFalse(self.env["hr.employee"].with_user(self.blind_user).has_access("read"))

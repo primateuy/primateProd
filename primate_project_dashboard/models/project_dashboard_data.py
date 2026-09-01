@@ -68,7 +68,8 @@ class ProjectProject(models.Model):
 			domain += ["|", ("date", "=", False), ("date", ">=", date_from)]
 		if with_selectors:
 			if options.get("area"):
-				domain.append(("task_ids.area", "=", options["area"]))
+				# El filtro viaja por CODE, igual que el payload de las tarjetas.
+				domain.append(("task_ids.area_id.code", "=", options["area"]))
 			if options.get("user_id"):
 				domain.append(("user_id", "=", int(options["user_id"])))
 			if options.get("partner_id"):
@@ -90,8 +91,8 @@ class ProjectProject(models.Model):
 			if partner
 		]
 		areas = [
-			{"value": value, "name": label}
-			for value, label in self.env["project.task"].fields_get(["area"])["area"]["selection"]
+			{"value": area.code, "name": area.display_name}
+			for area in self.env["primate.area"].search([])
 		]
 		return {
 			"users": sorted(users, key=lambda item: item["name"]),

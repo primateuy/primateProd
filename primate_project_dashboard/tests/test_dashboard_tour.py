@@ -58,7 +58,7 @@ class TestDashboardTour(HttpCase):
 					"name": f"Tarea tour {index}",
 					"project_id": critico.id,
 					"allocated_hours": 10.0,
-					"area": "technical",
+					"area_id": self.env.ref("primate_project_area.area_technical").id,
 					"date_deadline": fields.Datetime.now() + timedelta(days=2),
 				}
 				for index in range(3)
@@ -99,7 +99,7 @@ class TestDashboardTour(HttpCase):
 					"name": f"Tarea sana {index}",
 					"project_id": sano.id,
 					"allocated_hours": 10.0,
-					"area": "functional",
+					"area_id": self.env.ref("primate_project_area.area_functional").id,
 				}
 				for index in range(4)
 			]

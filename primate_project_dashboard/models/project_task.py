@@ -12,25 +12,15 @@ WAITING_STATE = "04_waiting_normal"
 # si ninguno viene en vals, el override sale sin costo.
 BLOCKING_TRIGGER_FIELDS = ("blocking_state", "state", "tag_ids")
 
-AREA_SELECTION = [
-	("technical", "Technical"),
-	("functional", "Functional"),
-	("admin", "Administrative"),
-]
-
 
 class ProjectTask(models.Model):
 	_inherit = "project.task"
 
-	area = fields.Selection(
-		selection=AREA_SELECTION,
-		string="Area",
-		index=True,
-		tracking=True,
-		help="Area in charge of the task. Used by the executive dashboard to group workload.",
-	)
-	# Caso borde asumido: al ser Selection, una tarea no puede estar "bloqueada" y
-	# "esperando al cliente" a la vez. Si la operativa real lo necesita, se revisa en v2.
+	# El área ya no vive acá: es `area_id` (primate.area) y la define `primate_project_area`,
+	# porque la comparten este dashboard y el rol Gestor de Proyectos de Sagui.
+	#
+	# Caso borde asumido: una tarea no puede estar "bloqueada" y "esperando al cliente" a la
+	# vez. Si la operativa real lo necesita, se revisa en v2.
 	blocking_state = fields.Selection(
 		selection=[("blocked", "Blocked"), ("waiting_customer", "Waiting for Customer")],
 		string="Blocking",

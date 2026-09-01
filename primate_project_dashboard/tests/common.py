@@ -96,14 +96,20 @@ class DashboardCommon(TransactionCase):
 			]
 		)
 
+	def _area(self, code):
+		"""El área por CODE. Los tests hablan de 'technical', nunca de un id: el code es lo que
+		viaja en el payload del dashboard y lo que sobrevive a un dump restaurado en otra base."""
+		return self.env["primate.area"]._by_code(code)
+
 	def _make_tasks(self, project, total=10, done=0, area="technical", allocated=10.0, deadline=None):
+		area_id = self._area(area).id
 		tasks = self.env["project.task"].create(
 			[
 				{
 					"name": f"{project.name} T{index + 1}",
 					"project_id": project.id,
 					"allocated_hours": allocated,
-					"area": area,
+					"area_id": area_id,
 					**(
 						{"date_deadline": fields.Datetime.now() + timedelta(days=deadline)}
 						if deadline is not None
