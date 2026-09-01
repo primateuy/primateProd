@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 
 class PrimateArea(models.Model):
 	_name = "primate.area"
-	_description = "Área de trabajo"
+	_description = "Work Area"
 	_order = "sequence, name"
 
 	name = fields.Char(string="Name", required=True, translate=True)

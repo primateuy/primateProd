@@ -1,0 +1,211 @@
+# Translation of Odoo Server.
+# Spanish (Uruguay) translation - PrimateUY.
+# This file contains the translation of the following modules:
+# 	* primate_project_area
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-01 22:07+0000\n"
+"PO-Revision-Date: 2026-09-01 22:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__active
+msgid "Active"
+msgstr "Activa"
+
+#. module: primate_project_area
+#: model:primate.area,name:primate_project_area.area_admin
+#: model_terms:ir.ui.view,arch_db:primate_project_area.view_task_search_form_primate_area
+msgid "Administrative"
+msgstr "Administrativa"
+
+#. module: primate_project_area
+#: model_terms:ir.actions.act_window,help:primate_project_area.primate_area_action
+msgid ""
+"An area groups the work of the team and has a lead. Projects carry an area and\n"
+"\t\t\t\ttheir tasks inherit it."
+msgstr "Un área agrupa el trabajo del equipo y tiene un responsable. Los proyectos llevan un área y sus tareas la heredan."
+
+#. module: primate_project_area
+#: model_terms:ir.ui.view,arch_db:primate_project_area.primate_area_view_form
+#: model_terms:ir.ui.view,arch_db:primate_project_area.primate_area_view_search
+msgid "Archived"
+msgstr "Archivada"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_hr_employee__area_id
+#: model:ir.model.fields,field_description:primate_project_area.field_project_project__area_id
+#: model:ir.model.fields,field_description:primate_project_area.field_project_task__area_id
+#: model_terms:ir.ui.view,arch_db:primate_project_area.primate_area_view_form
+#: model_terms:ir.ui.view,arch_db:primate_project_area.view_project_search_primate_area
+#: model_terms:ir.ui.view,arch_db:primate_project_area.view_task_search_form_primate_area
+msgid "Area"
+msgstr "Área"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__user_id
+msgid "Area Lead"
+msgstr "Responsable del área"
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_project_project__area_id
+msgid "Area in charge of the project. New tasks inherit it."
+msgstr "Área responsable del proyecto. Las tareas nuevas la heredan."
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_project_task__area_id
+msgid ""
+"Area in charge of the task. It is inherited from the project and can be "
+"changed here: an administrative task inside a technical project is a real "
+"case."
+msgstr "Área responsable de la tarea. Se hereda del proyecto y se puede cambiar acá: una tarea administrativa dentro de un proyecto técnico es un caso real."
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_hr_employee__area_id
+msgid ""
+"Area this employee belongs to. The executive dashboard uses it as the "
+"denominator of each area's occupied capacity."
+msgstr "Área a la que pertenece el empleado. El dashboard ejecutivo la usa como denominador de la capacidad ocupada de cada área."
+
+#. module: primate_project_area
+#: model:ir.actions.act_window,name:primate_project_area.primate_area_action
+#: model:ir.ui.menu,name:primate_project_area.primate_area_menu
+#: model_terms:ir.ui.view,arch_db:primate_project_area.primate_area_view_list
+#: model_terms:ir.ui.view,arch_db:primate_project_area.primate_area_view_search
+msgid "Areas"
+msgstr "Áreas"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__code
+msgid "Code"
+msgstr "Código"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__color
+msgid "Color"
+msgstr "Color"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__display_name
+#: model:ir.model.fields,field_description:primate_project_area.field_project_project__display_name
+#: model:ir.model.fields,field_description:primate_project_area.field_project_task__display_name
+msgid "Display Name"
+msgstr "Mostrar nombre"
+
+#. module: primate_project_area
+#: model:ir.model,name:primate_project_area.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: primate_project_area
+#: model:primate.area,name:primate_project_area.area_functional
+#: model_terms:ir.ui.view,arch_db:primate_project_area.view_task_search_form_primate_area
+msgid "Functional"
+msgstr "Funcional"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_hr_employee__id
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__id
+#: model:ir.model.fields,field_description:primate_project_area.field_project_project__id
+#: model:ir.model.fields,field_description:primate_project_area.field_project_task__id
+msgid "ID"
+msgstr ""
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__write_uid
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__write_date
+msgid "Last Updated on"
+msgstr "Última modificación el"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_primate_area__user_id
+msgid ""
+"Person in charge of the area. Sagui's project manager role sends this area's"
+" proposals to them."
+msgstr "Persona responsable del área. El rol Gestor de Proyectos de Sagui le manda a ella las propuestas de esta área."
+
+#. module: primate_project_area
+#: model:ir.model,name:primate_project_area.model_project_project
+msgid "Project"
+msgstr "Proyecto"
+
+#. module: primate_project_area
+#: model:ir.model.fields,field_description:primate_project_area.field_primate_area__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: primate_project_area
+#: model_terms:ir.actions.act_window,help:primate_project_area.primate_area_action
+msgid "Set up your first area"
+msgstr "Cargá tu primera área"
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_primate_area__code
+msgid ""
+"Stable identifier used by the dashboard payload, the tours and the tests. "
+"Unlike the database id, it is the same across databases."
+msgstr "Identificador estable que usan el payload del dashboard, los tours y los tests. A diferencia del id de la base, es el mismo en todas."
+
+#. module: primate_project_area
+#: model:ir.model,name:primate_project_area.model_project_task
+msgid "Task"
+msgstr "Tarea"
+
+#. module: primate_project_area
+#: model:primate.area,name:primate_project_area.area_technical
+#: model_terms:ir.ui.view,arch_db:primate_project_area.view_task_search_form_primate_area
+msgid "Technical"
+msgstr "Técnica"
+
+#. module: primate_project_area
+#: model:ir.model.constraint,message:primate_project_area.constraint_primate_area_code_uniq
+msgid "There is already an area with that code."
+msgstr "Ya existe un área con ese código."
+
+#. module: primate_project_area
+#: model:ir.model.fields,help:primate_project_area.field_project_task__display_name
+msgid ""
+"Use these keywords in the title to set new tasks:\n"
+"\n"
+"        30h Allocate 30 hours to the task\n"
+"        #tags Set tags on the task\n"
+"        @user Assign the task to a user\n"
+"        ! Set the task a medium priority\n"
+"        !! Set the task a high priority\n"
+"        !!! Set the task a urgent priority\n"
+"\n"
+"        Make sure to use the right format and order e.g. Improve the configuration screen 5h #feature #v16 @Mitchell !"
+msgstr ""
+
+#. module: primate_project_area
+#: model:ir.model,name:primate_project_area.model_primate_area
+msgid "Work Area"
+msgstr "Área de trabajo"
