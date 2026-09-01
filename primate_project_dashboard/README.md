@@ -9,10 +9,10 @@ Está pensado para responder en menos de 30 segundos: qué proyectos están en p
 ## Dependencias
 
 ```python
-"depends": ["project", "sale_timesheet", "hr_timesheet"]
+"depends": ["project", "sale_timesheet", "hr_timesheet", "primate_project_area"]
 ```
 
-Y nada más, a propósito: el módulo tiene que poder instalarse en cualquier Odoo 19 limpio, Community incluido, sin arrastrar módulos custom de Primate ni de ningún cliente. `sale_timesheet` trae por su cuenta `sale_project` y `sale`, que es de donde salen `sale_line_id` y las líneas de venta.
+`primate_project_area` es la única dependencia custom, y es deliberada: define `primate.area` —el área con responsable— que este dashboard comparte con el rol Gestor de Proyectos de Sagui. Un Selection propio no podía llevar el responsable y obligaba a mantener dos definiciones del área. Fuera de eso el módulo sigue instalando en cualquier Odoo 19 limpio, Community incluido, sin arrastrar nada de ningún cliente. `sale_timesheet` trae por su cuenta `sale_project` y `sale`, que es de donde salen `sale_line_id` y las líneas de venta.
 
 **Planning es opcional y se detecta en runtime** (`"planning.slot" in self.env`), nunca en el manifest. Si está instalado y el toggle de Ajustes está activo, la capacidad comprometida sale de los slots; si no, de las horas restantes de las tareas con vencimiento en la ventana.
 
@@ -23,7 +23,7 @@ Y nada más, a propósito: el módulo tiene que poder instalarse en cualquier Od
    - **Líder de área**: todo el portafolio, sin margen.
    - **Responsable de proyecto**: solo los proyectos que tiene a cargo.
 2. Cargar el **plan** de cada proyecto: fecha de inicio, fecha de fin y al menos dos hitos con `deadline` y **avance planificado**. Sin eso el proyecto queda en gris ("Sin plan") y aparece en las alertas.
-3. Cargar el **área** de las tareas (alimenta las tarjetas de carga) y de los empleados (es el denominador de la capacidad).
+3. Cargar las **áreas** en *Proyecto → Configuración → Áreas*, con su responsable, y ponerle área a los proyectos (las tareas la heredan) y a los empleados (son el denominador de la capacidad).
 4. Revisar los umbrales en *Ajustes → Proyectos*.
 
 ## Parámetros (Ajustes → Proyectos)
@@ -49,9 +49,9 @@ Los 16 parámetros viven en `ir.config_parameter` con prefijo `primate_project_d
 
 ## Idioma
 
-La interfaz está íntegramente traducida al **español rioplatense** (voseo: "cargá", "tenés"), que es el registro de Uruguay. Son 191 cadenas: etiquetas de campo, valores de selección, grupos, menús, acciones, crons, mensajes de error y todo el texto del dashboard OWL.
+La interfaz está íntegramente traducida al **español rioplatense** (voseo: "cargá", "tenés"), que es el registro de Uruguay. Son 126 cadenas: etiquetas de campo, valores de selección, grupos, menús, acciones, crons, mensajes de error y todo el texto del dashboard OWL.
 
-El archivo es `i18n/es.po`, uno solo y a propósito: Odoo carga las traducciones en cascada `es.po` → `es_419.po` → `es_UY.po`, así que ese archivo ya aplica a `es_UY`, `es_419`, `es_AR` y cualquier variante. Duplicarlo en un `es_UY.po` solo agregaría dos archivos que hay que mantener sincronizados.
+Los términos del **área** ya no están acá: se fueron a `primate_project_area/i18n/es.po` junto con el campo. El archivo es `i18n/es.po`, uno solo y a propósito: Odoo carga las traducciones en cascada `es.po` → `es_419.po` → `es_UY.po`, así que ese archivo ya aplica a `es_UY`, `es_419`, `es_AR` y cualquier variante. Duplicarlo en un `es_UY.po` solo agregaría dos archivos que hay que mantener sincronizados.
 
 Para que se vea en español hay que **activar el idioma en la base** (*Ajustes → Traducciones → Idiomas*, o `odoo-bin i18n loadlang -l es_UY`) y ponérselo al usuario. `docs/seed_demo.py` ya lo hace para los usuarios de prueba.
 
@@ -60,11 +60,40 @@ Al agregar texto nuevo: los literales de JS visibles para el usuario van siempre
 ## Correr los tests
 
 ```bash
-odoo-bin -c <conf> -d <base_limpia> -i primate_project_dashboard \
+odoo-bin -c <conf> -d <base_limpia> --db-filter='^<base_limpia>$' \
+  -i primate_project_area,primate_project_dashboard \
   --test-enable --test-tags=/primate_project_dashboard --stop-after-init
 ```
 
-86 tests. El tour necesita `websocket-client` en el entorno y un Chrome/Chromium en las rutas estándar (o `ODOO_BROWSER_BIN` apuntando al binario); si falta alguno, Odoo lo saltea sin fallar, así que conviene mirar el log y no solo el código de salida.
+132 tests, incluido el tour. Tres cosas que hacen fallar la corrida por el entorno y no por el
+módulo, y que en el log no se leen como lo que son:
+
+**1. `--db-filter` es obligatorio para el tour.** `-d <base>` decide contra qué base corre el
+proceso, pero las requests que hace el navegador pasan por el `dbfilter` del `.conf`. Si el conf
+apunta a otra base —el caso normal de un conf de cliente— el tour abre el dashboard contra ESA
+base y falla con `Failed to load registry` / `some depends are not loaded`. Parece un problema de
+dependencias del módulo y no lo es.
+
+**2. Sin `websocket-client` el tour no falla: se saltea.** No está en el `requirements.txt` de
+Odoo, así que un venv recién armado no lo tiene. El log dice `skipped ... websocket-client module
+is not installed` y la corrida termina en verde **sin haber corrido el tour**. Mirar el log, no
+el código de salida:
+
+```bash
+pip install websocket-client
+```
+
+También hace falta un Chrome/Chromium en las rutas estándar, o `ODOO_BROWSER_BIN` apuntando al
+binario. Si falta, mismo comportamiento: salteado, no fallado.
+
+**3. Una base clonada con `createdb -T` no trae el filestore.** El clon copia la base pero no
+`~/.../Odoo/filestore/<base>/`, donde viven los bundles de assets. Sin eso la página nunca
+termina de cargar el JS, el tour se queda esperando `isTourReady` y muere por timeout —con
+`FileNotFoundError` de filestore sueltos en el log—. Se copia a mano:
+
+```bash
+rsync -a "$FILESTORE/<base_origen>/" "$FILESTORE/<base_clon>/"
+```
 
 ## Datos de prueba
 
