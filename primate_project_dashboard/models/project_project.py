@@ -187,6 +187,25 @@ class ProjectProject(models.Model):
 				return value_from + (value_to - value_from) * ratio
 		return points[-1][1]
 
+	@api.model
+	def _primate_plan_is_usable(self, planned_milestones):
+		"""¿La secuencia de hitos describe una curva que se puede dibujar?
+
+		Se pide lo mínimo: porcentajes dentro de 0-100 y que no retrocedan con la fecha.
+		Un plan que baja daría un "avance planificado" decreciente, que es un número
+		engañoso; ante eso se prefiere el plan aproximado, que al menos se muestra
+		rotulado como aproximado.
+		"""
+		anterior = None
+		for milestone in planned_milestones:
+			progreso = milestone["planned_progress"]
+			if not 0.0 <= progreso <= 100.0:
+				return False
+			if anterior is not None and progreso < anterior:
+				return False
+			anterior = progreso
+		return True
+
 	def _primate_progress_planned_map(self, milestone_map=None, today=None):
 		"""{project_id: (avance planificado, plan aproximado, plan cargado)}.
 
@@ -211,7 +230,17 @@ class ProjectProject(models.Model):
 				for milestone in milestone_map.get(project._origin.id, [])
 				if milestone["deadline"] and milestone["planned_progress"]
 			]
-			has_plan = bool(project.date_start and project.date and len(planned_milestones) >= 2)
+			# Un plan inconsistente NO se le reprocha al usuario bloqueándole el guardado
+			# del hito: el dashboard lo detecta acá y cae en el plan aproximado, que ya es
+			# un estado de primera clase y que el front rotula como tal. Antes esto se
+			# imponía con dos constrains sobre project.milestone; un módulo de lectura no
+			# tiene por qué dictarle a nadie en qué orden carga sus hitos.
+			plan_utilizable = self._primate_plan_is_usable(planned_milestones)
+			has_plan = bool(
+				project.date_start and project.date
+				and len(planned_milestones) >= 2
+				and plan_utilizable
+			)
 			if has_plan:
 				points = [(project.date_start, 0.0)]
 				points += [(m["deadline"], m["planned_progress"]) for m in planned_milestones]

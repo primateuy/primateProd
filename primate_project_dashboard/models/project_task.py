@@ -1,7 +1,7 @@
 # Copyright 2026 - PrimateUY
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 from . import dashboard_params
 
@@ -111,17 +111,3 @@ class ProjectTask(models.Model):
 		if sync_blocking:
 			self._primate_sync_blocked_since()
 		return res
-
-	@api.onchange("project_id", "area")
-	def _onchange_area_warning(self):
-		"""Aviso no bloqueante: en proyectos facturables el área debería estar cargada."""
-		if self.project_id and self.project_id.sale_line_id and not self.area:
-			return {
-				"warning": {
-					"title": _("Area not set"),
-					"message": _(
-						"This task belongs to a billable project. Set its area so it is counted "
-						"in the workload of the executive dashboard."
-					),
-				}
-			}

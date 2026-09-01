@@ -1,7 +1,6 @@
 # Copyright 2026 - PrimateUY
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo.exceptions import ValidationError
 from odoo.tests.common import tagged
 
 from .common import DashboardCommon
@@ -125,16 +124,54 @@ class TestProgressPlanned(DashboardCommon):
 		self.assertLessEqual(self._metrics(project)["progress_real"], 50.0)
 
 	# ------------------------------------------------------------------
-	# Constraint de monotonía
+	# Un plan inconsistente degrada; NO bloquea al usuario
 	# ------------------------------------------------------------------
+	#
+	# Antes esto se imponía con dos constrains que impedían guardar el hito. El dashboard
+	# es un observador: no puede impedirle a nadie cargar sus hitos como quiera solo para
+	# poder dibujar una curva. Ahora se guarda siempre y el que se adapta es el dashboard.
 
-	def test_hitos_deben_crecer_con_la_fecha(self):
+	def test_hitos_que_no_crecen_se_pueden_guardar(self):
 		project = self._make_project()
 		self._make_milestones(project, [(-10, 50.0, False)])
-		with self.assertRaises(ValidationError):
-			self._make_milestones(project, [(10, 20.0, False)])
 
-	def test_avance_planificado_fuera_de_rango(self):
+		# No levanta: el usuario carga sus hitos en el orden que quiera.
+		hito = self._make_milestones(project, [(10, 20.0, False)])
+
+		self.assertTrue(hito.exists())
+
+	def test_un_plan_que_retrocede_cae_en_el_aproximado(self):
+		"""Una curva decreciente sería un número engañoso: mejor el plan aproximado."""
 		project = self._make_project()
-		with self.assertRaises(ValidationError):
-			self._make_milestones(project, [(0, 150.0, False)])
+		self._make_milestones(project, [(-10, 50.0, False), (10, 20.0, False)])
+
+		valores = self._metrics(project)
+
+		self.assertTrue(valores["progress_plan_is_estimated"])
+		self.assertFalse(valores["has_plan"])
+		self.assertIsNotNone(valores["progress_planned"], "aproximado no es sin dato")
+
+	def test_avance_fuera_de_rango_se_puede_guardar(self):
+		project = self._make_project()
+
+		hito = self._make_milestones(project, [(0, 150.0, False)])
+
+		self.assertTrue(hito.exists())
+
+	def test_un_plan_fuera_de_rango_cae_en_el_aproximado(self):
+		project = self._make_project()
+		self._make_milestones(project, [(-10, 30.0, False), (10, 150.0, False)])
+
+		valores = self._metrics(project)
+
+		self.assertTrue(valores["progress_plan_is_estimated"])
+
+	def test_un_plan_correcto_sigue_siendo_plan_cargado(self):
+		"""La degradación no puede comerse los planes buenos."""
+		project = self._make_project()
+		self._make_milestones(project, [(-10, 30.0, False), (10, 70.0, False)])
+
+		valores = self._metrics(project)
+
+		self.assertFalse(valores["progress_plan_is_estimated"])
+		self.assertTrue(valores["has_plan"])
