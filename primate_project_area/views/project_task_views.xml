@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="view_task_form2_primate_area" model="ir.ui.view">
+		<field name="name">project.task.form.inherit.primate.area</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_form2"/>
+		<field name="arch" type="xml">
+			<!-- tag_ids aparece también dentro de las listas de subtareas: se ancla al del grupo. -->
+			<xpath expr="//group/field[@name='tag_ids']" position="after">
+				<field name="area_id"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_task_tree2_primate_area" model="ir.ui.view">
+		<field name="name">project.task.list.inherit.primate.area</field>
+		<field name="model">project.task</field>
+		<!-- Vista base de lista: así el campo aparece en todas sus variantes. -->
+		<field name="inherit_id" ref="project.project_task_view_tree_base"/>
+		<field name="arch" type="xml">
+			<xpath expr="//list" position="inside">
+				<field name="area_id" optional="hide"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_task_search_form_primate_area" model="ir.ui.view">
+		<field name="name">project.task.search.inherit.primate.area</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_search_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//search" position="inside">
+				<field name="area_id"/>
+				<separator/>
+				<!--
+					Los tres filtros filtran por CODE, no por id: el id cambia entre bases y una
+					vista con un id embebido se rompe al restaurar un dump en otro lado.
+				-->
+				<filter string="Technical" name="primate_area_technical"
+					domain="[('area_id.code', '=', 'technical')]"/>
+				<filter string="Functional" name="primate_area_functional"
+					domain="[('area_id.code', '=', 'functional')]"/>
+				<filter string="Administrative" name="primate_area_admin"
+					domain="[('area_id.code', '=', 'admin')]"/>
+				<group>
+					<filter string="Area" name="primate_groupby_area"
+						context="{'group_by': 'area_id'}"/>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+	<!--
+		Las tres áreas iniciales. Los CODES son los mismos valores del Selection que estas áreas
+		reemplazan (technical / functional / admin): así la migración de datos mapea por code y
+		el payload del dashboard, los tests y el tour siguen enganchando por el mismo string.
+		NO cambiar un code sin migrar los datos que lo referencian.
+
+		noupdate="1": el responsable de cada área y su nombre los carga el cliente; una
+		actualización del módulo no puede pisarlos.
+	-->
+	<data noupdate="1">
+
+		<record id="area_technical" model="primate.area">
+			<field name="name">Technical</field>
+			<field name="code">technical</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<record id="area_functional" model="primate.area">
+			<field name="name">Functional</field>
+			<field name="code">functional</field>
+			<field name="sequence">20</field>
+		</record>
+
+		<record id="area_admin" model="primate.area">
+			<field name="name">Administrative</field>
+			<field name="code">admin</field>
+			<field name="sequence">30</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="hr_employee_view_form_primate_area" model="ir.ui.view">
+		<field name="name">hr.employee.form.inherit.primate.area</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			<field name="job_id" position="after">
+				<field name="area_id"/>
+			</field>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="view_project_form_primate_area" model="ir.ui.view">
+		<field name="name">project.project.form.inherit.primate.area</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.edit_project"/>
+		<field name="arch" type="xml">
+			<field name="user_id" position="after">
+				<field name="area_id"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="view_project_search_primate_area" model="ir.ui.view">
+		<field name="name">project.project.search.inherit.primate.area</field>
+		<field name="model">project.project</field>
+		<field name="inherit_id" ref="project.view_project_project_filter"/>
+		<field name="arch" type="xml">
+			<xpath expr="//search" position="inside">
+				<field name="area_id"/>
+				<group>
+					<filter string="Area" name="primate_groupby_area"
+						context="{'group_by': 'area_id'}"/>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 - PrimateUY / License AGPL-3.0 or later -->
+<odoo>
+
+	<record id="primate_area_view_list" model="ir.ui.view">
+		<field name="name">primate.area.list</field>
+		<field name="model">primate.area</field>
+		<field name="arch" type="xml">
+			<list string="Areas" editable="bottom">
+				<field name="sequence" widget="handle"/>
+				<field name="name"/>
+				<field name="code"/>
+				<field name="user_id"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="primate_area_view_form" model="ir.ui.view">
+		<field name="name">primate.area.form</field>
+		<field name="model">primate.area</field>
+		<field name="arch" type="xml">
+			<form string="Area">
+				<sheet>
+					<widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+						invisible="active"/>
+					<group>
+						<group>
+							<field name="name"/>
+							<field name="code"/>
+						</group>
+						<group>
+							<field name="user_id"/>
+							<field name="sequence"/>
+							<field name="active"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="primate_area_view_search" model="ir.ui.view">
+		<field name="name">primate.area.search</field>
+		<field name="model">primate.area</field>
+		<field name="arch" type="xml">
+			<search string="Areas">
+				<field name="name"/>
+				<field name="code"/>
+				<field name="user_id"/>
+				<filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+			</search>
+		</field>
+	</record>
+
+	<record id="primate_area_action" model="ir.actions.act_window">
+		<field name="name">Areas</field>
+		<field name="res_model">primate.area</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">Set up your first area</p>
+			<p>
+				An area groups the work of the team and has a lead. Projects carry an area and
+				their tasks inherit it.
+			</p>
+		</field>
+	</record>
+
+	<menuitem
+		id="primate_area_menu"
+		name="Areas"
+		parent="project.menu_project_config"
+		action="primate_area_action"
+		sequence="12"/>
+
+</odoo>
