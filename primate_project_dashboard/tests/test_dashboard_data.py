@@ -252,3 +252,20 @@ class TestDashboardData(DashboardCommon):
 		encontradas = self.env["project.task"].search(action["domain"])
 		self.assertIn(tareas[0], encontradas)
 		self.assertNotIn(tareas[1], encontradas)
+
+	def test_sin_extension_instalada_el_payload_sale_igual(self):
+		"""El punto de extensión no puede cambiar nada cuando no hay nadie extendiendo.
+
+		El camino contrario -una extensión que revienta- se prueba en primate_sagui_pm, que es el
+		único lado donde existen las dos puntas: este módulo no depende de él ni al revés.
+		"""
+		self._setup_portfolio()
+		payload = {"projects": [{"id": 1}], "areas": [{"area": "technical"}]}
+		original = {"projects": [{"id": 1}], "areas": [{"area": "technical"}]}
+
+		salida = self.Project._primate_extend_payload(dict(payload), {})
+
+		modelo = "primate.project.dashboard.extension"
+		if modelo in self.env:
+			self.skipTest("hay un módulo de extensión instalado; este test cubre el caso sin él")
+		self.assertEqual(salida, original)

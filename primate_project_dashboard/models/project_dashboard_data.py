@@ -214,6 +214,12 @@ class ProjectProject(models.Model):
 
 		Quien extiende recibe el payload armado y devuelve el payload. Si rompe, el dashboard
 		igual carga: una extensión caída no puede dejar a la dirección sin su tablero.
+
+		PERO NO EN SILENCIO. Degradar sin avisar es el peor de los dos males: lo que la extensión
+		agregaba -hoy la nota de gestión- desaparece del tablero y nadie se entera de que faltó,
+		porque el dashboard se ve perfecto. Por eso el except loguea con ERROR y traceback, dice
+		QUÉ modelo falló y dice QUÉ se perdió. Tiene test propio en primate_sagui_pm, que es el
+		único lado donde existen las dos puntas.
 		"""
 		modelo = "primate.project.dashboard.extension"
 		if modelo not in self.env:
@@ -221,7 +227,10 @@ class ProjectProject(models.Model):
 		try:
 			return self.env[modelo].extend(payload, options) or payload
 		except Exception:  # noqa: BLE001
-			_logger.exception("primate_project_dashboard: falló una extensión del payload")
+			_logger.exception(
+				"primate_project_dashboard: la extensión del payload (%s) falló. El dashboard "
+				"responde igual, pero SIN lo que esa extensión agregaba: lo que ese módulo "
+				"mostraba en las filas y en las tarjetas no va a estar.", modelo)
 			return payload
 
 	@api.model
