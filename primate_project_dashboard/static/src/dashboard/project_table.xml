@@ -26,6 +26,10 @@
 						<td>
 							<div class="o_primate_project_name" t-esc="row.name"/>
 							<div class="text-muted small" t-esc="row.partner_name or noData"/>
+							<!-- Nota de gestión (primate_sagui_pm). Si ese módulo no está, la
+							     clave no viaja en el payload y no se muestra nada. -->
+							<div t-if="row.pm_note" class="o_primate_pm_note text-muted small mt-1"
+								t-att-title="row.pm_note_date" t-esc="row.pm_note"/>
 						</td>
 						<td>
 							<span class="o_primate_badge" t-att-class="healthClass(row)"

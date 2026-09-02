@@ -194,3 +194,10 @@
 		}
 	}
 }
+
+// Nota de gestión (la escribe primate_sagui_pm; sin ese módulo nunca se renderiza).
+.o_primate_pm_note {
+    font-style: italic;
+    line-height: 1.35;
+    max-width: 46ch;
+}

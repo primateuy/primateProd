@@ -35,6 +35,8 @@
 						<div class="o_primate_bar_fill" t-att-class="capacityClass(area)"
 							t-att-style="'width: ' + barWidth(area)"/>
 					</div>
+					<div t-if="area.pm_note" class="o_primate_pm_note text-muted small mt-2"
+						t-att-title="area.pm_note_date" t-esc="area.pm_note"/>
 				</div>
 			</div>
 		</div>

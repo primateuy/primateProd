@@ -1,11 +1,15 @@
 # Copyright 2026 - PrimateUY
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
+import logging
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
 from . import dashboard_params
+
+_logger = logging.getLogger(__name__)
 
 MANAGER_GROUP = "primate_project_dashboard.group_dashboard_manager"
 AREA_LEAD_GROUP = "primate_project_dashboard.group_dashboard_area_lead"
@@ -175,7 +179,7 @@ class ProjectProject(models.Model):
 		offset = int(options.get("offset") or 0)
 		page = rows[offset : offset + limit] if limit else rows
 
-		return {
+		return self._primate_extend_payload({
 			"kpis": kpis,
 			"projects": page,
 			"projects_total": len(rows),
@@ -195,7 +199,30 @@ class ProjectProject(models.Model):
 				"page_size": DEFAULT_PAGE_SIZE,
 				"today": fields.Date.to_string(today),
 			},
-		}
+		}, options)
+
+	@api.model
+	def _primate_extend_payload(self, payload, options=None):
+		"""Punto de extensión del payload para módulos que NO son dependencia de éste.
+
+		Se busca el modelo POR NOMBRE en runtime, igual que se hace con `planning.slot`, y no se
+		espera que nadie herede `get_dashboard_data`. Motivo concreto: este módulo carga tarde en
+		el grafo -depende de sale_timesheet- y `get_dashboard_data` es una definición base que no
+		llama a super(), así que tapa cualquier herencia que venga de un módulo que cargue antes.
+		El orden lo decide el grafo, no el que quiere extender. Un lookup en runtime no depende
+		del orden y no obliga a nadie a declararnos como dependencia.
+
+		Quien extiende recibe el payload armado y devuelve el payload. Si rompe, el dashboard
+		igual carga: una extensión caída no puede dejar a la dirección sin su tablero.
+		"""
+		modelo = "primate.project.dashboard.extension"
+		if modelo not in self.env:
+			return payload
+		try:
+			return self.env[modelo].extend(payload, options) or payload
+		except Exception:  # noqa: BLE001
+			_logger.exception("primate_project_dashboard: falló una extensión del payload")
+			return payload
 
 	@api.model
 	def _primate_round(self, value, digits=1):
