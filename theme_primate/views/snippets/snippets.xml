@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Registro de los bloques de marca en el panel del builder (Odoo 19: html_builder).
+         Mismo patron que usan los modulos del core, p.ej.
+         website_mail_group/views/snippets/snippets.xml: se hereda website.snippets y se
+         agregan entradas <t t-snippet="..."/> dentro de <snippets id="snippet_structure">.
+         Los bloques propios van en su GRUPO "Primate", para que no se mezclen con los
+         nativos y el equipo los encuentre de una. -->
+    <template id="snippets" inherit_id="website.snippets" name="Bloques Primate">
+
+        <!-- Grupo propio en la barra de categorias. Va antes del hook de modulos
+             instalados, para que quede arriba en la lista. -->
+        <xpath expr="//snippets[@id='snippet_groups']//t[@id='installed_snippets_hook']"
+               position="before">
+            <t snippet-group="primate" t-snippet="website.s_snippet_group" string="Primate"
+               t-thumbnail="/theme_primate/static/src/img/snippets_thumbs/primate.svg"/>
+        </xpath>
+
+        <!-- Bloques del grupo. -->
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="theme_primate.s_primate_hero" string="Hero Primate" group="primate"
+               t-thumbnail="/theme_primate/static/src/img/snippets_thumbs/s_primate_hero.svg">
+                <keywords>hero, portada, inicio, cabecera, primate</keywords>
+            </t>
+        </xpath>
+
+    </template>
+
+</odoo>

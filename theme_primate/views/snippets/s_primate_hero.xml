@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Hero de la home como SNIPPET arrastrable. El mismo markup vive inline en la pagina
+         (views/home.xml) para que sea el contenido inicial; este template es la fuente que
+         usa el panel de bloques cuando el usuario quiere volver a insertarlo o ponerlo en
+         otra pagina. Odoo hace lo mismo en sus page templates: inlinea la seccion y ademas
+         la registra como snippet. -->
+    <template id="s_primate_hero" name="Hero Primate">
+    <section class="s_primate_hero pw_section hero" data-snippet="s_primate_hero" data-name="Hero Primate">
+                        <div class="wrap">
+                        <div class="hero-copy reveal in">
+                        <div class="eyebrow" style="margin-bottom:20px;">Odoo Partner · Uruguay y Brasil</div>
+                        <h1>Empresas que evolucionan necesitan <b>sistemas que evolucionen</b> con ellas.</h1>
+                        <p class="hero-sub">Primero entendemos el problema. Después pensamos la solución.<br/>Conocemos tu negocio, analizamos tus procesos y entendemos qué necesitás resolver antes de definir módulos, desarrollos o tecnología.</p>
+                        <p class="hero-tags">Implementación · Procesos · Desarrollo · Integraciones · Cloud · IA</p>
+                        <div class="hero-ctas">
+                        <a href="#contacto" class="btn btn-primary">Contanos qué querés resolver</a>
+                        <a href="#trabajamos" class="btn btn-outline">Ver cómo trabajamos</a>
+                        </div>
+                        <p class="hero-foot">La evolución a tu alcance.</p>
+                        </div>
+                        <div class="hero-monkey" id="heroMonkey">
+                        <img src="/theme_primate/static/src/img/primate_hero_monkey.png" alt="Isologo de Primate" loading="lazy"/>
+                        </div>
+                        </div>
+                        <div class="marquee-wrap">
+                        <div class="marquee">
+                        <span>Retail</span><span>Distribución</span><span>Servicios</span><span>Empresas en crecimiento</span><span>Odoo Partner</span>
+                        <span>Retail</span><span>Distribución</span><span>Servicios</span><span>Empresas en crecimiento</span><span>Odoo Partner</span>
+                        </div>
+                        </div>
+                        </section>
+    </template>
+
+</odoo>

@@ -11,8 +11,8 @@
             <t t-set="pageName" t-value="'primate_home'"/>
             <div id="wrap" class="o_primate_home">
 
-                <div class="oe_structure" id="primate_home_top">
-                    <section class="pw_section hero">
+                <div class="oe_structure" id="oe_structure_primate_home_top">
+                    <section class="s_primate_hero pw_section hero" data-snippet="s_primate_hero" data-name="Hero Primate">
                     <div class="wrap">
                     <div class="hero-copy reveal in">
                     <div class="eyebrow" style="margin-bottom:20px;">Odoo Partner · Uruguay y Brasil</div>
@@ -195,7 +195,7 @@
       </section>
 
 
-                <div class="oe_structure" id="primate_home_bottom">
+                <div class="oe_structure" id="oe_structure_primate_home_bottom">
                     <section id="nosotros" class="pw_section about">
                     <div class="wrap">
                     <div class="about-inner reveal">

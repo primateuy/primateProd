@@ -23,6 +23,10 @@
     # compilación con "undefined variable".
     "data": [
         "data/ir_asset.xml",
+        # Los snippets se declaran ANTES que las paginas: la pagina inlinea el markup, pero
+        # el registro en el panel debe existir para que el builder reconozca las instancias.
+        "views/snippets/s_primate_hero.xml",
+        "views/snippets/snippets.xml",
         "views/home.xml",
     ],
     "assets": {
