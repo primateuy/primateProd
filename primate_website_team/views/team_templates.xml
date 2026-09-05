@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Grilla reutilizable. Recibe `members`: lista de dicts blanqueados por el controlador. -->
+    <template id="team_grid" name="Grilla de equipo">
+        <t t-if="not members">
+            <p class="text-muted">Todavía no hay integrantes publicados.</p>
+        </t>
+        <div t-else="" class="row g-4">
+            <div t-foreach="members" t-as="member" class="col-12 col-sm-6 col-lg-3">
+                <div class="pwt_member h-100" t-attf-id="empleado-#{member['id']}">
+                    <img t-if="member['photo_url']" t-att-src="member['photo_url']"
+                         t-att-alt="member['name']" class="pwt_member_photo" loading="lazy"/>
+                    <h3 class="pwt_member_name h5-fs" t-out="member['name']"/>
+                    <p t-if="member['role']" class="pwt_member_role" t-out="member['role']"/>
+                    <p t-if="member['bio']" class="pwt_member_bio" t-out="member['bio']"/>
+                    <a t-if="member['email']" class="pwt_member_email"
+                       t-attf-href="mailto:#{member['email']}" t-out="member['email']"/>
+                    <div t-if="member['socials']" class="pwt_member_socials">
+                        <a t-foreach="member['socials']" t-as="social" t-att-href="social['url']"
+                           t-att-aria-label="social['label']" t-att-title="social['label']"
+                           target="_blank" rel="noopener noreferrer">
+                            <i t-attf-class="fa #{social['icon']}" role="img"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Página /equipo. Usa website.layout: header/footer reales, nav funcional y /odoo accesible. -->
+    <template id="team_page" name="Equipo">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Equipo</t>
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <section class="pwt_team pt64 pb64">
+                    <div class="container">
+                        <h1 class="pwt_team_title">Equipo</h1>
+                        <t t-call="primate_website_team.team_grid"/>
+                    </div>
+                </section>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+</odoo>
