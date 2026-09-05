@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Home de Primate. Diseno del brief "moderno" (Design Pipa 2026).
+         Las secciones van INLINE dentro de zonas oe_structure: asi Odoo permite editar el
+         copy in-place, y mover o duplicar cada bloque desde el builder. La seccion Equipo
+         queda FUERA de esas zonas, porque su contenido es dinamico y el editor no debe
+         reescribirla. -->
+    <template id="home" name="Primate — Home">
+        <t t-call="website.layout">
+            <t t-set="pageName" t-value="'primate_home'"/>
+            <div id="wrap" class="o_primate_home">
+
+                <div class="oe_structure" id="primate_home_top">
+                    <section class="pw_section hero">
+                    <div class="wrap">
+                    <div class="hero-copy reveal in">
+                    <div class="eyebrow" style="margin-bottom:20px;">Odoo Partner · Uruguay y Brasil</div>
+                    <h1>Empresas que evolucionan necesitan <b>sistemas que evolucionen</b> con ellas.</h1>
+                    <p class="hero-sub">Primero entendemos el problema. Después pensamos la solución.<br/>Conocemos tu negocio, analizamos tus procesos y entendemos qué necesitás resolver antes de definir módulos, desarrollos o tecnología.</p>
+                    <p class="hero-tags">Implementación · Procesos · Desarrollo · Integraciones · Cloud · IA</p>
+                    <div class="hero-ctas">
+                    <a href="#contacto" class="btn btn-primary">Contanos qué querés resolver</a>
+                    <a href="#trabajamos" class="btn btn-outline">Ver cómo trabajamos</a>
+                    </div>
+                    <p class="hero-foot">La evolución a tu alcance.</p>
+                    </div>
+                    <div class="hero-monkey" id="heroMonkey">
+                    <img t-attf-src="/theme_primate/static/src/img/primate_hero_monkey.png" alt="Isologo de Primate" loading="lazy"/>
+                    </div>
+                    </div>
+                    <div class="marquee-wrap">
+                    <div class="marquee">
+                    <span>Retail</span><span>Distribución</span><span>Servicios</span><span>Empresas en crecimiento</span><span>Odoo Partner</span>
+                    <span>Retail</span><span>Distribución</span><span>Servicios</span><span>Empresas en crecimiento</span><span>Odoo Partner</span>
+                    </div>
+                    </div>
+                    </section>
+                    <section class="pw_section problem">
+                    <div class="wrap">
+                    <div class="problem-inner reveal">
+                    <p class="problem-lead">Antes de hablar de módulos, hablamos de objetivos</p>
+                    <p class="problem-new">¿Qué quieren resolver?</p>
+                    <div class="problem-list">
+                    <span>Vender mejor</span>
+                    <span>Controlar el inventario</span>
+                    <span>Cerrar la contabilidad</span>
+                    <span>Integrar canales</span>
+                    <span>Ordenar la información</span>
+                    <span>Reducir errores</span>
+                    <span>Entender qué está pasando</span>
+                    </div>
+                    <p class="problem-close">Cada implementación arranca ahí. Recién después definimos qué módulos, integraciones o desarrollos hacen falta.</p>
+                    </div>
+                    </div>
+                    </section>
+                    <section class="pw_section tresmonos">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Cómo miramos una implementación</div>
+                    <h2>Ver. Escuchar. Decir.</h2>
+                    <p>Una implementación empieza a complicarse cuando nadie ve el problema, nadie escucha a quien trabaja todos los días con él y nadie se anima a decir lo incómodo.</p>
+                    </div>
+                    <div class="tm-grid reveal">
+                    <div class="tm-card">
+                    <div class="tm-flip"><span class="no">No ver</span><span class="arrow">→</span><span class="yes">VER</span></div>
+                    <div class="tm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                    <h3>Entender cómo funciona realmente la empresa.</h3>
+                    <p>No cómo dice el procedimiento. No cómo debería funcionar. Cómo funciona.</p>
+                    </div>
+                    <div class="tm-card">
+                    <div class="tm-flip"><span class="no">No escuchar</span><span class="arrow">→</span><span class="yes">ESCUCHAR</span></div>
+                    <div class="tm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10a7 7 0 0 1 14 0v5a3 3 0 0 1-3 3h-1"/><path d="M3 10v5a2 2 0 0 0 2 2h1v-7H4a1 1 0 0 0-1 1z"/><path d="M17 10h2a1 1 0 0 1 1 1v3a2 2 0 0 1-2 2h-1v-6z"/></svg></div>
+                    <h3>Hablar con quienes hacen el trabajo.</h3>
+                    <p>Los procesos también están hechos de excepciones, hábitos, errores, necesidades y personas.</p>
+                    </div>
+                    <div class="tm-card">
+                    <div class="tm-flip"><span class="no">No decir</span><span class="arrow">→</span><span class="yes">DECIR</span></div>
+                    <div class="tm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+                    <h3>Poner los problemas arriba de la mesa.</h3>
+                    <p>Incluso cuando la respuesta no es la más cómoda. No creemos que cuidar al cliente sea decirle que sí a todo.</p>
+                    </div>
+                    </div>
+                    <div class="tm-close reveal">
+                    <h3>Implementar también es tener conversaciones difíciles.</h3>
+                    <p>Y cuanto antes ocurran, menos caras suelen ser.</p>
+                    </div>
+                    </div>
+                    </section>
+                    <section id="hacemos" class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Qué hacemos</div>
+                    <h2>Negocio, procesos y tecnología, trabajando juntos.</h2>
+                    <p>Nuestro conocimiento del negocio es el diferencial. Combinamos estándar, consultoría y desarrollo para construir la solución que cada empresa necesita.</p>
+                    </div>
+                    <div class="bento reveal">
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">01</div>
+                    <h3>Implementación Odoo</h3>
+                    <p>Ventas, compras, inventario, POS, contabilidad, fabricación, proyectos, CRM y eCommerce, pensado desde el negocio.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">02</div>
+                    <h3>Procesos</h3>
+                    <p>Analizamos flujos, responsabilidades, controles y excepciones antes de automatizar nada.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">03</div>
+                    <h3>Integraciones</h3>
+                    <p>eCommerce, marketplaces, medios de pago, logística, bancos y facturación electrónica.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">04</div>
+                    <h3>Desarrollo</h3>
+                    <p>Cuando estándar alcanza, usamos estándar. Cuando no, desarrollamos sin romper el mantenimiento.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">05</div>
+                    <h3>Cloud &amp; continuidad</h3>
+                    <p>Hosting, monitoreo, backups, actualizaciones, soporte y evolución continua.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    <div class="bcard"><div class="bglow"></div><div class="bnum">06</div>
+                    <h3>Inteligencia artificial</h3>
+                    <p>Automatización, análisis de información y agentes conectados a procesos reales.</p>
+                    <span class="link-arrow">Ver más →</span>
+                    </div>
+                    </div>
+                    </div>
+                    </section>
+                    <section id="trabajamos" class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Cómo trabajamos</div>
+                    <h2>No empezamos desarrollando.</h2>
+                    </div>
+                    <div class="m-grid reveal">
+                    <div class="m-card active"><div class="m-num">01</div><h4>Entender</h4><p>¿Qué queremos resolver? Problema, objetivo, usuarios, información disponible y restricciones.</p></div>
+                    <div class="m-card"><div class="m-num">02</div><h4>Cuestionar</h4><p>¿El proceso actual tiene sentido? Automatizar un mal proceso lo hace fallar más rápido.</p></div>
+                    <div class="m-card"><div class="m-num">03</div><h4>Resolver</h4><p>¿Odoo estándar ya lo hace? Si la respuesta es sí, mejor.</p></div>
+                    <div class="m-card"><div class="m-num">04</div><h4>Adaptar</h4><p>Configuramos, integramos o desarrollamos solamente donde genera valor.</p></div>
+                    <div class="m-card"><div class="m-num">05</div><h4>Probar</h4><p>Con casos reales, usuarios reales y datos lo más reales posible.</p></div>
+                    <div class="m-card"><div class="m-num">06</div><h4>Evolucionar</h4><p>El go-live no es el final. Es cuando empieza la etapa más interesante.</p></div>
+                    </div>
+                    </div>
+                    </section>
+                    <div class="cta-outer">
+                    <div class="independence reveal">
+                    <div class="bglow"></div>
+                    <div class="indep-inner">
+                    <div class="eyebrow" style="margin-bottom:20px;">Una forma distinta de trabajar</div>
+                    <h2>No queremos que dependas de nosotros.</h2>
+                    <p>Puede parecer una pésima estrategia comercial. Nos parece una buena forma de trabajar.</p>
+                    <p>Queremos que el conocimiento quede en tu empresa, que tu equipo entienda el sistema y que pueda tomar cada vez más decisiones sin nosotros.</p>
+                    <p class="quote">Si después seguimos trabajando juntos, que sea porque seguimos aportando valor. No porque nadie sabe cómo funciona lo que hicimos.</p>
+                    </div>
+                    </div>
+                    </div>
+                    <section id="casos" class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Casos</div>
+                    <h2>Problemas reales.<br/>Soluciones reales.</h2>
+                    </div>
+                    <div class="casos-grid reveal">
+                    <div class="caso-card"><div class="eyebrow">Retail</div><h3>Múltiples locales, POS y franquicias</h3><p>Operaciones con múltiples locales, POS, eCommerce, franquicias, promociones, inventario y grandes volúmenes de transacciones.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Distribución</div><h3>Abastecimiento y trazabilidad</h3><p>Compras, abastecimiento, depósitos, costos, trazabilidad y operaciones multicompany.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Servicios</div><h3>CRM, proyectos y facturación</h3><p>CRM, proyectos, horas, facturación, atención al cliente y automatización administrativa.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Empresas en crecimiento</div><h3>Cuando las planillas dejan de escalar</h3><p>Organizaciones donde las planillas y los procesos informales dejaron de escalar.</p></div>
+                    </div>
+                    <div style="margin-top:32px;"><span class="link-arrow">Ver casos →</span></div>
+                    </div>
+                    </section>
+                </div>
+
+      <!-- EQUIPO: seccion FIJA, fuera de las zonas editables.
+           El titulo y la bajada se editan in-place; la grilla es un t-call al template
+           reutilizable de primate_website_team, alimentado por
+           hr.employee._website_team_members(). Por eso nunca se congela: no es un snippet
+           cuyo DOM se guarde al arrastrarlo. -->
+      <section class="pw_section equipo">
+        <div class="wrap">
+          <div class="equipo-inner">
+            <div class="eyebrow">El equipo</div>
+            <h2>Un equipo que entiende tu negocio.</h2>
+            <p class="lead">Somos personas intentando entender el negocio de otras personas.</p>
+            <p>Consultores funcionales, tecnicos y desarrolladores trabajamos juntos durante todo
+               el proyecto para comprender el problema antes de definir la solucion.</p>
+          </div>
+          <div class="equipo-grid">
+            <t t-set="members" t-value="env['hr.employee']._website_team_members()"/>
+            <t t-call="primate_website_team.team_grid"/>
+          </div>
+        </div>
+      </section>
+
+
+                <div class="oe_structure" id="primate_home_bottom">
+                    <section id="nosotros" class="pw_section about">
+                    <div class="wrap">
+                    <div class="about-inner reveal">
+                    <div>
+                    <div class="eyebrow" style="margin-bottom:18px;">Sobre Primate</div>
+                    <h2 style="margin-bottom:20px;">Primate también está cambiando.</h2>
+                    <p>Empezamos implementando Odoo. Hoy trabajamos con procesos, desarrollo, infraestructura, integraciones e inteligencia artificial.</p>
+                    <p>Y seguramente esta descripción vuelva a quedar vieja.</p>
+                    <p class="bold-line">Eso está bien. Nos preocuparía bastante más dejar de cuestionarnos qué hacemos y cómo lo hacemos.</p>
+                    <div style="margin-top:24px;"><span class="link-arrow">Conocé Primate →</span></div>
+                    </div>
+                    <div class="about-mark"><img t-attf-src="/theme_primate/static/src/img/primate_about_mark.png" alt="Isologo de Primate" loading="lazy"/></div>
+                    </div>
+                    </div>
+                    </section>
+                    <section id="blog" class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Blog</div>
+                    <h2>Pensamos en público.</h2>
+                    <p>No solamente escribimos sobre Odoo. Escribimos sobre implementaciones, tecnología, empresas, errores, gestión, personas y algunas cosas que todavía estamos intentando entender.</p>
+                    </div>
+                    <div class="blog-grid reveal">
+                    <div class="blog-card"><div class="eyebrow">Procesos</div><h3>Por qué "digitalizar" no es lo mismo que mejorar</h3><p>Automatizar un proceso roto solo lo hace fallar más rápido.</p></div>
+                    <div class="blog-card"><div class="eyebrow">Implementaciones</div><h3>Lo que aprendimos de tres go-lives que salieron mal</h3><p>Y qué cambiamos en nuestra forma de trabajar después de eso.</p></div>
+                    <div class="blog-card"><div class="eyebrow">IA aplicada</div><h3>Cuándo tiene sentido meter IA en un ERP (y cuándo no)</h3><p>Automatización real versus demo bonita: cómo distinguirlas antes de invertir.</p></div>
+                    </div>
+                    <div style="margin-top:32px;"><span class="link-arrow">Leer el blog →</span></div>
+                    </div>
+                    </section>
+                    <div class="cta-outer">
+                    <div class="cta-final reveal" id="contacto">
+                    <div class="bglow"></div>
+                    <div class="inner">
+                    <div class="eyebrow" style="justify-content:center; margin-bottom:18px;">Empecemos</div>
+                    <h2>Empecemos por entender tu negocio.</h2>
+                    <h2 class="sub">Así vamos a saber qué solución tiene sentido para vos.</h2>
+                    <p class="help">Contanos qué está pasando. Empecemos por entender el problema y encontremos juntos la solución que tenga sentido para tu negocio.</p>
+                    <a href="/contactus" class="btn btn-primary">Hablemos →</a>
+                    <p class="fine">Sin presentaciones de 48 slides. Directo al problema.</p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

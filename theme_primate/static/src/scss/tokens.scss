@@ -1,0 +1,15 @@
+// Tokens de la variante oscura, disponibles en todo el frontend (los usan tanto las secciones
+// de la home como el estilo del header/footer real de Odoo).
+:root {
+    --pw-bg: #150C24;
+    --pw-bg-soft: #1D1332;
+    --pw-card: #241740;
+    --pw-card-2: #2C1D4D;
+    --pw-cream: #F6F1EA;
+    --pw-cream-dim: rgba(246, 241, 234, 0.64);
+    --pw-cream-faint: rgba(246, 241, 234, 0.4);
+    --pw-teal: #56AEA0;
+    --pw-teal-glow: #8CE9D8;
+    --pw-line: rgba(246, 241, 234, 0.10);
+    --pw-line-strong: rgba(246, 241, 234, 0.18);
+}

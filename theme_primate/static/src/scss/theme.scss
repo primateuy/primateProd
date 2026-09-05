@@ -1,0 +1,15 @@
+// Estilo on-brand del frontend. La paleta y las fuentes vienen de primary_variables.scss;
+// acá va solo el carácter tipográfico de la marca.
+
+// El logotipo Primate es mayúsculas con tracking abierto: se refleja en botones y antetítulos.
+.btn-primary,
+.btn-secondary {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+// Montserrat SemiBold es el peso de la marca para títulos.
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}

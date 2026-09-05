@@ -1,0 +1,48 @@
+// Identidad de marca Primate — rebranding "Design Pipa 2026", VARIANTE OSCURA.
+//
+// Paleta POR ROL. Fuente: PRIMATE REBRANDING (manual) + el brief moderno para los violetas
+// de superficie. El turquesa es el del manual (#56AEA0): da 7,2:1 sobre el fondo #150C24,
+// asi que no hace falta el #5FC2B2 del mockup.
+//
+// Mapeo de combos que produce o-make-palette con estos valores (verificado en el CSS
+// compilado): o_cc1 <- o-color-4, o_cc2 <- o-color-3, o_cc3 <- o-color-2,
+// o_cc4 <- o-color-1, o_cc5 <- o-color-5.
+//   o_cc1 #150C24 fondo de pagina · o_cc2 #1D1332 superficie · o_cc3 #241740 tarjeta
+//   o_cc4 #56AEA0 acento · o_cc5 #2C1D4D banda
+
+$o-color-palettes: map-merge($o-color-palettes, (
+    'primate': o-make-palette(#56AEA0, #241740, (
+        'o-color-3': #1D1332,
+        'o-color-4': #150C24,
+        'o-color-5': #2C1D4D,
+        'menu': 4,        // header sobre el fondo de pagina
+        'footer': 4,
+        'copyright': 4,
+
+        // Boton primario: turquesa de marca con texto VIOLETA OSCURO (5,7:1). Nunca blanco:
+        // el turquesa da 2,6:1 contra blanco y falla WCAG AA.
+        'o-cc1-btn-primary': 'o-color-1', 'o-cc1-btn-primary-text': 'o-color-5',
+        'o-cc2-btn-primary': 'o-color-1', 'o-cc2-btn-primary-text': 'o-color-5',
+        'o-cc3-btn-primary': 'o-color-1', 'o-cc3-btn-primary-text': 'o-color-5',
+        'o-cc5-btn-primary': 'o-color-1', 'o-cc5-btn-primary-text': 'o-color-5',
+    )),
+));
+$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'primate');
+
+// Montserrat, unica familia del manual. Pesos del brief: 400 a 800.
+$o-theme-font-configs: map-merge($o-theme-font-configs, (
+    'Montserrat': (
+        'family': ('Montserrat', sans-serif),
+        'url': 'Montserrat:400,500,600,700,800',
+    ),
+));
+
+$o-website-values-palettes: (
+    (
+        'color-palettes-name': 'primate',
+        'font': 'Montserrat',
+        'headings-font': 'Montserrat',
+        'default-headings-font': 'Montserrat',
+    ),
+);
+$o-website-values-palette-number: 1;
