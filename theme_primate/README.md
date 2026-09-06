@@ -3,6 +3,24 @@
 Identidad de marca Primate (rebranding **Design Pipa 2026**, variante oscura) y home del sitio,
 portadas del mockup `primate-web-redesign-brief-moderno.html`.
 
+## Puesta en marcha en una base
+
+Tres scripts, en este orden. Todos son idempotentes y se corren con
+`odoo-bin shell -c <conf> -d <db> < theme_primate/<script>.py`.
+
+| Orden | Script | Qué hace |
+|---|---|---|
+| 1 | `migrar_a_multipagina.py` | **Antes** del upgrade. Saca la home creada a mano y los menús de ancla del sitio one-page, y despublica `/soluciones`, `/nosotros` y `/equipo` |
+| 2 | — | `odoo-bin -u theme_primate`: crea las páginas y el menú desde `data/` |
+| 3 | `instalar_logo.py` | Carga el logo del header en `website.logo` |
+| 4 | `desactivar_footer_viejo.py` | Desactiva el footer y el copyright que dejó `primate_website_generator` |
+
+El paso 1 es el único que importa que vaya antes: el tema declara la home como
+`theme.website.page`, y `_update_records` vincula por `theme_template_id`, no por URL. Si la
+página vieja sigue ahí, el upgrade crea una segunda con la misma URL.
+
+Los scripts asumen `website_id = 1`.
+
 ## Páginas
 
 El sitio es multipágina: cada ítem del menú es una URL propia, no un ancla.
