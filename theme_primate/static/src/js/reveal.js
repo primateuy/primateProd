@@ -15,6 +15,10 @@ export class PrimateReveal extends Interaction {
     }
 
     start() {
+        // Recien aca se habilita el estado oculto: hasta que el JS no corre, el contenido se
+        // ve. Ver la nota en sections.scss (.pw-reveal-on).
+        this.el.classList.add("pw-reveal-on");
+        this.registerCleanup(() => this.el.classList.remove("pw-reveal-on"));
         const targets = this.el.querySelectorAll(".reveal");
         // El mockup no lo hacia: si el usuario pidio menos movimiento, se muestra todo de una.
         if (this.reduceMotion) {

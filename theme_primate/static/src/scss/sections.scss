@@ -77,8 +77,13 @@ from{transform:translateX(0);}to{transform:translateX(-50%);}
 .o_primate_site .btn-sm { padding:10px 18px; font-size:13px; }
 .o_primate_site .link-arrow { text-decoration:none; display:inline-flex; align-items:center; gap:7px; font-weight:600; font-size:14.5px; color:var(--cream); border-bottom:1.5px solid transparent; padding-bottom:2px; transition:border-color .2s ease, gap .2s ease; }
 .o_primate_site .link-arrow:hover { border-color:var(--teal); gap:11px; }
-.o_primate_site .reveal { opacity:0; transform:translateY(24px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
-.o_primate_site .reveal.in { opacity:1; transform:none; }
+// El estado oculto del reveal se aplica SOLO cuando el JS confirmo que va a animar, con la
+// clase pw-reveal-on que agrega reveal.js. Si el JS no corre —error, bundle que no carga, un
+// crawler que no ejecuta scripts— el contenido se ve igual. Ocultar por defecto y depender del
+// JS para mostrar deja el sitio entero en blanco ante cualquier falla, y vacio para quien
+// indexa sin ejecutar JS.
+.o_primate_site.pw-reveal-on .reveal { opacity:0; transform:translateY(24px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.o_primate_site.pw-reveal-on .reveal.in { opacity:1; transform:none; }
 .o_primate_site .hero { padding:110px 0 0; position:relative; overflow:hidden; }
 .o_primate_site .hero .wrap { position:relative; min-height:600px; }
 .o_primate_site .hero-copy { max-width:740px; position:relative; z-index:2; }
@@ -88,7 +93,9 @@ from{transform:translateX(0);}to{transform:translateX(-50%);}
 .o_primate_site .hero-tags { font-size:14px; color:var(--cream-faint); font-weight:600; margin-bottom:38px; }
 .o_primate_site .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:32px; }
 .o_primate_site .hero-foot { font-size:13px; color:var(--cream-faint); font-weight:600; }
-.o_primate_site .hero-monkey { position:absolute; right:-30px; bottom:-30px; width:42%; max-width:520px; z-index:1; opacity:0.9; transition:transform .1s linear; }
+// El isologo del hero es fondo de escena, no un elemento mas del titular: a 0.9 de opacidad
+// competia con el h1 y la ultima linea ("con ellas.") caia justo encima del contorno.
+.o_primate_site .hero-monkey { position:absolute; right:-70px; bottom:-40px; width:38%; max-width:460px; z-index:1; opacity:0.42; transition:transform .1s linear; }
 .o_primate_site .marquee-wrap { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; margin-top:74px; overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
 .o_primate_site .marquee { display:flex; gap:70px; width:max-content; animation:pw-marquee 26s linear infinite; }
 .o_primate_site .marquee span { font-weight:700; font-size:19px; color:var(--cream-faint); white-space:nowrap; }
