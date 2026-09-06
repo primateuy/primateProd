@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Paginas del sitio como theme.website.page: al instalar o actualizar el tema, Odoo las
+         copia a website.page por cada sitio que lo use (ir_module_module._theme_load). Asi la
+         estructura del sitio es reproducible en cualquier base, en vez de depender de paginas
+         creadas a mano.
+
+         En un upgrade Odoo NO pisa el arch de una vista que el cliente edito desde el builder
+         (_update_records mira arch_updated), asi que declararlas aca no le quita el control del
+         contenido a nadie. -->
+
+    <record id="page_home_rec" model="theme.website.page">
+        <field name="view_id" ref="home"/>
+        <field name="url">/inicio</field>
+        <field name="is_published" eval="True"/>
+        <field name="website_indexed" eval="True"/>
+    </record>
+
+    <record id="page_about_rec" model="theme.website.page">
+        <field name="view_id" ref="page_about"/>
+        <field name="url">/sobre-nosotros</field>
+        <field name="is_published" eval="True"/>
+        <field name="website_indexed" eval="True"/>
+    </record>
+
+    <record id="page_cases_rec" model="theme.website.page">
+        <field name="view_id" ref="page_cases"/>
+        <field name="url">/casos-de-exito</field>
+        <field name="is_published" eval="True"/>
+        <field name="website_indexed" eval="True"/>
+    </record>
+
+    <record id="page_booking_rec" model="theme.website.page">
+        <field name="view_id" ref="page_booking"/>
+        <field name="url">/agendar-reunion</field>
+        <field name="is_published" eval="True"/>
+        <field name="website_indexed" eval="True"/>
+    </record>
+
+</odoo>

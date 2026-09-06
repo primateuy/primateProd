@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Home de Primate. Diseno del brief "moderno" (Design Pipa 2026).
-         Las secciones van INLINE dentro de zonas oe_structure: asi Odoo permite editar el
-         copy in-place, y mover o duplicar cada bloque desde el builder. La seccion Equipo
-         queda FUERA de esas zonas, porque su contenido es dinamico y el editor no debe
-         reescribirla. -->
+    <!-- Home. Todo el cuerpo va dentro de una zona oe_structure: el copy se edita in-place
+         desde el builder y los bloques se pueden mover, duplicar o borrar. El id lleva el
+         prefijo oe_structure_ a proposito: con ese prefijo Odoo guarda lo editado en una
+         vista hija heredada, y el arch del modulo se puede seguir actualizando por codigo.
+         Equipo y el grid completo de casos ya no viven aca: tienen pagina propia. -->
     <template id="home" name="Primate — Home">
         <t t-call="website.layout">
-            <t t-set="pageName" t-value="'primate_home'"/>
-            <div id="wrap" class="o_primate_home">
-
-                <div class="oe_structure" id="oe_structure_primate_home_top">
+            <t t-set="pageName" t-value="'home'"/>
+            <div id="wrap" class="o_primate_site">
+                <div class="oe_structure" id="oe_structure_primate_home">
                     <section class="s_primate_hero pw_section hero" data-snippet="s_primate_hero" data-name="Hero Primate">
                     <div class="wrap">
                     <div class="hero-copy reveal in">
@@ -161,69 +160,9 @@
                     <div class="sec-head reveal">
                     <div class="eyebrow">Casos</div>
                     <h2>Problemas reales.<br/>Soluciones reales.</h2>
+                    <p>Retail, distribución, servicios y empresas donde las planillas dejaron de escalar. Cada proyecto arranca entendiendo el problema, no eligiendo módulos.</p>
                     </div>
-                    <div class="casos-grid reveal">
-                    <div class="caso-card"><div class="eyebrow">Retail</div><h3>Múltiples locales, POS y franquicias</h3><p>Operaciones con múltiples locales, POS, eCommerce, franquicias, promociones, inventario y grandes volúmenes de transacciones.</p></div>
-                    <div class="caso-card"><div class="eyebrow">Distribución</div><h3>Abastecimiento y trazabilidad</h3><p>Compras, abastecimiento, depósitos, costos, trazabilidad y operaciones multicompany.</p></div>
-                    <div class="caso-card"><div class="eyebrow">Servicios</div><h3>CRM, proyectos y facturación</h3><p>CRM, proyectos, horas, facturación, atención al cliente y automatización administrativa.</p></div>
-                    <div class="caso-card"><div class="eyebrow">Empresas en crecimiento</div><h3>Cuando las planillas dejan de escalar</h3><p>Organizaciones donde las planillas y los procesos informales dejaron de escalar.</p></div>
-                    </div>
-                    <div style="margin-top:32px;"><span class="link-arrow">Ver casos →</span></div>
-                    </div>
-                    </section>
-                </div>
-
-      <!-- EQUIPO: seccion FIJA, fuera de las zonas editables.
-           El titulo y la bajada se editan in-place; la grilla es un t-call al template
-           reutilizable de primate_website_team, alimentado por
-           hr.employee._website_team_members(). Por eso nunca se congela: no es un snippet
-           cuyo DOM se guarde al arrastrarlo. -->
-      <section class="pw_section equipo">
-        <div class="wrap">
-          <div class="equipo-inner">
-            <div class="eyebrow">El equipo</div>
-            <h2>Un equipo que entiende tu negocio.</h2>
-            <p class="lead">Somos personas intentando entender el negocio de otras personas.</p>
-            <p>Consultores funcionales, tecnicos y desarrolladores trabajamos juntos durante todo
-               el proyecto para comprender el problema antes de definir la solucion.</p>
-          </div>
-          <div class="equipo-grid">
-            <t t-set="members" t-value="env['hr.employee']._website_team_members()"/>
-            <t t-call="primate_website_team.team_grid"/>
-          </div>
-        </div>
-      </section>
-
-
-                <div class="oe_structure" id="oe_structure_primate_home_bottom">
-                    <section id="nosotros" class="pw_section about">
-                    <div class="wrap">
-                    <div class="about-inner reveal">
-                    <div>
-                    <div class="eyebrow" style="margin-bottom:18px;">Sobre Primate</div>
-                    <h2 style="margin-bottom:20px;">Primate también está cambiando.</h2>
-                    <p>Empezamos implementando Odoo. Hoy trabajamos con procesos, desarrollo, infraestructura, integraciones e inteligencia artificial.</p>
-                    <p>Y seguramente esta descripción vuelva a quedar vieja.</p>
-                    <p class="bold-line">Eso está bien. Nos preocuparía bastante más dejar de cuestionarnos qué hacemos y cómo lo hacemos.</p>
-                    <div style="margin-top:24px;"><span class="link-arrow">Conocé Primate →</span></div>
-                    </div>
-                    <div class="about-mark"><img t-attf-src="/theme_primate/static/src/img/primate_about_mark.png" alt="Isologo de Primate" loading="lazy"/></div>
-                    </div>
-                    </div>
-                    </section>
-                    <section id="blog" class="pw_section">
-                    <div class="wrap">
-                    <div class="sec-head reveal">
-                    <div class="eyebrow">Blog</div>
-                    <h2>Pensamos en público.</h2>
-                    <p>No solamente escribimos sobre Odoo. Escribimos sobre implementaciones, tecnología, empresas, errores, gestión, personas y algunas cosas que todavía estamos intentando entender.</p>
-                    </div>
-                    <div class="blog-grid reveal">
-                    <div class="blog-card"><div class="eyebrow">Procesos</div><h3>Por qué "digitalizar" no es lo mismo que mejorar</h3><p>Automatizar un proceso roto solo lo hace fallar más rápido.</p></div>
-                    <div class="blog-card"><div class="eyebrow">Implementaciones</div><h3>Lo que aprendimos de tres go-lives que salieron mal</h3><p>Y qué cambiamos en nuestra forma de trabajar después de eso.</p></div>
-                    <div class="blog-card"><div class="eyebrow">IA aplicada</div><h3>Cuándo tiene sentido meter IA en un ERP (y cuándo no)</h3><p>Automatización real versus demo bonita: cómo distinguirlas antes de invertir.</p></div>
-                    </div>
-                    <div style="margin-top:32px;"><span class="link-arrow">Leer el blog →</span></div>
+                    <div style="margin-top:32px;"><a href="/casos-de-exito" class="link-arrow">Ver casos →</a></div>
                     </div>
                     </section>
                     <div class="cta-outer">
@@ -235,12 +174,12 @@
                     <h2 class="sub">Así vamos a saber qué solución tiene sentido para vos.</h2>
                     <p class="help">Contanos qué está pasando. Empecemos por entender el problema y encontremos juntos la solución que tenga sentido para tu negocio.</p>
                     <a href="/contactus" class="btn btn-primary">Hablemos →</a>
+                    <a href="/agendar-reunion" class="btn btn-outline">Agendar una reunión</a>
                     <p class="fine">Sin presentaciones de 48 slides. Directo al problema.</p>
                     </div>
                     </div>
                     </div>
                 </div>
-
             </div>
         </t>
     </template>

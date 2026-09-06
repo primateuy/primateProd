@@ -5,7 +5,7 @@ import { Interaction } from "@web/public/interaction";
 import { registry } from "@web/core/registry";
 
 export class PrimateHeroParallax extends Interaction {
-    static selector = ".o_primate_home .hero-monkey";
+    static selector = ".o_primate_site .hero-monkey";
 
     setup() {
         this.enabled =

@@ -27,7 +27,13 @@
         # el registro en el panel debe existir para que el builder reconozca las instancias.
         "views/snippets/s_primate_hero.xml",
         "views/snippets/snippets.xml",
+        # Paginas: las vistas primero, porque data/pages.xml las referencia por ref().
         "views/home.xml",
+        "views/pages/page_about.xml",
+        "views/pages/page_cases.xml",
+        "views/pages/page_booking.xml",
+        "data/pages.xml",
+        "data/menu.xml",
     ],
     "assets": {
         "web.assets_frontend": [

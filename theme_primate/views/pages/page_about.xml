@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sobre nosotros. La seccion Equipo va FUERA de las zonas editables: su grilla es un
+         t-call alimentado por hr.employee._website_team_members(), y el builder guarda el
+         HTML renderizado de la zona que edita. Adentro de una oe_structure la lista de
+         empleados quedaria congelada al primer guardado. El titulo y la bajada si se
+         editan in-place, porque estan fuera del t-call. -->
+    <template id="page_about" name="Primate — Sobre nosotros">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Sobre nosotros</t>
+            <t t-set="pageName" t-value="'page_about'"/>
+            <div id="wrap" class="o_primate_site">
+                <div class="oe_structure" id="oe_structure_primate_about_top">
+                    <section id="nosotros" class="pw_section about">
+                    <div class="wrap">
+                    <div class="about-inner reveal">
+                    <div>
+                    <div class="eyebrow" style="margin-bottom:18px;">Sobre Primate</div>
+                    <h2 style="margin-bottom:20px;">Primate también está cambiando.</h2>
+                    <p>Empezamos implementando Odoo. Hoy trabajamos con procesos, desarrollo, infraestructura, integraciones e inteligencia artificial.</p>
+                    <p>Y seguramente esta descripción vuelva a quedar vieja.</p>
+                    <p class="bold-line">Eso está bien. Nos preocuparía bastante más dejar de cuestionarnos qué hacemos y cómo lo hacemos.</p>
+
+                    </div>
+                    <div class="about-mark"><img t-attf-src="/theme_primate/static/src/img/primate_about_mark.png" alt="Isologo de Primate" loading="lazy"/></div>
+                    </div>
+                    </div>
+                    </section>
+                </div>
+
+              <section class="pw_section equipo">
+              <div class="wrap">
+              <div class="equipo-inner">
+              <div class="eyebrow">El equipo</div>
+              <h2>Un equipo que entiende tu negocio.</h2>
+              <p class="lead">Somos personas intentando entender el negocio de otras personas.</p>
+              <p>Consultores funcionales, tecnicos y desarrolladores trabajamos juntos durante todo
+              el proyecto para comprender el problema antes de definir la solucion.</p>
+              </div>
+              <div class="equipo-grid">
+              <t t-set="members" t-value="env['hr.employee']._website_team_members()"/>
+              <t t-call="primate_website_team.team_grid"/>
+              </div>
+              </div>
+              </section>
+
+                <div class="oe_structure" id="oe_structure_primate_about_bottom">
+                    <div class="cta-outer">
+                    <div class="cta-final reveal" id="contacto">
+                    <div class="bglow"></div>
+                    <div class="inner">
+                    <div class="eyebrow" style="justify-content:center; margin-bottom:18px;">Empecemos</div>
+                    <h2>Empecemos por entender tu negocio.</h2>
+                    <h2 class="sub">Así vamos a saber qué solución tiene sentido para vos.</h2>
+                    <p class="help">Contanos qué está pasando. Empecemos por entender el problema y encontremos juntos la solución que tenga sentido para tu negocio.</p>
+                    <a href="/contactus" class="btn btn-primary">Hablemos →</a>
+                    <a href="/agendar-reunion" class="btn btn-outline">Agendar una reunión</a>
+                    <p class="fine">Sin presentaciones de 48 slides. Directo al problema.</p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

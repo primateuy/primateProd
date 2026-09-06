@@ -8,7 +8,7 @@ import { Interaction } from "@web/public/interaction";
 import { registry } from "@web/core/registry";
 
 export class PrimateReveal extends Interaction {
-    static selector = ".o_primate_home";
+    static selector = ".o_primate_site";
 
     setup() {
         this.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
