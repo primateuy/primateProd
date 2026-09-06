@@ -112,14 +112,42 @@ Tipografía Montserrat (400–800), cargada por el mecanismo de fuentes del tema
 
 ## Header y footer
 
-El mockup los dibuja con markup propio. Acá **no se duplican**: se estilan los selectores reales
-de `website.layout` (`#top .navbar` como pill flotante, `.top_menu .nav-link`, `footer.o_footer`)
+El mockup los dibuja con markup propio. El **header** acá **no se duplica**: se estilan los
+selectores reales de `website.layout` (`#top .navbar` como pill flotante, `.top_menu .nav-link`)
 en `static/src/scss/header_footer.scss`. Duplicar el nav en el cuerpo fue justamente el bug que
 tenía el sitio anterior: dos menús en pantalla.
 
-El logo del header sigue siendo `website.logo` de Odoo, sin tocar. Las marcas del contenido
-(hero, nosotros, footer) sí salen de `static/src/img/`, generadas desde los originales de
-4500 px de la carpeta de marca y recoloreadas sobre el canal alpha.
+El **footer** sí es propio (`views/footer.xml`, reemplaza `#footer` de `website.layout`): marca,
+navegación y contacto. Va con `t-ignore` y sin `oe_structure`, o sea que se edita por código y no
+desde el builder, para que sus enlaces no se desincronicen del menú.
+
+### Logo
+
+Sale de `website.logo`, el campo estándar del sitio, y lo instala
+`instalar_logo.py` desde `static/src/img/primate_logo_header.png`. No es un dato del tema porque
+los temas pueden declarar vistas, páginas, menús y attachments, pero no escribir un campo de
+`website`.
+
+El archivo se generó desde `PRIMATE - ALT4.png` de la carpeta de marca, el único lockup
+**horizontal** (isologo + PRIMATE + bajada, 3.4:1). Dos operaciones sobre el original:
+
+1. **recorte al arte real** — venía centrado en un lienzo cuadrado con margen transparente, y ese
+   margen hacía que el logo se viera minúsculo dentro de la altura del header;
+2. **recoloreo al crema sobre el canal alpha** — el archivo de marca es gris oscuro, invisible
+   sobre el violeta del header.
+
+Se muestra a 34 px de alto: más chico, la bajada se empasta. El pill del header quedó en 1280 px
+de ancho para que los cinco ítems del menú entren sin que Odoo colapse el último en un `+`.
+
+Las marcas del contenido (hero, nosotros, footer) salen de `static/src/img/`, generadas del mismo
+modo desde los originales de 4500 px.
+
+### Restos del sitio anterior
+
+`desactivar_footer_viejo.py` desactiva —no borra— dos vistas específicas del sitio que había
+dejado `primate_website_generator`: el footer que decía "B2B Service" y enlazaba a las anclas del
+sitio one-page, y una herencia que hardcodeaba "© 2026 B2B Service" con el año fijo. Sin esa
+segunda, el copyright nativo muestra el nombre de la compañía.
 
 ## JS
 

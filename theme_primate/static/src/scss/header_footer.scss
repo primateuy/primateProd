@@ -18,7 +18,7 @@ html {
 }
 
 #top .navbar {
-    max-width: 1180px;
+    max-width: 1280px;
     margin: 0 auto;
     min-height: 66px;
     padding: 0 10px 0 22px;
@@ -30,8 +30,12 @@ html {
     box-shadow: none;
 }
 
+// El logo es el lockup HORIZONTAL de marca (isologo + PRIMATE + bajada), recortado al arte y
+// recoloreado al crema sobre el canal alpha: el archivo de marca es gris oscuro e invisible
+// sobre el violeta del header. A 34px la palabra se lee; mas chico, la bajada se empasta.
+// Se instala en website.logo con theme_primate/instalar_logo.py.
 #top .navbar-brand img {
-    height: 26px;
+    height: 34px;
     width: auto;
 }
 
@@ -53,7 +57,7 @@ html {
 // Padding mas ajustado en los items de menu: le da aire al pill para que Odoo colapse
 // menos items en el boton "+".
 #top .top_menu .nav-link {
-    padding: 9px 12px;
+    padding: 9px 10px;
 }
 
 #top .nav-link:hover,
@@ -151,5 +155,86 @@ footer.o_footer a:hover {
     }
     #top .top_menu .nav-link {
         transition: none;
+    }
+}
+
+// ---------------------------------------------------------------------------------------
+// Footer de marca (views/footer.xml). Namespaceado bajo .pw_footer para no tocar el footer
+// de los otros sitios de la instancia, que comparten el mismo web.assets_frontend.
+// ---------------------------------------------------------------------------------------
+.pw_footer {
+    background: var(--pw-bg, #150C24);
+    border-top: 1px solid var(--pw-line-strong);
+    padding: 64px 0 56px;
+}
+
+.pw_footer .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+}
+
+.pw_footer .pw_footer_grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+}
+
+.pw_footer_logo {
+    height: 38px;
+    width: auto;
+    margin-bottom: 18px;
+}
+
+.pw_footer_claim {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--pw-cream);
+    margin-bottom: 10px;
+}
+
+.pw_footer_desc {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--pw-cream-dim);
+    max-width: 380px;
+    margin: 0;
+}
+
+.pw_footer_col h6 {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--pw-cream-faint);
+    margin-bottom: 16px;
+}
+
+.pw_footer_col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pw_footer_col li + li {
+    margin-top: 10px;
+}
+
+.pw_footer_col a,
+.pw_footer_col span {
+    font-size: 14.5px;
+    color: var(--pw-cream-dim);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.pw_footer_col a:hover {
+    color: var(--pw-teal);
+}
+
+@media (max-width: 980px) {
+    .pw_footer .pw_footer_grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
     }
 }
