@@ -102,6 +102,11 @@ Paleta por rol en `static/src/scss/primary_variables.scss`, que alimenta los com
 | `o_cc4` | `#56AEA0` | acento |
 | `o_cc5` | `#2C1D4D` | banda |
 
+Header, footer y copyright se asignan a un combo en el mismo mapa (`'menu'`, `'footer'`,
+`'copyright'`). Footer y copyright van al **combo 1**, no al 4: el 4 es el acento turquesa, y el
+color de texto que Odoo calcula para él es `#212529`, así que la banda del copyright salía con
+letra casi negra sobre turquesa.
+
 El turquesa es el **`#56AEA0` del manual de marca**, no el `#5FC2B2` del mockup: da 7,2:1 sobre
 `#150C24`, así que no hace falta desviarse del manual. `#8CE9D8` queda solo para glows y hovers.
 

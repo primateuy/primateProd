@@ -16,8 +16,12 @@ $o-color-palettes: map-merge($o-color-palettes, (
         'o-color-4': #150C24,
         'o-color-5': #2C1D4D,
         'menu': 4,        // header sobre el fondo de pagina
-        'footer': 4,
-        'copyright': 4,
+        // Footer y copyright en el combo 1 (#150C24), NO en el 4. El combo 4 es el acento
+        // turquesa, y el color de texto que Odoo calcula para el es #212529: sobre turquesa
+        // eso da una banda de copyright con letra casi negra, ilegible. Con el combo 1 el
+        // footer entero queda oscuro y el texto lo pone la paleta.
+        'footer': 1,
+        'copyright': 1,
 
         // Boton primario: turquesa de marca con texto VIOLETA OSCURO (5,7:1). Nunca blanco:
         // el turquesa da 2,6:1 contra blanco y falla WCAG AA.

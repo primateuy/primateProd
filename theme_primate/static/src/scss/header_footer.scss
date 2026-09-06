@@ -142,11 +142,28 @@ footer.o_footer a:hover {
     color: var(--pw-cream);
 }
 
+// cream-faint (40%) sobre el violeta da ~3,2:1 y no pasa AA para texto chico; cream-dim
+// (64%) da ~6,5:1.
 .o_footer_copyright {
     border-top: 1px solid var(--pw-line);
     font-size: 12px;
     font-weight: 600;
-    color: var(--pw-cream-faint);
+    color: var(--pw-cream-dim);
+}
+
+// .text-muted de Bootstrap y los links del copyright traen sus propios colores, pensados para
+// fondo claro. Se fuerzan al crema del footer.
+footer.o_footer .o_footer_copyright .text-muted,
+footer.o_footer .o_footer_copyright .o_footer_copyright_name {
+    color: var(--pw-cream-dim) !important;
+}
+
+footer.o_footer .o_footer_copyright a:not(.badge) {
+    color: var(--pw-cream-dim);
+}
+
+footer.o_footer .o_footer_copyright a:not(.badge):hover {
+    color: var(--pw-cream);
 }
 
 @media (prefers-reduced-motion: reduce) {
