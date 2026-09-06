@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_form_website_team" model="ir.ui.view">
+        <field name="name">hr.employee.form.website.team</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <page name="website_team" string="Sitio web" groups="hr.group_hr_user">
+                    <div class="alert alert-info" role="status">
+                        Los datos de esta pestaña se pueden cargar siempre; cargarlos no los
+                        publica. Aparecen en el sitio solo si <b>Publicar en el sitio</b> está
+                        activo y además el dato está marcado en <b>Qué se publica</b>.
+                    </div>
+                    <group>
+                        <group string="Publicación">
+                            <field name="website_published" widget="boolean_toggle"/>
+                            <field name="website_sequence"/>
+                            <field name="website_url" widget="url" readonly="1"
+                                   invisible="not website_published"/>
+                        </group>
+                        <group string="Qué se publica">
+                            <field name="website_show_photo"/>
+                            <field name="website_show_role"/>
+                            <field name="website_show_bio"/>
+                            <field name="website_show_email"/>
+                            <field name="website_show_socials"/>
+                        </group>
+                    </group>
+                    <group string="Datos del sitio">
+                        <field name="website_role" placeholder="Ej. Consultora funcional Odoo"/>
+                        <field name="work_email" readonly="1"/>
+                        <field name="website_bio"
+                               placeholder="Una o dos líneas de presentación."/>
+                    </group>
+                    <group string="Redes">
+                        <field name="website_linkedin" widget="url"
+                               placeholder="https://www.linkedin.com/in/usuario"/>
+                        <field name="website_github" widget="url"
+                               placeholder="https://github.com/usuario"/>
+                        <field name="website_x" widget="url" placeholder="https://x.com/usuario"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

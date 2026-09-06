@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menu principal. Cada item apunta a una URL propia, no a un ancla: el sitio dejo de ser
+         one-page. use_main_menu_as_parent (default True) los cuelga del menu raiz del sitio.
+
+         Contacto reusa /contactus, la pagina nativa de Odoo con su formulario: cambiarle la URL
+         obligaria a redirigir todo lo que ya apunta ahi (mails, /contactus-thank-you). -->
+
+    <record id="menu_home" model="theme.website.menu">
+        <field name="name">Home</field>
+        <field name="url">/</field>
+        <field name="sequence" type="int">10</field>
+    </record>
+
+    <record id="menu_about" model="theme.website.menu">
+        <field name="name">Sobre nosotros</field>
+        <field name="url">/sobre-nosotros</field>
+        <field name="sequence" type="int">20</field>
+    </record>
+
+    <record id="menu_cases" model="theme.website.menu">
+        <field name="name">Casos de éxito</field>
+        <field name="url">/casos-de-exito</field>
+        <field name="sequence" type="int">30</field>
+    </record>
+
+    <record id="menu_booking" model="theme.website.menu">
+        <field name="name">Agendar una reunión</field>
+        <field name="url">/agendar-reunion</field>
+        <field name="sequence" type="int">40</field>
+    </record>
+
+    <record id="menu_contact" model="theme.website.menu">
+        <field name="name">Contáctenos</field>
+        <field name="url">/contactus</field>
+        <field name="sequence" type="int">50</field>
+    </record>
+
+</odoo>

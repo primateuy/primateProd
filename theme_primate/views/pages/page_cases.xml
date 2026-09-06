@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Casos de exito. El grid queda preparado para que cada caso pueda crecer a su propia
+         subpagina de detalle mas adelante. -->
+    <template id="page_cases" name="Primate — Casos de éxito">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Casos de éxito</t>
+            <t t-set="pageName" t-value="'page_cases'"/>
+            <div id="wrap" class="o_primate_site">
+                <div class="oe_structure" id="oe_structure_primate_cases">
+                    <section id="casos" class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Casos</div>
+                    <h2>Problemas reales.<br/>Soluciones reales.</h2>
+                    </div>
+                    <div class="casos-grid reveal">
+                    <div class="caso-card"><div class="eyebrow">Retail</div><h3>Múltiples locales, POS y franquicias</h3><p>Operaciones con múltiples locales, POS, eCommerce, franquicias, promociones, inventario y grandes volúmenes de transacciones.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Distribución</div><h3>Abastecimiento y trazabilidad</h3><p>Compras, abastecimiento, depósitos, costos, trazabilidad y operaciones multicompany.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Servicios</div><h3>CRM, proyectos y facturación</h3><p>CRM, proyectos, horas, facturación, atención al cliente y automatización administrativa.</p></div>
+                    <div class="caso-card"><div class="eyebrow">Empresas en crecimiento</div><h3>Cuando las planillas dejan de escalar</h3><p>Organizaciones donde las planillas y los procesos informales dejaron de escalar.</p></div>
+                    </div>
+
+                    </div>
+                    </section>
+                    <div class="cta-outer">
+                    <div class="cta-final reveal" id="contacto">
+                    <div class="bglow"></div>
+                    <div class="inner">
+                    <div class="eyebrow" style="justify-content:center; margin-bottom:18px;">Empecemos</div>
+                    <h2>Empecemos por entender tu negocio.</h2>
+                    <h2 class="sub">Así vamos a saber qué solución tiene sentido para vos.</h2>
+                    <p class="help">Contanos qué está pasando. Empecemos por entender el problema y encontremos juntos la solución que tenga sentido para tu negocio.</p>
+                    <a href="/contactus" class="btn btn-primary">Hablemos →</a>
+                    <a href="/agendar-reunion" class="btn btn-outline">Agendar una reunión</a>
+                    <p class="fine">Sin presentaciones de 48 slides. Directo al problema.</p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

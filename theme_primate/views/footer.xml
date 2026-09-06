@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Footer de marca. Reemplaza el #footer de website.layout, que es el mismo punto que usa
+         Odoo para sus plantillas de footer.
+
+         Sustituye al que habia dejado el generador viejo (una vista especifica del sitio con
+         key website.footer_custom): decia "B2B Service", mezclaba portugues y enlazaba a las
+         anclas del sitio one-page (/#s-1-qui-nes-somos...), que ya no existen. Esa vista queda
+         DESACTIVADA, no borrada, con desactivar_footer_viejo.py.
+
+         El bloque va con t-ignore y sin oe_structure: el footer se edita desde el codigo, no
+         desde el builder, para que los enlaces no se desincronicen del menu. -->
+    <template id="footer_primate" inherit_id="website.layout" name="Footer Primate">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="pw_footer" t-ignore="true" t-if="not no_footer">
+                <div class="wrap">
+                    <div class="pw_footer_grid">
+
+                        <div class="pw_footer_brand">
+                            <img src="/theme_primate/static/src/img/primate_logo_header.png"
+                                 alt="Primate" class="pw_footer_logo"/>
+                            <p class="pw_footer_claim">La evolución a tu alcance.</p>
+                            <p class="pw_footer_desc">Consultora Odoo en Uruguay y Brasil.
+                                Primero entendemos el problema. Después pensamos la solución.</p>
+                        </div>
+
+                        <div class="pw_footer_col">
+                            <h6>Navegación</h6>
+                            <ul>
+                                <li><a href="/">Inicio</a></li>
+                                <li><a href="/sobre-nosotros">Sobre nosotros</a></li>
+                                <li><a href="/casos-de-exito">Casos de éxito</a></li>
+                                <li><a href="/agendar-reunion">Agendar una reunión</a></li>
+                                <li><a href="/contactus">Contáctenos</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="pw_footer_col">
+                            <h6>Contacto</h6>
+                            <ul>
+                                <li><a href="mailto:comercial@primate.uy">comercial@primate.uy</a></li>
+                                <li><a href="https://wa.me/59892205405" target="_blank"
+                                       rel="noopener noreferrer">+598 92 205 405</a></li>
+                                <li><span>Montevideo, Uruguay</span></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

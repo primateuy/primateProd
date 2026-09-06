@@ -1,0 +1,73 @@
+// Estilos del bloque de equipo. Todo namespaceado bajo .pwt_team para no filtrar al resto del
+// sitio ni al backend. Sin selectores globales de elemento.
+// Los colores y tipografías salen del tema (variables de Odoo), así el bloque queda on-brand
+// cuando se cambie la identidad del sitio.
+
+.pwt_team {
+
+    .pwt_team_title {
+        margin-bottom: 2.5rem;
+    }
+
+    .pwt_member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .pwt_member_photo {
+        display: block;
+        width: 100%;
+        max-width: 200px;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+
+    .pwt_member_name {
+        margin-bottom: 0.25rem;
+    }
+
+    .pwt_member_role {
+        margin-bottom: 0.75rem;
+        opacity: 0.75;
+    }
+
+    .pwt_member_bio {
+        margin-bottom: 0.75rem;
+    }
+
+    .pwt_member_email {
+        margin-bottom: 0.5rem;
+        word-break: break-word;
+    }
+
+    .pwt_member_socials {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: auto;
+        padding-top: 0.5rem;
+
+        a {
+            cursor: pointer;
+            transition: opacity 0.2s ease-in-out;
+
+            &:hover {
+                opacity: 0.6;
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+            }
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pwt_team .pwt_member_socials a {
+        transition: none;
+    }
+}

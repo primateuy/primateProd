@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Agendar una reunion. El calendario en si NO es una website.page: lo sirve el
+         controlador de appointment (/appointment y /appointment/<id>). Esta pagina es la
+         antesala de marca, y el salto al calendario lo hace el boton nativo
+         .s_online_appointment de website_appointment.
+
+         El boton va con data-appointment-types="[]" a proposito: asi lleva al listado de
+         tipos publicados. Cuando exista el tipo "Diagnostico - 45 min" se lo apunta desde el
+         editor (opcion nativa del bloque), y esa eleccion se guarda en la vista hija de la
+         zona, sin tocar el modulo. Hardcodear el id del tipo en el XML lo romperia en
+         cualquier otra base. -->
+    <template id="page_booking" name="Primate — Agendar una reunión">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Agendar una reunión</t>
+            <t t-set="pageName" t-value="'page_booking'"/>
+            <div id="wrap" class="o_primate_site">
+                <div class="oe_structure" id="oe_structure_primate_booking">
+
+                    <div class="cta-outer">
+                    <div class="cta-final reveal" id="agendar">
+                    <div class="bglow"></div>
+                    <div class="inner">
+                    <div class="eyebrow" style="justify-content:center; margin-bottom:18px;">Agendar</div>
+                    <h2>45 minutos para entender el problema.</h2>
+                    <h2 class="sub">Después vemos si la tecnología tiene algo que decir.</h2>
+                    <p class="help">Contanos qué está pasando en tu operación y lo miramos juntos. No es una demo: es una conversación para entender tu caso antes de hablar de módulos, desarrollos o presupuestos.</p>
+                    <button type="button" class="btn btn-primary s_online_appointment" data-display="inline"
+                            data-target-types="all" data-appointment-types="[]"
+                            data-target-users="all" data-staff-users="[]">Ver horarios disponibles →</button>
+                    <p class="fine">Sin presentaciones de 48 slides. Directo al problema.</p>
+                    </div>
+                    </div>
+                    </div>
+
+                    <section class="pw_section">
+                    <div class="wrap">
+                    <div class="sec-head reveal">
+                    <div class="eyebrow">Qué te llevás</div>
+                    <h2>Salís de la reunión sabiendo algo que no sabías.</h2>
+                    </div>
+                    <div class="casos-grid reveal">
+                    <div class="caso-card">
+                    <h3>Una lectura de afuera</h3>
+                    <p>Cómo se ve tu operación para alguien que implementó decenas parecidas, incluidas las partes incómodas.</p>
+                    </div>
+                    <div class="caso-card">
+                    <h3>Si Odoo aplica, y hasta dónde</h3>
+                    <p>Qué resuelve el estándar, qué necesita configuración y qué requiere desarrollo. Si no aplica, también te lo decimos.</p>
+                    </div>
+                    <div class="caso-card">
+                    <h3>Un orden de magnitud</h3>
+                    <p>Esfuerzo y plazos aproximados, para que puedas decidir si vale la pena avanzar antes de pedir una propuesta formal.</p>
+                    </div>
+                    </div>
+                    <div style="margin-top:32px;"><a href="/contactus" class="link-arrow">Prefiero escribir un mail →</a></div>
+                    </div>
+                    </section>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

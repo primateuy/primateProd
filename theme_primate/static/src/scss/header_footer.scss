@@ -1,0 +1,257 @@
+// Header y footer: el brief los dibuja con markup propio, pero en Odoo viven en
+// website.layout, FUERA del wrapper de la home. Asi que en vez de duplicar markup (que
+// produciria un segundo menu, el bug que tenia el sitio anterior), se estilan los
+// selectores REALES del frontend para que tomen la forma del diseno.
+// [VERIFICADO] contra el HTML servido por esta instancia: <header id="top"> con dos <nav
+// class="navbar"> (escritorio y mobile) y <ul class="top_menu"> con enlaces .nav-link.
+
+html {
+    scroll-behavior: smooth;
+}
+
+// --- header como pill flotante ---
+#top.o_header_standard,
+#top {
+    background: transparent;
+    padding: 16px 20px 0;
+    box-shadow: none;
+}
+
+#top .navbar {
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 66px;
+    padding: 0 10px 0 22px;
+    background: rgba(21, 12, 36, 0.65);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--pw-line-strong);
+    border-radius: 100px;
+    box-shadow: none;
+}
+
+// El logo es el lockup HORIZONTAL de marca (isologo + PRIMATE + bajada), recortado al arte y
+// recoloreado al crema sobre el canal alpha: el archivo de marca es gris oscuro e invisible
+// sobre el violeta del header. A 34px la palabra se lee; mas chico, la bajada se empasta.
+// Se instala en website.logo con theme_primate/instalar_logo.py.
+#top .navbar-brand img {
+    height: 34px;
+    width: auto;
+}
+
+// TODO enlace del header, no solo los de .top_menu. El selector de idioma y el menu de
+// usuario tambien son .nav-link pero viven fuera de .top_menu: si solo se estila .top_menu
+// se quedan con el color por defecto de Odoo (pensado para fondo claro) y sobre el violeta
+// oscuro quedan ilegibles.
+#top .nav-link,
+#top .dropdown-toggle,
+#top .o_nav_link_btn,
+#top .btn.text-reset {
+    color: var(--pw-cream-dim);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 100px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+// Padding mas ajustado en los items de menu: le da aire al pill para que Odoo colapse
+// menos items en el boton "+".
+#top .top_menu .nav-link {
+    padding: 9px 10px;
+}
+
+#top .nav-link:hover,
+#top .nav-link:focus-visible,
+#top .dropdown-toggle:hover,
+#top .o_nav_link_btn:hover,
+#top .btn.text-reset:hover {
+    background: rgba(246, 241, 234, 0.07);
+    color: var(--pw-cream);
+}
+
+// El link con borde ("Iniciar sesion") traia el borde por defecto, casi invisible.
+#top .o_nav_link_btn {
+    border-color: var(--pw-line-strong) !important;
+}
+
+// CTA del header. #top no lleva clase de combo (o_cc*), asi que no hereda los colores de la
+// paleta: se fijan explicitamente. Texto violeta oscuro sobre turquesa = 5,7:1; blanco daria
+// 2,6:1 y fallaria WCAG AA.
+#top .btn-primary,
+#top .btn_cta {
+    background-color: var(--pw-teal);
+    border-color: var(--pw-teal);
+    color: #150C24;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+#top .btn-primary:hover,
+#top .btn_cta:hover {
+    background-color: var(--pw-teal-glow);
+    border-color: var(--pw-teal-glow);
+    color: #150C24;
+}
+
+// Los desplegables (idioma, usuario, "+") son paneles blancos por defecto: sobre un sitio
+// oscuro cortan la lectura.
+#top .dropdown-menu {
+    background-color: var(--pw-card);
+    border: 1px solid var(--pw-line-strong);
+    border-radius: 14px;
+}
+
+#top .dropdown-menu .dropdown-item {
+    color: var(--pw-cream-dim);
+}
+
+#top .dropdown-menu .dropdown-item:hover,
+#top .dropdown-menu .dropdown-item:focus {
+    background-color: rgba(246, 241, 234, 0.07);
+    color: var(--pw-cream);
+}
+
+#top .top_menu .nav-item.active > .nav-link {
+    color: var(--pw-teal);
+}
+
+// --- footer ---
+footer.o_footer,
+#bottom {
+    background: var(--pw-bg);
+    color: var(--pw-cream-dim);
+}
+
+footer.o_footer h5,
+footer.o_footer .h5 {
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pw-teal);
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+footer.o_footer a {
+    color: var(--pw-cream-dim);
+    font-weight: 500;
+}
+
+footer.o_footer a:hover {
+    color: var(--pw-cream);
+}
+
+// cream-faint (40%) sobre el violeta da ~3,2:1 y no pasa AA para texto chico; cream-dim
+// (64%) da ~6,5:1.
+.o_footer_copyright {
+    border-top: 1px solid var(--pw-line);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pw-cream-dim);
+}
+
+// .text-muted de Bootstrap y los links del copyright traen sus propios colores, pensados para
+// fondo claro. Se fuerzan al crema del footer.
+footer.o_footer .o_footer_copyright .text-muted,
+footer.o_footer .o_footer_copyright .o_footer_copyright_name {
+    color: var(--pw-cream-dim) !important;
+}
+
+footer.o_footer .o_footer_copyright a:not(.badge) {
+    color: var(--pw-cream-dim);
+}
+
+footer.o_footer .o_footer_copyright a:not(.badge):hover {
+    color: var(--pw-cream);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    #top .top_menu .nav-link {
+        transition: none;
+    }
+}
+
+// ---------------------------------------------------------------------------------------
+// Footer de marca (views/footer.xml). Namespaceado bajo .pw_footer para no tocar el footer
+// de los otros sitios de la instancia, que comparten el mismo web.assets_frontend.
+// ---------------------------------------------------------------------------------------
+.pw_footer {
+    background: var(--pw-bg, #150C24);
+    border-top: 1px solid var(--pw-line-strong);
+    padding: 64px 0 56px;
+}
+
+.pw_footer .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+}
+
+.pw_footer .pw_footer_grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+}
+
+.pw_footer_logo {
+    height: 38px;
+    width: auto;
+    margin-bottom: 18px;
+}
+
+.pw_footer_claim {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--pw-cream);
+    margin-bottom: 10px;
+}
+
+.pw_footer_desc {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--pw-cream-dim);
+    max-width: 380px;
+    margin: 0;
+}
+
+.pw_footer_col h6 {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--pw-cream-faint);
+    margin-bottom: 16px;
+}
+
+.pw_footer_col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pw_footer_col li + li {
+    margin-top: 10px;
+}
+
+.pw_footer_col a,
+.pw_footer_col span {
+    font-size: 14.5px;
+    color: var(--pw-cream-dim);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.pw_footer_col a:hover {
+    color: var(--pw-teal);
+}
+
+@media (max-width: 980px) {
+    .pw_footer .pw_footer_grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+}
