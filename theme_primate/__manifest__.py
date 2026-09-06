@@ -28,6 +28,7 @@
         "views/snippets/s_primate_hero.xml",
         "views/snippets/snippets.xml",
         # Paginas: las vistas primero, porque data/pages.xml las referencia por ref().
+        "views/footer.xml",
         "views/home.xml",
         "views/pages/page_about.xml",
         "views/pages/page_cases.xml",
