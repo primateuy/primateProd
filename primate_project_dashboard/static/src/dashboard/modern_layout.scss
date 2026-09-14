@@ -1,0 +1,36 @@
+// Grilla de la vista moderna. Desde 1200px: KPIs; progreso por proyecto (7) junto a donut
+// y carga por área (5); alertas a lo ancho. Por debajo, todo apilado. Adentro de cada
+// columna las cards se acomodan solas con sus container queries.
+
+.o_primate_dashboard .o_ppd_modern {
+	// El header es el mismo de la clásica: cuando los filtros bajan de renglón, el toggle
+	// quedaba pegado al título. Se separa acá, sin tocar su DOM ni la clásica.
+	.d-flex:has(> .o_primate_dashboard_title) {
+		row-gap: 0.75rem;
+	}
+
+	.o_ppd_main_row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		// Altura natural: la columna más corta termina antes, sin estirar cards con huecos.
+		align-items: start;
+		gap: var(--ppd-section-gap);
+	}
+
+	.o_ppd_main_col,
+	.o_ppd_side_col {
+		min-width: 0;
+	}
+
+	.o_ppd_side_col {
+		display: flex;
+		flex-direction: column;
+		gap: var(--ppd-section-gap);
+	}
+
+	@media (min-width: 1200px) {
+		.o_ppd_main_row {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		}
+	}
+}

@@ -7,16 +7,39 @@ $ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
 	.o_ppd_kpi_row {
 		display: grid;
 		gap: var(--ppd-gap);
-		// Tantas por fila como entren sin apretar el número: cinco en escritorio, una en
-		// un teléfono. La grilla definitiva de la página se ajusta en el paso de layout.
+		// Hasta 1199px: tantas por fila como entren sin apretar el número (tres, dos, una).
 		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 	}
 
+	// Desde 1200px, todos los KPIs en una sola fila.
+	@media (min-width: 1200px) {
+		.o_ppd_kpi_row {
+			grid-template-columns: none;
+			grid-auto-columns: minmax(0, 1fr);
+			grid-auto-flow: column;
+		}
+	}
+
+	// Cada card decide por su propio ancho: con cinco KPIs a 1200px el número no entra al
+	// lado del badge, y ahí el badge sube. Todas las cards de la fila miden lo mismo, así
+	// que la decisión es la misma para las cinco.
 	.o_ppd_kpi {
+		container-type: inline-size;
+		min-width: 0;
+	}
+
+	.o_ppd_kpi_inner {
 		display: flex;
 		align-items: center;
 		gap: 0.875rem;
-		min-width: 0;
+	}
+
+	@container (max-width: 14rem) {
+		.o_ppd_kpi_inner {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.625rem;
+		}
 	}
 
 	.o_ppd_kpi_badge {
