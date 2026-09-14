@@ -10,3 +10,4 @@ from . import project_dashboard_alerts
 from . import project_dashboard_alert_snooze
 from . import project_progress_snapshot
 from . import res_config_settings
+from . import res_users_settings

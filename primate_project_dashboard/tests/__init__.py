@@ -12,3 +12,4 @@ from . import test_sale_line_sharing
 from . import test_timesheet_access
 from . import test_area_migration
 from . import test_dashboard_tour
+from . import test_view_preference

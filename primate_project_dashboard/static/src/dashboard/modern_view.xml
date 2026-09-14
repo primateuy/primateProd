@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.DashboardModernView">
+		<div class="o_ppd_modern">
+			<h2 class="o_ppd_modern_title">Modern view</h2>
+		</div>
+	</t>
+
+</templates>

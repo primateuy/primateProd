@@ -2,13 +2,19 @@ import { Component, onWillStart, onWillUnmount, useState } from "@odoo/owl";
 import { router } from "@web/core/browser/router";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
+import { user } from "@web/core/user";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { DashboardClassicView } from "./classic_view";
+import { DashboardModernView } from "./modern_view";
 
 // Filtros que viajan en la URL para poder compartir una vista filtrada.
 const URL_FILTERS = ["period", "date_from", "date_to", "area", "user_id", "partner_id", "only_at_risk"];
+
+// Campo de res.users.settings donde queda la vista elegida por cada usuario.
+const VIEW_SETTING = "primate_dashboard_view";
+const VIEW_COMPONENTS = { classic: DashboardClassicView, modern: DashboardModernView };
 
 /**
  * Raíz del dashboard: estado, carga, filtros y acciones. Lo que se dibuja con los
@@ -16,7 +22,7 @@ const URL_FILTERS = ["period", "date_from", "date_to", "area", "user_id", "partn
  */
 export class ProjectDashboard extends Component {
 	static template = "primate_project_dashboard.ProjectDashboard";
-	static components = { Layout, DashboardClassicView };
+	static components = { Layout };
 	static props = { ...standardActionServiceProps };
 	static path = "primate-project-dashboard";
 	static displayName = _t("Executive Dashboard");
@@ -33,9 +39,65 @@ export class ProjectDashboard extends Component {
 			rows: [],
 			offset: 0,
 			loadingMore: false,
+			// Sale de la sesión, que ya está en memoria: la primera pintura es la vista
+			// elegida, sin pasar por la clásica.
+			view: this.readViewFromSettings(),
 		});
+		// Callbacks estables: armados una sola vez, las vistas no re-renderizan por
+		// recibir funciones nuevas en cada render del raíz.
+		this.viewCallbacks = {
+			onOpenProject: this.openProject.bind(this),
+			onLoadMore: this.loadMore.bind(this),
+			onOpenAreaTasks: this.openAreaTasks.bind(this),
+			onOpenAlertRecord: this.openAlertRecord.bind(this),
+			onSnooze: this.snoozeAlert.bind(this),
+		};
 		onWillStart(() => this.load());
 		onWillUnmount(() => this.stopAutoRefresh());
+	}
+
+	get views() {
+		return [
+			{ value: "classic", label: _t("Classic") },
+			{ value: "modern", label: _t("Modern") },
+		];
+	}
+
+	get viewComponent() {
+		return VIEW_COMPONENTS[this.state.view];
+	}
+
+	/** Las dos vistas reciben lo mismo: cambiar de una a otra no pide datos. */
+	get viewProps() {
+		return {
+			data: this.state.data,
+			rows: this.state.rows,
+			hasMoreRows: this.hasMoreRows,
+			loadingMore: this.state.loadingMore,
+			...this.viewCallbacks,
+		};
+	}
+
+	readViewFromSettings() {
+		const view = user.settings[VIEW_SETTING];
+		return view in VIEW_COMPONENTS ? view : "classic";
+	}
+
+	/**
+	 * Optimista: la vista cambia ya y se guarda en segundo plano. Si el guardado falla
+	 * sólo se pierde la preferencia, así que alcanza con dejarlo anotado en la consola.
+	 */
+	onViewChange(view) {
+		if (view === this.state.view) {
+			return;
+		}
+		this.state.view = view;
+		// Local primero: si se sale y se vuelve al dashboard antes de que responda el
+		// servidor, la sesión en memoria ya tiene la vista nueva.
+		user.updateUserSettings(VIEW_SETTING, view);
+		user.setUserSettings(VIEW_SETTING, view).catch((error) => {
+			console.warn("primate_project_dashboard: no se pudo guardar la vista elegida", error);
+		});
 	}
 
 	get selectorAreas() {

@@ -4,7 +4,7 @@
 {
 	"name": "Project Executive Dashboard",
 	"summary": "Dashboard ejecutivo de proyectos: semáforo, avance real vs plan, carga por área y alertas.",
-	"version": "19.0.1.1.0",
+	"version": "19.0.1.2.0",
 	"category": "Services/Project",
 	"author": "PrimateUY",
 	"website": "https://primateuy.com",

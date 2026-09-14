@@ -7,6 +7,18 @@
 				<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
 					<h1 class="o_primate_dashboard_title mb-0">Executive Dashboard</h1>
 					<div class="d-flex flex-wrap gap-2 align-items-center">
+						<!-- Sobre un dashboard roto no se ofrece cambiar de vista. -->
+						<div t-if="!state.error" class="o_primate_view_switch btn-group btn-group-sm"
+							role="group" aria-label="Dashboard view">
+							<t t-foreach="views" t-as="view" t-key="view.value">
+								<button type="button" class="btn"
+									t-att-class="state.view === view.value ? 'btn-primary' : 'btn-outline-secondary'"
+									t-att-aria-pressed="state.view === view.value ? 'true' : 'false'"
+									t-att-data-view="view.value"
+									t-on-click="() => this.onViewChange(view.value)"
+									t-esc="view.label"/>
+							</t>
+						</div>
 						<select class="form-select form-select-sm w-auto"
 							t-att-title="periodTooltip"
 							t-on-change="(ev) => this.onFilterChange('period', ev.target.value)">
@@ -74,13 +86,7 @@
 					</div>
 				</t>
 				<t t-else="">
-					<DashboardClassicView data="state.data" rows="state.rows"
-						hasMoreRows="hasMoreRows" loadingMore="state.loadingMore"
-						onOpenProject.bind="openProject"
-						onLoadMore.bind="loadMore"
-						onOpenAreaTasks.bind="openAreaTasks"
-						onOpenAlertRecord.bind="openAlertRecord"
-						onSnooze.bind="snoozeAlert"/>
+					<t t-component="viewComponent" t-props="viewProps"/>
 				</t>
 			</div>
 		</Layout>
