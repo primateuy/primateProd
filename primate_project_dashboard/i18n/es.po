@@ -6,14 +6,82 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-01 22:06+0000\n"
-"PO-Revision-Date: 2026-09-01 22:06+0000\n"
+"POT-Creation-Date: 2026-09-14 23:02+0000\n"
+"PO-Revision-Date: 2026-09-14 23:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_areas.py:0
+msgid "%(area)s tasks"
+msgstr "Tareas de %(area)s"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_format.js:0
+msgid "%(committed)s h committed out of %(available)s h available"
+msgstr "%(committed)s h comprometidas de %(available)s h disponibles"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid ""
+"%(count)s users assigned to open tasks have not logged any timesheet this "
+"week"
+msgstr ""
+"Usuarios con tareas abiertas sin horas cargadas esta semana: %(count)s"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid ""
+"%(project)s: %(consumed)s%% of the sold hours consumed with %(progress)s%% "
+"progress"
+msgstr ""
+"%(project)s: %(consumed)s%% de las horas vendidas consumidas con "
+"%(progress)s%% de avance"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid "%(project)s: milestone \"%(milestone)s\" is %(days)s days overdue"
+msgstr "%(project)s: el hito \"%(milestone)s\" está vencido hace %(days)s días"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid ""
+"%(project)s: no plan loaded (missing end date or milestones with planned "
+"progress)"
+msgstr ""
+"%(project)s: sin plan cargado (falta la fecha de fin o hitos con avance "
+"planificado)"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid "%(project)s: no timesheet or stage change in the last %(days)s days"
+msgstr ""
+"%(project)s: sin horas cargadas ni cambios de etapa en los últimos %(days)s "
+"días"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "%(real)s real / %(planned)s planned"
+msgstr "%(real)s real / %(planned)s planificado"
+
+#. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_alerts.py:0
+msgid "%(task)s: blocked for %(days)s days"
+msgstr "%(task)s: bloqueada hace %(days)s días"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -74,9 +142,47 @@ msgid "A task stays blocked for (days)"
 msgstr "Una tarea sigue bloqueada por (días)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_kpi_cards.js:0
+msgid "Active projects"
+msgstr "Proyectos activos"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__alert_type
 msgid "Alert Type"
 msgstr "Tipo de alerta"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/classic_view.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_deadlines_panel.xml:0
+msgid "Alerts"
+msgstr "Alertas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "All areas"
+msgstr "Todas las áreas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "All customers"
+msgstr "Todos los clientes"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "All managers"
+msgstr "Todos los responsables"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid "All time"
+msgstr "Todo el tiempo"
 
 #. module: primate_project_dashboard
 #: model:ir.model.constraint,message:primate_project_dashboard.constraint_project_dashboard_alert_snooze_alert_key_uniq
@@ -89,11 +195,23 @@ msgid "Approximate Plan"
 msgstr "Plan aproximado"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid ""
+"Approximate plan: this project has no milestones with a planned progress, so"
+" the expected progress is interpolated between its start and end dates."
+msgstr ""
+"Plan aproximado: este proyecto no tiene hitos con avance planificado, así "
+"que el avance esperado se interpola entre sus fechas de inicio y fin."
+
+#. module: primate_project_dashboard
 #: model:res.groups,name:primate_project_dashboard.group_dashboard_area_lead
 msgid "Area Lead"
 msgstr "Líder de área"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_progress_snapshot__health_state__critical
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_project__health_state__critical
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.project_progress_snapshot_view_search
@@ -107,6 +225,21 @@ msgid "At Risk (red)"
 msgstr "En riesgo (rojo)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_kpi_cards.js:0
+msgid "At risk"
+msgstr "En riesgo"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "At risk only"
+msgstr "Solo en riesgo"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_progress_snapshot__health_state__at_risk
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_project__health_state__at_risk
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.view_project_project_filter_dashboard
@@ -121,32 +254,32 @@ msgstr "Atención (amarillo)"
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_yellow_hours_ratio
 msgid "Attention hours consumption (%)"
-msgstr "Consumo de horas de Atención (%)"
+msgstr "Atención: consumo de horas (%)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_yellow_progress_max
 msgid "Attention progress below (%)"
-msgstr "Avance por debajo de, para Atención (%)"
+msgstr "Atención: avance por debajo de (%)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_yellow_progress_gap
 msgid "Attention progress gap (pp)"
-msgstr "Brecha de avance de Atención (pp)"
+msgstr "Atención: brecha de avance (pp)"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
 msgid "Auto-refresh"
-msgstr "Auto-refresco"
+msgstr "Actualización automática"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__auto_refresh_interval
 msgid "Auto-refresh every (minutes)"
-msgstr "Auto-refrescar cada (minutos)"
+msgstr "Actualizar automáticamente cada (minutos)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__auto_refresh_enabled
 msgid "Auto-refresh the dashboard"
-msgstr "Auto-refrescar el dashboard"
+msgstr "Actualizar el dashboard automáticamente"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_task__blocking_state__blocked
@@ -158,6 +291,12 @@ msgstr "Bloqueada"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_task__blocked_since
 msgid "Blocked Since"
 msgstr "Bloqueada desde"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Blocked task"
+msgstr "Tarea bloqueada"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__alert_blocked_days
@@ -189,6 +328,13 @@ msgstr "Ventana de capacidad"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__capacity_window_days
 msgid "Capacity window (working days)"
 msgstr "Ventana de capacidad (días hábiles)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:primate_project_dashboard.selection__res_users_settings__primate_dashboard_view__classic
+msgid "Classic"
+msgstr "Clásica"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__res_config_settings__progress_method__closed
@@ -235,24 +381,30 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Critical"
+msgstr "Crítica"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_red_hours_ratio
 msgid "Critical hours consumption (%)"
-msgstr "Consumo de horas de En riesgo (%)"
+msgstr "En riesgo: consumo de horas (%)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_milestone_overdue_days
 msgid "Critical overdue milestone (days)"
-msgstr "Hito vencido hace más de (días)"
+msgstr "En riesgo: hito vencido hace más de (días)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_red_progress_max
 msgid "Critical progress below (%)"
-msgstr "Avance por debajo de, para En riesgo (%)"
+msgstr "En riesgo: avance por debajo de (%)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_red_progress_gap
 msgid "Critical progress gap (pp)"
-msgstr "Brecha de avance de En riesgo (pp)"
+msgstr "En riesgo: brecha de avance (pp)"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,help:primate_project_dashboard.field_project_milestone__planned_progress
@@ -260,14 +412,26 @@ msgid "Cumulative project progress expected when this milestone is reached."
 msgstr "% acumulado del proyecto que se espera al alcanzar este hito."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid "Custom"
+msgstr "Personalizado"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.edit_project_dashboard
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_project_dashboard_alert_snooze
 msgid "Dashboard Alert Snooze"
 msgstr "Silenciado de alertas del dashboard"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Dashboard view"
+msgstr "Vista del dashboard"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__date
@@ -286,12 +450,19 @@ msgid "Deviation (days)"
 msgstr "Desvío (días)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Dismiss this alert for a week"
+msgstr "Silenciar esta alerta por una semana"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_milestone__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_task__display_name
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:primate_project_dashboard.field_res_users_settings__display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
@@ -318,6 +489,16 @@ msgid "Estimated deviation"
 msgstr "Desvío estimado"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_kpi_cards.js:0
+msgid "Estimated margin"
+msgstr "Margen estimado"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
 #: model:ir.actions.client,name:primate_project_dashboard.action_project_dashboard
 #: model:ir.ui.menu,name:primate_project_dashboard.menu_project_dashboard
 msgid "Executive Dashboard"
@@ -352,9 +533,22 @@ msgid "Health"
 msgstr "Estado"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Hours"
+msgstr "Horas"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.edit_project_dashboard
 msgid "Hours and margin"
 msgstr "Horas y margen"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Hours budget"
+msgstr "Presupuesto de horas"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__alert_hours_red_ratio
@@ -379,7 +573,14 @@ msgstr "Aviso de presupuesto de horas en (%)"
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__alert_hours_progress_max
 msgid "Hours budget warning below progress (%)"
-msgstr "Aviso de presupuesto de horas con avance debajo de (%)"
+msgstr "Aviso de presupuesto de horas con avance por debajo de (%)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_kpi_cards.js:0
+msgid "Hours deviation"
+msgstr "Desvío de horas"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -399,8 +600,9 @@ msgstr "Cómo se mide el avance"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__id
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_task__id
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__id
+#: model:ir.model.fields,field_description:primate_project_dashboard.field_res_users_settings__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__is_planning_installed
@@ -420,6 +622,19 @@ msgid "Last Updated on"
 msgstr "Última modificación el"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/classic_view.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+msgid "Load more"
+msgstr "Cargar más"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Loading"
+msgstr "Cargando"
+
+#. module: primate_project_dashboard
 #: model:res.groups,name:primate_project_dashboard.group_dashboard_manager
 msgid "Management"
 msgstr "Dirección"
@@ -436,9 +651,23 @@ msgstr ""
 "ajustes del dashboard."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Margin"
+msgstr "Margen"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
 msgid "Meant for an office screen showing the dashboard permanently"
 msgstr "Pensado para una pantalla de oficina con el dashboard permanente"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Mgr"
+msgstr "Resp."
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_milestone_soon_days
@@ -446,11 +675,33 @@ msgid "Milestone due soon (days)"
 msgstr "Hito próximo a vencer en (días)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Missing timesheets"
+msgstr "Horas sin cargar"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__res_model
 msgid "Model"
 msgstr "Modelo"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+#: model:ir.model.fields.selection,name:primate_project_dashboard.selection__res_users_settings__primate_dashboard_view__modern
+msgid "Modern"
+msgstr "Moderna"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Next milestone"
+msgstr "Próximo hito"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_progress_snapshot__health_state__no_plan
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_project__health_state__no_plan
 msgid "No Plan"
@@ -462,16 +713,92 @@ msgid "No activity after (days)"
 msgstr "Sin actividad hace más de (días)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_deadlines_panel.xml:0
+msgid "No alert. Everything under control."
+msgstr "Sin alertas. Todo bajo control."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_format.js:0
+msgid ""
+"No employee is assigned to this area, so there is no capacity to compare "
+"against."
+msgstr ""
+"No hay empleados asignados a esta área, así que no hay capacidad contra la "
+"cual comparar."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_task_donut.xml:0
+msgid "No open tasks in the areas of these projects."
+msgstr "No hay tareas abiertas en las áreas de estos proyectos."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "No plan loaded"
+msgstr "Sin plan cargado"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "No plan loaded: the project is missing an end date or milestones."
+msgstr "Sin plan cargado: al proyecto le falta la fecha de fin o los hitos."
+
+#. module: primate_project_dashboard
 #: model_terms:ir.actions.act_window,help:primate_project_dashboard.action_project_progress_snapshot
 msgid "No progress snapshot yet"
 msgstr "Todavía no hay ningún snapshot de avance"
 
 #. module: primate_project_dashboard
-#: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
-msgid "No timesheet or stage change for (days)"
-msgstr "Sin timesheets ni cambios de etapa por (días)"
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_format.js:0
+msgid "No project in this selection has sold hours to compare against."
+msgstr ""
+"Ningún proyecto de esta selección tiene horas vendidas contra las cuales "
+"comparar."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "No project matches the current filters."
+msgstr "Ningún proyecto coincide con los filtros actuales."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "No recent activity"
+msgstr "Sin actividad reciente"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "No sales order linked to this project."
+msgstr "Este proyecto no tiene una orden de venta vinculada."
+
+#. module: primate_project_dashboard
+#: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
+msgid "No timesheet or stage change for (days)"
+msgstr "Sin horas cargadas ni cambios de etapa por (días)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+msgid "No work areas configured."
+msgstr "No hay áreas de trabajo configuradas."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
+msgid "Occupied capacity:"
+msgstr "Capacidad ocupada:"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_progress_snapshot__health_state__on_track
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_project__health_state__on_track
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.view_project_project_filter_dashboard
@@ -484,9 +811,33 @@ msgid "Only estimate after (days of project)"
 msgstr "Estimar recién después de (días de proyecto)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "Open"
+msgstr "Abrir"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_task_donut.xml:0
+msgid "Open tasks by area"
+msgstr "Tareas abiertas por área"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__health_milestone_open_ratio
 msgid "Open tasks of the upcoming milestone (%)"
 msgstr "Tareas abiertas del hito próximo (%)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Open the related record"
+msgstr "Abrir el registro relacionado"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Overdue milestone"
+msgstr "Hito vencido"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__has_dashboard_plan
@@ -494,11 +845,31 @@ msgid "Plan Loaded"
 msgstr "Plan cargado"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_kpi_cards.js:0
+msgid "Plan compliance"
+msgstr "Cumplimiento del plan"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Plan information"
+msgstr "Información del plan"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_milestone__planned_progress
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__progress_planned
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__progress_planned
 msgid "Planned Progress (%)"
 msgstr "Avance planificado (%)"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Planned progress"
+msgstr "Avance planificado"
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.edit_project_dashboard
@@ -519,6 +890,9 @@ msgid "Progress expected today, interpolated between milestones."
 msgstr "Avance esperado hoy, interpolado entre hitos."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
 #: model:ir.model,name:primate_project_dashboard.model_project_project
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_progress_snapshot__project_id
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.project_progress_snapshot_view_search
@@ -529,6 +903,11 @@ msgstr "Proyecto"
 #: model:res.groups.privilege,name:primate_project_dashboard.res_groups_privilege_project_dashboard
 msgid "Project Dashboard"
 msgstr "Dashboard de proyectos"
+
+#. module: primate_project_dashboard
+#: model:ir.model.fields,field_description:primate_project_dashboard.field_res_users_settings__primate_dashboard_view
+msgid "Project Dashboard View"
+msgstr "Vista del dashboard de proyectos"
 
 #. module: primate_project_dashboard
 #: model:ir.actions.server,name:primate_project_dashboard.ir_cron_progress_snapshot_ir_actions_server
@@ -548,7 +927,7 @@ msgstr "Responsable de proyecto (sus proyectos)"
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_project_milestone
 msgid "Project Milestone"
-msgstr "Objetivo del proyecto"
+msgstr "Hito del proyecto"
 
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_project_progress_snapshot
@@ -578,6 +957,13 @@ msgid "Real progress method"
 msgstr "Método de avance real"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Real vs planned progress"
+msgstr "Avance real vs. planificado"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.edit_project_dashboard
 msgid "Recompute health"
 msgstr "Recalcular semáforo"
@@ -588,9 +974,15 @@ msgid "Record ID"
 msgstr "ID del registro"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Refresh"
+msgstr "Actualizar"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
 msgid "Refresh every (minutes)"
-msgstr "Refrescar cada (minutos)"
+msgstr "Actualizar cada (minutos)"
 
 #. module: primate_project_dashboard
 #: model:res.groups,comment:primate_project_dashboard.group_dashboard_area_lead
@@ -620,6 +1012,12 @@ msgstr ""
 "de bloqueo). Se limpia al desbloquearse."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "Snooze"
+msgstr "Silenciar"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__snooze_until
 msgid "Snoozed Until"
 msgstr "Silenciada hasta"
@@ -628,6 +1026,19 @@ msgstr "Silenciada hasta"
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_project__sold_hours
 msgid "Sold Hours"
 msgstr "Horas vendidas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_table.xml:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/classic_view.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_project_list.xml:0
+msgid "Status by project"
+msgstr "Estado por proyecto"
 
 #. module: primate_project_dashboard
 #: model:ir.model,name:primate_project_dashboard.model_project_task
@@ -653,10 +1064,22 @@ msgstr ""
 "configurado en Ajustes."
 
 #. module: primate_project_dashboard
+#. odoo-python
+#: code:addons/primate_project_dashboard/models/project_dashboard_areas.py:0
+msgid "The area «%s» no longer exists."
+msgstr "El área «%s» ya no existe."
+
+#. module: primate_project_dashboard
 #: model_terms:ir.actions.act_window,help:primate_project_dashboard.action_project_progress_snapshot
 msgid "The daily scheduled action stores one snapshot per active project."
 msgstr ""
 "La acción planificada diaria guarda un snapshot por cada proyecto activo."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "The dashboard data could not be loaded."
+msgstr "No se pudieron cargar los datos del dashboard."
 
 #. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
@@ -666,6 +1089,16 @@ msgid ""
 msgstr ""
 "La capacidad ocupada de cada área se mide sobre esta ventana. El denominador"
 " es el tiempo laborable de los empleados que tengan el área cargada."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid ""
+"The period selects which projects are listed. Progress, hours and health are"
+" always calculated as of today."
+msgstr ""
+"El período elige qué proyectos se listan. El avance, las horas y el estado "
+"siempre se calculan a la fecha de hoy."
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,help:primate_project_dashboard.field_project_project__progress_plan_is_estimated
@@ -691,6 +1124,18 @@ msgid "There can only be one progress snapshot per project and date."
 msgstr "Solo puede haber un snapshot de avance por proyecto y fecha."
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid "This month"
+msgstr "Este mes"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/dashboard.js:0
+msgid "This quarter"
+msgstr "Este trimestre"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
 msgid "Turn the alert red when consumption reaches (%)"
 msgstr "Poner la alerta en rojo cuando el consumo llegue a (%)"
@@ -714,6 +1159,16 @@ msgid ""
 "\n"
 "        Make sure to use the right format and order e.g. Improve the configuration screen 5h #feature #v16 @Mitchell !"
 msgstr ""
+"Usa estas palabras clave en el título para configurar nuevas tareas:\n"
+"\n"
+"        30h Asigna 30 horas a la tarea\n"
+"        #etiquetas Agrega etiquetas a la tarea\n"
+"        @usuario Asígnale la tarea a un usuario\n"
+"        ! Define que la prioridad de la tarea es media\n"
+"        !! Define que la prioridad de la tarea es alta\n"
+"        !!! Define que la prioridad de la tarea es urgente\n"
+"\n"
+"        Asegúrate de utilizar el formato y el orden correcto, por ejemplo: Realizar mejoras a la pantalla de configuración 5h #función #v16 @Mitchell !"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_project_dashboard_alert_snooze__user_id
@@ -721,10 +1176,15 @@ msgid "User"
 msgstr "Usuario"
 
 #. module: primate_project_dashboard
+#: model:ir.model,name:primate_project_dashboard.model_res_users_settings
+msgid "User Settings"
+msgstr "Ajustes de usuario"
+
+#. module: primate_project_dashboard
 #: model:ir.model.fields.selection,name:primate_project_dashboard.selection__project_task__blocking_state__waiting_customer
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.view_task_search_form_dashboard
 msgid "Waiting for Customer"
-msgstr "Espera cliente"
+msgstr "Esperando al cliente"
 
 #. module: primate_project_dashboard
 #: model:ir.model.fields,field_description:primate_project_dashboard.field_res_config_settings__waiting_customer_tag_ids
@@ -737,6 +1197,103 @@ msgid "Warn when consumed hours reach (%)"
 msgstr "Avisar cuando las horas consumidas lleguen a (%)"
 
 #. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "Warning"
+msgstr "Advertencia"
+
+#. module: primate_project_dashboard
 #: model_terms:ir.ui.view,arch_db:primate_project_dashboard.res_config_settings_view_form
 msgid "Working days ahead"
 msgstr "Días hábiles hacia adelante"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/classic_view.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+msgid "Workload by area"
+msgstr "Carga por área"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/kpi_format.js:0
+msgid "You do not have access to the hours data of these projects."
+msgstr "Sin acceso a los datos de horas de estos proyectos."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "You do not have access to the milestones of these projects."
+msgstr "Sin acceso a los hitos de estos proyectos."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "You do not have access to the sales data of these projects."
+msgstr "Sin acceso a los datos de venta de estos proyectos."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "You do not have access to the timesheets of these projects."
+msgstr "Sin acceso a las horas cargadas de estos proyectos."
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "and"
+msgstr "y"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_deadlines_panel.js:0
+msgid "and %s more alerts"
+msgstr "y %s alertas más"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+msgid "blocked"
+msgstr "bloqueadas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+msgid "blocked for %s days"
+msgstr "bloqueada hace %s días"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alerts_panel.xml:0
+msgid "more alerts"
+msgstr "alertas más"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_task_donut.xml:0
+msgid "open tasks"
+msgstr "tareas abiertas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+msgid "overdue"
+msgstr "vencidas"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/alert_format.js:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/project_format.js:0
+msgid "overdue by %s days"
+msgstr "vencido hace %s días"
+
+#. module: primate_project_dashboard
+#. odoo-javascript
+#: code:addons/primate_project_dashboard/static/src/dashboard/area_cards.xml:0
+#: code:addons/primate_project_dashboard/static/src/dashboard/modern_area_workload.xml:0
+msgid "waiting for customer"
+msgstr "esperando al cliente"
