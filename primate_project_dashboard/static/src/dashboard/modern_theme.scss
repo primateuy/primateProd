@@ -15,6 +15,10 @@
 	--ppd-card-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
 	--ppd-gap: 1rem;
 	--ppd-track: #EFEFF2;
+	// Separadores y hover: derivados del texto, sirven igual en claro y en oscuro.
+	--ppd-divider: color-mix(in srgb, var(--ppd-text-primary) 8%, transparent);
+	--ppd-hover: color-mix(in srgb, var(--ppd-text-primary) 4%, transparent);
+	--ppd-section-gap: 1.5rem;
 
 	// Texto. El secundario de la referencia (#9D9EA5) no llega a 4.5:1 en texto chico:
 	// se oscurece manteniendo el tinte azulado.
@@ -42,6 +46,11 @@
 	--ppd-health-on-track-text: color-mix(in srgb, var(--ppd-health-on-track) 70%, var(--ppd-text-primary));
 	--ppd-health-at-risk-text: color-mix(in srgb, var(--ppd-health-at-risk) 70%, var(--ppd-text-primary));
 	--ppd-health-critical-text: color-mix(in srgb, var(--ppd-health-critical) 70%, var(--ppd-text-primary));
+	// Para texto chico (12-13px) hace falta 4.5:1: más mezcla. El rojo oscuro de Odoo al
+	// 70% no llega sobre la card oscura.
+	--ppd-health-on-track-text-sm: color-mix(in srgb, var(--ppd-health-on-track) 55%, var(--ppd-text-primary));
+	--ppd-health-at-risk-text-sm: color-mix(in srgb, var(--ppd-health-at-risk) 55%, var(--ppd-text-primary));
+	--ppd-health-critical-text-sm: color-mix(in srgb, var(--ppd-health-critical) 55%, var(--ppd-text-primary));
 
 	// Tipografía: la fuente de Odoo, con más peso y más escala que la clásica.
 	--ppd-title-size: 1.75rem;
@@ -77,5 +86,25 @@
 	.o_ppd_text_secondary {
 		font-size: var(--ppd-label-size);
 		color: var(--ppd-text-secondary);
+	}
+
+	.o_ppd_modern_view {
+		display: flex;
+		flex-direction: column;
+		gap: var(--ppd-section-gap);
+	}
+
+	// Muestras de color reutilizables (badges de KPI): fijan
+	// --ppd-swatch con un acento decorativo o, si expresa salud, con el del semáforo.
+	@each $accent in (blue, violet, teal, slate) {
+		.o_ppd_color_#{$accent} {
+			--ppd-swatch: var(--ppd-accent-#{$accent});
+		}
+	}
+
+	@each $tone, $token in (on_track: on-track, at_risk: at-risk, critical: critical) {
+		.o_ppd_color_#{$tone} {
+			--ppd-swatch: var(--ppd-health-#{$token});
+		}
 	}
 }

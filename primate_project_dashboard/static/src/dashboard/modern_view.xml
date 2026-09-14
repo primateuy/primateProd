@@ -5,6 +5,10 @@
 	<t t-name="primate_project_dashboard.DashboardModernView">
 		<div class="o_ppd_modern_view">
 			<ModernKpiCards kpis="props.data.kpis" config="props.data.config"/>
+			<ModernProjectList projects="props.rows" config="props.data.config"
+				total="props.data.projects_total" hasMore="props.hasMoreRows"
+				loadingMore="props.loadingMore"
+				onOpenProject="props.onOpenProject" onLoadMore="props.onLoadMore"/>
 		</div>
 	</t>
 

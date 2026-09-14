@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ModernProjectList">
+		<section class="o_ppd_card o_ppd_projects"
+			t-att-class="{ 'o_ppd_projects_with_margin': props.config.can_see_margin }">
+			<h2 class="o_ppd_section_title o_ppd_card_title">Status by project</h2>
+
+			<div t-if="!props.projects.length" class="o_ppd_empty">
+				<i class="fa fa-folder-open-o" aria-hidden="true"/>
+				<span>No project matches the current filters.</span>
+			</div>
+			<t t-else="">
+				<!-- Encabezados de columna: sólo se muestran cuando la card es ancha. -->
+				<div class="o_ppd_project_head" aria-hidden="true">
+					<span/>
+					<span>Project</span>
+					<span>Real vs planned progress</span>
+					<span/>
+					<span class="text-end">Hours</span>
+					<span>Next milestone</span>
+					<span t-if="props.config.can_see_margin" class="text-end">Margin</span>
+					<span class="text-center">Mgr</span>
+				</div>
+				<ul class="o_ppd_project_list list-unstyled mb-0">
+					<li t-foreach="props.projects" t-as="row" t-key="row.id"
+						class="o_ppd_project" t-att-class="'o_ppd_health_' + row.health_state"
+						t-att-data-id="row.id" role="button" tabindex="0"
+						t-on-click="() => props.onOpenProject(row.id)"
+						t-on-keydown="(ev) => this.onRowKeydown(ev, row)">
+						<span class="o_ppd_project_initial" aria-hidden="true" t-esc="initial(row)"/>
+						<div class="o_ppd_project_main">
+							<div class="o_ppd_project_name" t-esc="row.name"/>
+							<div class="o_ppd_project_partner" t-esc="row.partner_name or noData"/>
+							<!-- Nota de gestión (primate_sagui_pm): sin ese módulo no viaja. -->
+							<div t-if="row.pm_note" class="o_ppd_pm_note" t-att-title="row.pm_note_date"
+								t-esc="row.pm_note"/>
+						</div>
+						<div class="o_ppd_project_progress">
+							<div class="o_ppd_bar" role="img" t-att-aria-label="format.progressLabel(row)"
+								t-att-title="format.progressLabel(row)">
+								<div class="o_ppd_bar_fill" t-att-style="'width: ' + format.barWidth(row.progress_real)"/>
+								<!-- Sin curva de plan no hay marcador: no hay nada que marcar. -->
+								<div t-if="row.progress_planned !== null" class="o_ppd_bar_marker"
+									t-att-style="'left: ' + format.barWidth(row.progress_planned)"/>
+							</div>
+						</div>
+						<div class="o_ppd_project_pct">
+							<span class="o_ppd_pct_value" t-esc="format.percentage(row.progress_real)"/>
+							<span class="o_ppd_health_label">
+								<t t-esc="format.healthLabel(row)"/>
+								<i t-if="row.plan_is_estimated" class="fa fa-info-circle ms-1"
+									t-att-title="format.planTooltip(row)" role="img" aria-label="Plan information"/>
+							</span>
+						</div>
+						<div class="o_ppd_project_meta">
+							<span class="o_ppd_meta_hours" t-att-title="format.hoursTooltip(row)">
+								<i class="fa fa-clock-o o_ppd_meta_icon" aria-hidden="true"/>
+								<t t-esc="format.hoursLabel(row)"/>
+							</span>
+							<span class="o_ppd_meta_milestone">
+								<i class="fa fa-flag-o o_ppd_meta_icon" aria-hidden="true"/>
+								<t t-if="!props.config.can_see_milestones">
+									<span t-att-title="format.milestoneTooltip()" t-esc="noData"/>
+								</t>
+								<t t-elif="row.next_milestone">
+									<span class="o_ppd_milestone_name" t-esc="row.next_milestone.name"/>
+									<span t-if="row.next_milestone.overdue_days" class="o_ppd_overdue"
+										t-esc="format.overdueLabel(row)"/>
+									<span t-else="" class="o_ppd_milestone_date" t-esc="format.milestoneDate(row)"/>
+								</t>
+								<t t-else="">
+									<span t-esc="noData"/>
+								</t>
+							</span>
+							<span t-if="props.config.can_see_margin" class="o_ppd_meta_margin"
+								t-att-class="{ 'o_ppd_negative': format.isNegativeMargin(row) }"
+								t-att-title="format.marginTooltip(row)">
+								<i class="fa fa-money o_ppd_meta_icon" aria-hidden="true"/>
+								<t t-esc="format.formatMargin(row)"/>
+							</span>
+							<span class="o_ppd_meta_manager">
+								<img t-if="row.user_id" class="o_ppd_manager_avatar"
+									t-att-src="'/web/image/res.users/' + row.user_id + '/avatar_128'"
+									t-att-alt="row.user_name" t-att-title="row.user_name"/>
+								<span t-else="" t-esc="noData"/>
+							</span>
+						</div>
+					</li>
+				</ul>
+				<div t-if="props.hasMore" class="o_ppd_card_footer">
+					<button class="btn btn-sm btn-outline-secondary" t-on-click="() => props.onLoadMore()"
+						t-att-disabled="props.loadingMore">
+						<span>Load more</span>
+						<span class="ms-1" t-esc="'(' + props.projects.length + '/' + props.total + ')'"/>
+					</button>
+				</div>
+			</t>
+		</section>
+	</t>
+
+</templates>

@@ -28,8 +28,8 @@ $ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
 		height: 2.75rem;
 		border-radius: 0.75rem;
 		font-size: 1.15rem;
-		color: var(--ppd-kpi-color);
-		background-color: color-mix(in srgb, var(--ppd-kpi-color) var(--ppd-tint), var(--ppd-card-bg));
+		color: var(--ppd-swatch);
+		background-color: color-mix(in srgb, var(--ppd-swatch) var(--ppd-tint), var(--ppd-card-bg));
 	}
 
 	.o_ppd_kpi_body {
@@ -53,18 +53,8 @@ $ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
 		white-space: nowrap;
 	}
 
-	// Color del badge: acento decorativo o, si el KPI expresa salud, el del semáforo.
-	@each $accent in (blue, violet, teal, slate) {
-		.o_ppd_color_#{$accent} {
-			--ppd-kpi-color: var(--ppd-accent-#{$accent});
-		}
-	}
-
+	// Color del número cuando el KPI expresa salud; el del badge lo fija .o_ppd_color_*.
 	@each $tone, $token in $ppd-health-tokens {
-		.o_ppd_color_#{$tone} {
-			--ppd-kpi-color: var(--ppd-health-#{$token});
-		}
-
 		.o_ppd_kpi_value.o_ppd_tone_#{$tone} {
 			color: var(--ppd-health-#{$token}-text);
 		}

@@ -1,0 +1,290 @@
+// Lista de proyectos de la vista moderna. El relleno de la barra es siempre el
+// semáforo; el track es sólo el fondo. Las columnas dependen del ancho de la card
+// (container query), no del de la ventana: la misma lista sirve a pantalla completa
+// y dentro de una columna de la grilla.
+
+$ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
+
+.o_primate_dashboard .o_ppd_modern {
+	.o_ppd_projects {
+		container-type: inline-size;
+	}
+
+	.o_ppd_card_title {
+		margin-bottom: 0.75rem;
+	}
+
+	.o_ppd_empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 2.5rem 1rem;
+		color: var(--ppd-text-secondary);
+		text-align: center;
+
+		.fa {
+			font-size: 1.75rem;
+			color: var(--ppd-accent-slate);
+		}
+	}
+
+	// Angosto: inicial, nombre y % arriba; la barra y la info secundaria debajo.
+	.o_ppd_project {
+		display: grid;
+		grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+		grid-template-areas:
+			"initial main pct"
+			"progress progress progress"
+			"meta meta meta";
+		align-items: center;
+		column-gap: 0.75rem;
+		row-gap: 0.5rem;
+		padding: 0.75rem 0.5rem;
+		border-radius: 0.625rem;
+		cursor: pointer;
+
+		& + .o_ppd_project {
+			box-shadow: inset 0 1px 0 var(--ppd-divider);
+		}
+
+		&:hover {
+			background-color: var(--ppd-hover);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--ppd-accent-blue);
+			outline-offset: -2px;
+		}
+	}
+
+	.o_ppd_project_head {
+		display: none;
+	}
+
+	// Neutro a propósito: con el tinte de los badges, turquesa y gris azulado casi no se
+	// distinguen de la card y la rotación se leía como círculos vacíos; más tinte ya
+	// competía con el semáforo de la barra.
+	.o_ppd_project_initial {
+		grid-area: initial;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		font-weight: var(--ppd-weight-bold);
+		color: var(--ppd-text-primary);
+		background-color: color-mix(in srgb, var(--ppd-text-primary) 7%, var(--ppd-card-bg));
+	}
+
+	.o_ppd_project_main {
+		grid-area: main;
+		min-width: 0;
+	}
+
+	.o_ppd_project_name,
+	.o_ppd_project_partner {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.o_ppd_project_name {
+		font-weight: var(--ppd-weight-semibold);
+		color: var(--ppd-text-primary);
+	}
+
+	.o_ppd_project_partner {
+		font-size: var(--ppd-label-size);
+		color: var(--ppd-text-secondary);
+	}
+
+	.o_ppd_pm_note {
+		margin-top: 0.25rem;
+		font-size: var(--ppd-label-size);
+		font-style: italic;
+		line-height: 1.35;
+		color: var(--ppd-text-secondary);
+	}
+
+	.o_ppd_project_progress {
+		grid-area: progress;
+		min-width: 0;
+	}
+
+	.o_ppd_bar {
+		position: relative;
+		height: 0.5rem;
+		border-radius: 999px;
+		background-color: var(--ppd-track);
+	}
+
+	.o_ppd_bar_fill {
+		height: 100%;
+		border-radius: inherit;
+		background-color: var(--ppd-bar-color);
+	}
+
+	// Avance planificado: la raya que explica por qué la barra está en rojo.
+	.o_ppd_bar_marker {
+		position: absolute;
+		top: -0.25rem;
+		width: 2px;
+		height: 1rem;
+		margin-left: -1px;
+		border-radius: 1px;
+		background-color: var(--ppd-text-primary);
+	}
+
+	.o_ppd_project_pct {
+		grid-area: pct;
+		text-align: end;
+		white-space: nowrap;
+	}
+
+	.o_ppd_pct_value {
+		display: block;
+		font-weight: var(--ppd-weight-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--ppd-text-primary);
+	}
+
+	// El estado en texto chico va en gris legible; el color lo lleva el punto, el mismo
+	// de la barra (un naranja de 12px no llega a 4.5:1 sobre la card).
+	.o_ppd_health_label {
+		display: block;
+		font-size: 0.75rem;
+		font-weight: var(--ppd-weight-semibold);
+		color: var(--ppd-text-secondary);
+
+		&::before {
+			content: "";
+			display: inline-block;
+			width: 0.5rem;
+			height: 0.5rem;
+			margin-inline-end: 0.3rem;
+			border-radius: 50%;
+			background-color: var(--ppd-bar-color);
+			vertical-align: 0.05em;
+		}
+	}
+
+	@each $state, $token in $ppd-health-tokens {
+		.o_ppd_health_#{$state} {
+			--ppd-bar-color: var(--ppd-health-#{$token});
+		}
+	}
+
+	// Sin plan: gris apagado. No es un riesgo medido, es un dato que falta.
+	.o_ppd_health_no_plan {
+		--ppd-bar-color: var(--ppd-health-no-plan);
+	}
+
+	.o_ppd_project_meta {
+		grid-area: meta;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem 1rem;
+		padding-inline-start: 3rem;
+		font-size: var(--ppd-label-size);
+		color: var(--ppd-text-secondary);
+	}
+
+	.o_ppd_meta_icon {
+		margin-inline-end: 0.3rem;
+	}
+
+	.o_ppd_milestone_name {
+		color: var(--ppd-text-primary);
+	}
+
+	.o_ppd_milestone_date,
+	.o_ppd_overdue {
+		margin-inline-start: 0.35rem;
+	}
+
+	.o_ppd_overdue,
+	.o_ppd_meta_margin.o_ppd_negative {
+		color: var(--ppd-health-critical-text-sm);
+	}
+
+	.o_ppd_manager_avatar {
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.o_ppd_card_footer {
+		display: flex;
+		justify-content: center;
+		margin-top: 0.5rem;
+		padding-top: 0.75rem;
+		box-shadow: inset 0 1px 0 var(--ppd-divider);
+	}
+
+	// Ancho: una fila por proyecto con la info secundaria en columnas alineadas.
+	@container (min-width: 52rem) {
+		.o_ppd_project_head,
+		.o_ppd_project {
+			grid-template-columns:
+				2.25rem minmax(9rem, 1.4fr) minmax(8rem, 2fr) 5.5rem
+				5.5rem minmax(8rem, 1.3fr) 2.5rem;
+			grid-template-areas: none;
+			column-gap: 1rem;
+		}
+
+		.o_ppd_projects_with_margin {
+			.o_ppd_project_head,
+			.o_ppd_project {
+				grid-template-columns:
+					2.25rem minmax(9rem, 1.4fr) minmax(8rem, 2fr) 5.5rem
+					5.5rem minmax(8rem, 1.3fr) 7rem 2.5rem;
+			}
+		}
+
+		.o_ppd_project > *,
+		.o_ppd_project_meta > * {
+			grid-area: auto;
+		}
+
+		.o_ppd_project_head {
+			display: grid;
+			padding: 0 0.5rem 0.5rem;
+			font-size: 0.75rem;
+			color: var(--ppd-text-secondary);
+		}
+
+		// La info secundaria pasa a ser celdas de la fila; los encabezados la explican.
+		.o_ppd_project_meta {
+			display: contents;
+		}
+
+		.o_ppd_meta_icon {
+			display: none;
+		}
+
+		.o_ppd_meta_hours,
+		.o_ppd_meta_margin {
+			text-align: end;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.o_ppd_meta_milestone {
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+		}
+
+		.o_ppd_milestone_date,
+		.o_ppd_overdue {
+			margin-inline-start: 0;
+		}
+
+		.o_ppd_meta_manager {
+			text-align: center;
+		}
+	}
+}
