@@ -29,6 +29,11 @@
 	"assets": {
 		"web.assets_backend": [
 			"primate_project_dashboard/static/src/dashboard/**/*",
+			# El oscuro va sólo en su bundle; sin esto el glob lo mete también en el claro.
+			("remove", "primate_project_dashboard/static/src/dashboard/**/*.dark.scss"),
+		],
+		"web.assets_web_dark": [
+			"primate_project_dashboard/static/src/dashboard/**/*.dark.scss",
 		],
 		"web.assets_tests": [
 			"primate_project_dashboard/static/tests/tours/**/*",

@@ -1,0 +1,74 @@
+// Tema moderno del dashboard. Todo cuelga de .o_ppd_modern, que el componente raíz
+// pone sobre el contenedor sólo cuando el usuario eligió la vista moderna: la clásica
+// y el resto de Odoo no ven ninguna de estas reglas.
+//
+// Los tokens son custom properties y no variables SCSS para que el modo oscuro
+// (modern_theme.dark.scss) sólo re-declare valores, sin repetir reglas.
+// Neutros y acentos muestreados de docs/design_reference.png.
+
+.o_primate_dashboard .o_ppd_modern {
+	// Superficies
+	--ppd-page-bg: #F8F9FA;
+	--ppd-card-bg: #FFFFFF;
+	--ppd-card-radius: 14px;
+	--ppd-card-padding: 1.25rem;
+	--ppd-card-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
+	--ppd-gap: 1rem;
+	--ppd-track: #EFEFF2;
+
+	// Texto. El secundario de la referencia (#9D9EA5) no llega a 4.5:1 en texto chico:
+	// se oscurece manteniendo el tinte azulado.
+	--ppd-text-primary: #0F1118;
+	--ppd-text-secondary: #6B7080;
+
+	// Acentos decorativos: rellenos, puntos y avatares. Nunca texto (turquesa y gris
+	// azulado no tienen contraste para eso). Verde, naranja y rojo quedan para la salud.
+	--ppd-accent-blue: #3C74E6;
+	--ppd-accent-violet: #956DEE;
+	--ppd-accent-teal: #6AD4C4;
+	--ppd-accent-slate: #C7CAD8;
+	// Cuánto acento lleva un fondo pastel (badges, pills) mezclado con la card.
+	--ppd-tint: 12%;
+
+	// Semáforo: los mismos colores que la vista clásica, no otros.
+	--ppd-health-on-track: #{$o-success};
+	--ppd-health-at-risk: #{$o-warning};
+	--ppd-health-critical: #{$o-danger};
+	--ppd-health-no-plan: #{$gray-400};
+
+	// Tipografía: la fuente de Odoo, con más peso y más escala que la clásica.
+	--ppd-title-size: 1.75rem;
+	--ppd-section-title-size: 1.05rem;
+	--ppd-kpi-value-size: 1.75rem;
+	--ppd-label-size: 0.8125rem;
+	--ppd-weight-semibold: 600;
+	--ppd-weight-bold: 700;
+
+	min-height: 100%;
+	background-color: var(--ppd-page-bg);
+	color: var(--ppd-text-primary);
+
+	.o_primate_dashboard_title {
+		font-size: var(--ppd-title-size);
+		font-weight: var(--ppd-weight-bold);
+		color: var(--ppd-text-primary);
+	}
+
+	.o_ppd_card {
+		background-color: var(--ppd-card-bg);
+		border-radius: var(--ppd-card-radius);
+		box-shadow: var(--ppd-card-shadow);
+		padding: var(--ppd-card-padding);
+	}
+
+	.o_ppd_section_title {
+		font-size: var(--ppd-section-title-size);
+		font-weight: var(--ppd-weight-bold);
+		color: var(--ppd-text-primary);
+	}
+
+	.o_ppd_text_secondary {
+		font-size: var(--ppd-label-size);
+		color: var(--ppd-text-secondary);
+	}
+}

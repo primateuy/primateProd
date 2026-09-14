@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
+	<!-- El scope del tema (.o_ppd_modern) lo pone el raíz sobre el contenedor. -->
 	<t t-name="primate_project_dashboard.DashboardModernView">
-		<div class="o_ppd_modern">
-			<h2 class="o_ppd_modern_title">Modern view</h2>
+		<div class="o_ppd_modern_view">
+			<div class="o_ppd_card">
+				<h2 class="o_ppd_section_title mb-0">Modern view</h2>
+			</div>
 		</div>
 	</t>
 

@@ -1,0 +1,21 @@
+// Modo oscuro del tema moderno: sólo valores. Las reglas están en modern_theme.scss.
+// Entra únicamente en web.assets_web_dark. Las superficies siguen la paleta oscura de
+// Odoo (gray-100 para la página, gray-200 para las cards) para no desentonar con el
+// resto del webclient. El semáforo no se re-declara: $o-success y compañía ya se
+// compilan con sus valores oscuros en este bundle.
+
+.o_primate_dashboard .o_ppd_modern {
+	--ppd-page-bg: #1B1D26;
+	--ppd-card-bg: #262A36;
+	--ppd-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+	--ppd-track: #3C3E4B;
+
+	--ppd-text-primary: #ECEDF2;
+	--ppd-text-secondary: #A3A7B5;
+
+	// Más luminosos que en claro para que sigan leyéndose sobre la card oscura.
+	--ppd-accent-blue: #6E9BF2;
+	--ppd-accent-violet: #A688F5;
+	--ppd-accent-slate: #8A90A2;
+	--ppd-tint: 22%;
+}

@@ -3,7 +3,9 @@
 
 	<t t-name="primate_project_dashboard.ProjectDashboard">
 		<Layout className="'o_primate_dashboard'">
-			<div class="o_primate_dashboard_content p-3">
+			<!-- El tema moderno cubre también el header: la clase va en el contenedor. -->
+			<div class="o_primate_dashboard_content p-3"
+				t-att-class="{ 'o_ppd_modern': state.view === 'modern' }">
 				<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
 					<h1 class="o_primate_dashboard_title mb-0">Executive Dashboard</h1>
 					<div class="d-flex flex-wrap gap-2 align-items-center">
