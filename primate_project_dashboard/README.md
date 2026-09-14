@@ -65,7 +65,8 @@ odoo-bin -c <conf> -d <base_limpia> --db-filter='^<base_limpia>$' \
   --test-enable --test-tags=/primate_project_dashboard --stop-after-init
 ```
 
-132 tests, incluido el tour. Tres cosas que hacen fallar la corrida por el entorno y no por el
+117 tests, incluido el tour (130 sumando los 13 de `primate_project_area`, con
+`--test-tags=/primate_project_dashboard,/primate_project_area`). Tres cosas que hacen fallar la corrida por el entorno y no por el
 módulo, y que en el log no se leen como lo que son:
 
 **1. `--db-filter` es obligatorio para el tour.** `-d <base>` decide contra qué base corre el
