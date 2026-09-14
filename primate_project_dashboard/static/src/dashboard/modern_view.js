@@ -1,5 +1,6 @@
 import { Component } from "@odoo/owl";
 import { ModernAreaWorkload } from "./modern_area_workload";
+import { ModernDeadlinesPanel } from "./modern_deadlines_panel";
 import { ModernKpiCards } from "./modern_kpi_cards";
 import { ModernProjectList } from "./modern_project_list";
 import { ModernTaskDonut } from "./modern_task_donut";
@@ -11,6 +12,12 @@ import { dashboardViewProps } from "./view_props";
  */
 export class DashboardModernView extends Component {
 	static template = "primate_project_dashboard.DashboardModernView";
-	static components = { ModernKpiCards, ModernProjectList, ModernTaskDonut, ModernAreaWorkload };
+	static components = {
+		ModernKpiCards,
+		ModernProjectList,
+		ModernTaskDonut,
+		ModernAreaWorkload,
+		ModernDeadlinesPanel,
+	};
 	static props = dashboardViewProps;
 }

@@ -11,6 +11,9 @@
 				onOpenProject="props.onOpenProject" onLoadMore="props.onLoadMore"/>
 			<ModernTaskDonut areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
 			<ModernAreaWorkload areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
+			<ModernDeadlinesPanel alerts="props.data.alerts" total="props.data.alerts_total"
+				today="props.data.config.today"
+				onOpenRecord="props.onOpenAlertRecord" onSnooze="props.onSnooze"/>
 		</div>
 	</t>
 

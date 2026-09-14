@@ -1,5 +1,5 @@
 import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import { hiddenAlertCount, isCritical, openRecordTooltip, snoozeTooltip } from "./alert_format";
 
 export class AlertsPanel extends Component {
 	static template = "primate_project_dashboard.AlertsPanel";
@@ -10,20 +10,19 @@ export class AlertsPanel extends Component {
 		onSnooze: Function,
 	};
 
-	/** El panel no se pagina en v1: si hay más, al menos se dice cuántas. */
 	get hiddenCount() {
-		return Math.max(this.props.total - this.props.alerts.length, 0);
+		return hiddenAlertCount(this.props.alerts, this.props.total);
 	}
 
 	severityClass(alert) {
-		return alert.severity === "danger" ? "o_primate_alert_danger" : "o_primate_alert_warning";
+		return isCritical(alert) ? "o_primate_alert_danger" : "o_primate_alert_warning";
 	}
 
 	get snoozeTooltip() {
-		return _t("Dismiss this alert for a week");
+		return snoozeTooltip();
 	}
 
 	get openTooltip() {
-		return _t("Open the related record");
+		return openRecordTooltip();
 	}
 }

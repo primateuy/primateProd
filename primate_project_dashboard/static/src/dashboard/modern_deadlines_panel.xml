@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ModernDeadlinesPanel">
+		<section class="o_ppd_card o_ppd_alerts">
+			<h2 class="o_ppd_section_title o_ppd_card_title">Alerts</h2>
+
+			<div t-if="!props.alerts.length" class="o_ppd_empty">
+				<i class="fa fa-check-circle-o" aria-hidden="true"/>
+				<span>No alert. Everything under control.</span>
+			</div>
+			<t t-else="">
+				<ul class="o_ppd_alert_list list-unstyled mb-0">
+					<li t-foreach="items" t-as="item" t-key="item.alert.key"
+						class="o_ppd_alert" t-att-class="'o_ppd_color_' + item.severity"
+						t-att-data-key="item.alert.key" t-att-data-type="item.alert.type">
+						<!-- Fecha sólo donde sale exacta de la alerta; en el resto, el ícono del tipo. -->
+						<div t-if="item.day" class="o_ppd_alert_badge o_ppd_alert_date" t-att-title="item.dateTitle">
+							<span class="o_ppd_alert_month" t-esc="item.month"/>
+							<span class="o_ppd_alert_day" t-esc="item.day"/>
+						</div>
+						<div t-else="" class="o_ppd_alert_badge o_ppd_alert_icon" aria-hidden="true">
+							<i t-att-class="'fa ' + item.icon"/>
+						</div>
+						<div class="o_ppd_alert_main">
+							<div class="o_ppd_alert_title" t-esc="item.alert.message"/>
+							<div class="o_ppd_alert_type" t-esc="item.typeLabel"/>
+						</div>
+						<span class="o_ppd_alert_chip" t-esc="item.chip"/>
+						<div class="o_ppd_alert_actions">
+							<button type="button" class="btn btn-link o_ppd_alert_action" data-action="open"
+								t-att-title="openTooltip" t-att-aria-label="openTooltip"
+								t-on-click="() => props.onOpenRecord(item.alert)">
+								<i class="fa fa-external-link" aria-hidden="true"/>
+							</button>
+							<button type="button" class="btn btn-link o_ppd_alert_action" data-action="snooze"
+								t-att-title="snoozeTooltip" t-att-aria-label="snoozeTooltip"
+								t-on-click="() => props.onSnooze(item.alert)">
+								<i class="fa fa-bell-slash-o" aria-hidden="true"/>
+							</button>
+						</div>
+					</li>
+				</ul>
+				<div t-if="hiddenCount" class="o_ppd_alert_more" t-esc="hiddenLabel"/>
+			</t>
+		</section>
+	</t>
+
+</templates>
