@@ -65,7 +65,8 @@
 									t-esc="partner.name"/>
 							</t>
 						</select>
-						<button class="btn btn-sm"
+						<!-- data-filter: el tour engancha por acá, no por el texto, que depende del idioma. -->
+						<button class="btn btn-sm" data-filter="only_at_risk"
 							t-att-class="state.filters.only_at_risk ? 'btn-danger' : 'btn-outline-secondary'"
 							t-on-click="onToggleAtRisk">
 							At risk only

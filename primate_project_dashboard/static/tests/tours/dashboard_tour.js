@@ -3,6 +3,9 @@ import { registry } from "@web/core/registry";
 /**
  * Recorrido mínimo del dashboard. Es la única verificación que ejecuta el render de
  * verdad en un navegador: si una plantilla o un componente se rompe, esto falla.
+ *
+ * Ningún trigger depende de un texto visible: el mismo recorrido corre con la interfaz en
+ * inglés y en español.
  */
 registry.category("web_tour.tours").add("primate_project_dashboard_tour", {
 	url: "/odoo/action-primate_project_dashboard.action_project_dashboard",
@@ -19,7 +22,7 @@ registry.category("web_tour.tours").add("primate_project_dashboard_tour", {
 		},
 		{
 			content: "Aplicar el filtro de solo en riesgo",
-			trigger: ".o_primate_dashboard_content button:contains('At risk only')",
+			trigger: ".o_primate_dashboard_content button[data-filter=only_at_risk]",
 			run: "click",
 		},
 		{
@@ -29,7 +32,7 @@ registry.category("web_tour.tours").add("primate_project_dashboard_tour", {
 		},
 		{
 			content: "Quitar el filtro",
-			trigger: ".o_primate_dashboard_content button:contains('At risk only')",
+			trigger: ".o_primate_dashboard_content button[data-filter=only_at_risk]",
 			run: "click",
 		},
 		{

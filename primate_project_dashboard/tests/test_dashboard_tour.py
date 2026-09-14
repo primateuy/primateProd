@@ -11,7 +11,7 @@ from odoo.tests import HttpCase, tagged
 class TestDashboardTour(HttpCase):
 	"""Único punto donde el frontend se ejecuta de verdad en un navegador."""
 
-	def test_dashboard_tour(self):
+	def _prepare_dashboard_data(self):
 		today = fields.Date.context_today(self.env["project.project"])
 		admin = self.env.ref("base.user_admin")
 		admin.write(
@@ -109,8 +109,27 @@ class TestDashboardTour(HttpCase):
 		self.env["project.project"]._cron_recompute_health_state()
 		self.env.flush_all()
 
+	def _run_dashboard_tour(self):
 		self.start_tour(
 			"/odoo/action-primate_project_dashboard.action_project_dashboard",
 			"primate_project_dashboard_tour",
 			login="admin",
 		)
+
+	def test_dashboard_tour(self):
+		self._prepare_dashboard_data()
+		self._run_dashboard_tour()
+
+	def test_dashboard_tour_es_uy(self):
+		"""El mismo recorrido con la interfaz en español: el tour no puede depender del idioma."""
+		self.env["res.lang"]._activate_lang("es_UY")
+		self.env["ir.module.module"]._load_module_terms(
+			["primate_project_area", "primate_project_dashboard"], ["es_UY"]
+		)
+		admin = self.env.ref("base.user_admin")
+		admin.lang = "es_UY"
+		# Sin esto el test pasaría igual con las traducciones sin cargar, y no probaría nada.
+		action = self.env.ref("primate_project_dashboard.action_project_dashboard")
+		self.assertEqual(action.with_context(lang="es_UY").name, "Dashboard ejecutivo")
+		self._prepare_dashboard_data()
+		self._run_dashboard_tour()

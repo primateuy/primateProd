@@ -3,7 +3,7 @@
 
 {
 	"name": "Project Executive Dashboard",
-	"summary": "Dashboard ejecutivo de proyectos: semáforo, avance real vs plan, carga por área y alertas.",
+	"summary": "Executive project dashboard: health status, real vs planned progress, workload by area and alerts.",
 	"version": "19.0.1.2.0",
 	"category": "Services/Project",
 	"author": "PrimateUY",
