@@ -5,17 +5,18 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { AlertsPanel } from "./alerts_panel";
-import { AreaCards } from "./area_cards";
-import { KpiCards } from "./kpi_cards";
-import { ProjectTable } from "./project_table";
+import { DashboardClassicView } from "./classic_view";
 
 // Filtros que viajan en la URL para poder compartir una vista filtrada.
 const URL_FILTERS = ["period", "date_from", "date_to", "area", "user_id", "partner_id", "only_at_risk"];
 
+/**
+ * Raíz del dashboard: estado, carga, filtros y acciones. Lo que se dibuja con los
+ * datos lo resuelve la vista de presentación.
+ */
 export class ProjectDashboard extends Component {
 	static template = "primate_project_dashboard.ProjectDashboard";
-	static components = { Layout, KpiCards, ProjectTable, AreaCards, AlertsPanel };
+	static components = { Layout, DashboardClassicView };
 	static props = { ...standardActionServiceProps };
 	static path = "primate-project-dashboard";
 	static displayName = _t("Executive Dashboard");

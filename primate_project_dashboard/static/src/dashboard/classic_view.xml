@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<!-- Sin elemento envolvente a propósito: el DOM tiene que quedar igual al de antes
+	     de separar la vista, que es lo que miran el SCSS y el tour. -->
+	<t t-name="primate_project_dashboard.DashboardClassicView">
+		<KpiCards kpis="props.data.kpis" config="props.data.config"/>
+
+		<h2 class="o_primate_section_title mt-4 mb-2">Status by project</h2>
+		<ProjectTable projects="props.rows" config="props.data.config"
+			onOpenProject="props.onOpenProject"/>
+		<div t-if="props.hasMoreRows" class="text-center mt-2">
+			<button class="btn btn-sm btn-outline-secondary" t-on-click="() => props.onLoadMore()"
+				t-att-disabled="props.loadingMore">
+				<span>Load more</span>
+				<span class="ms-1" t-esc="'(' + props.rows.length + '/' + props.data.projects_total + ')'"/>
+			</button>
+		</div>
+
+		<h2 class="o_primate_section_title mt-4 mb-2">Workload by area</h2>
+		<AreaCards areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
+
+		<h2 class="o_primate_section_title mt-4 mb-2">Alerts</h2>
+		<AlertsPanel alerts="props.data.alerts" total="props.data.alerts_total"
+			onOpenRecord="props.onOpenAlertRecord"
+			onSnooze="props.onSnooze"/>
+	</t>
+
+</templates>
