@@ -9,6 +9,7 @@
 				total="props.data.projects_total" hasMore="props.hasMoreRows"
 				loadingMore="props.loadingMore"
 				onOpenProject="props.onOpenProject" onLoadMore="props.onLoadMore"/>
+			<ModernTaskDonut areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
 		</div>
 	</t>
 

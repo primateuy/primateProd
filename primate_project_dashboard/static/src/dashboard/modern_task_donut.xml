@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ModernTaskDonut">
+		<section class="o_ppd_card o_ppd_donut_card">
+			<h2 class="o_ppd_section_title o_ppd_card_title">Open tasks by area</h2>
+
+			<div t-if="!total" class="o_ppd_empty">
+				<i class="fa fa-pie-chart" aria-hidden="true"/>
+				<span>No open tasks in the areas of these projects.</span>
+			</div>
+			<div t-else="" class="o_ppd_donut">
+				<div class="o_ppd_donut_chart">
+					<!-- Decorativo: toda la información está en la leyenda, que es texto. -->
+					<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+						<g transform="rotate(-90 60 60)">
+							<t t-foreach="slices" t-as="slice" t-key="slice.code">
+								<circle t-if="slice.count" t-att-class="segmentClass(slice)"
+									cx="60" cy="60" t-att-r="radius" fill="none"
+									t-att-stroke-dasharray="slice.dash"
+									t-att-stroke-dashoffset="slice.offset"
+									t-att-data-area="slice.code"
+									t-on-mouseenter="() => this.onHover(slice.code)"
+									t-on-mouseleave="() => this.onHover(null)"/>
+							</t>
+						</g>
+					</svg>
+					<div class="o_ppd_donut_center">
+						<span class="o_ppd_donut_total" t-esc="total"/>
+						<span class="o_ppd_donut_caption">open tasks</span>
+					</div>
+				</div>
+				<!-- El click va en la leyenda: target grande, y abre lo mismo que la tarjeta clásica. -->
+				<ul class="o_ppd_legend list-unstyled mb-0">
+					<li t-foreach="slices" t-as="slice" t-key="slice.code">
+						<button type="button" t-att-class="legendClass(slice)" t-att-data-area="slice.code"
+							t-on-click="() => props.onOpenTasks(slice.code, 'open')"
+							t-on-mouseenter="() => this.onHover(slice.code)"
+							t-on-mouseleave="() => this.onHover(null)"
+							t-on-focus="() => this.onHover(slice.code)"
+							t-on-blur="() => this.onHover(null)">
+							<span class="o_ppd_legend_dot" t-att-class="'o_ppd_color_' + slice.color" aria-hidden="true"/>
+							<span class="o_ppd_legend_name" t-esc="slice.name"/>
+							<span class="o_ppd_legend_count" t-esc="slice.count"/>
+							<span class="o_ppd_legend_share" t-esc="slice.share + '%'"/>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</t>
+
+</templates>

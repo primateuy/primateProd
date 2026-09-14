@@ -102,6 +102,15 @@
 		}
 	}
 
+	// Variantes de luminosidad de los acentos, para cuando hay más categorías que acentos
+	// (quinta área en adelante). Mezcladas con el texto: más oscuras en claro, más claras
+	// en oscuro, sin re-declarar nada.
+	@each $accent in (blue, violet, teal, slate) {
+		.o_ppd_color_#{$accent}_alt {
+			--ppd-swatch: color-mix(in srgb, var(--ppd-accent-#{$accent}) 60%, var(--ppd-text-primary));
+		}
+	}
+
 	@each $tone, $token in (on_track: on-track, at_risk: at-risk, critical: critical) {
 		.o_ppd_color_#{$tone} {
 			--ppd-swatch: var(--ppd-health-#{$token});
