@@ -1,0 +1,76 @@
+// KPIs de la vista moderna: badge pastel con ícono, label chico y número grande.
+// Sólo consume tokens de modern_theme.scss, así que el oscuro no necesita nada propio.
+
+$ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
+
+.o_primate_dashboard .o_ppd_modern {
+	.o_ppd_kpi_row {
+		display: grid;
+		gap: var(--ppd-gap);
+		// Tantas por fila como entren sin apretar el número: cinco en escritorio, una en
+		// un teléfono. La grilla definitiva de la página se ajusta en el paso de layout.
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	}
+
+	.o_ppd_kpi {
+		display: flex;
+		align-items: center;
+		gap: 0.875rem;
+		min-width: 0;
+	}
+
+	.o_ppd_kpi_badge {
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 0.75rem;
+		font-size: 1.15rem;
+		color: var(--ppd-kpi-color);
+		background-color: color-mix(in srgb, var(--ppd-kpi-color) var(--ppd-tint), var(--ppd-card-bg));
+	}
+
+	.o_ppd_kpi_body {
+		min-width: 0;
+	}
+
+	.o_ppd_kpi_label {
+		overflow: hidden;
+		font-size: var(--ppd-label-size);
+		color: var(--ppd-text-secondary);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.o_ppd_kpi_value {
+		font-size: var(--ppd-kpi-value-size);
+		font-weight: var(--ppd-weight-bold);
+		font-variant-numeric: tabular-nums;
+		line-height: 1.2;
+		color: var(--ppd-text-primary);
+		white-space: nowrap;
+	}
+
+	// Color del badge: acento decorativo o, si el KPI expresa salud, el del semáforo.
+	@each $accent in (blue, violet, teal, slate) {
+		.o_ppd_color_#{$accent} {
+			--ppd-kpi-color: var(--ppd-accent-#{$accent});
+		}
+	}
+
+	@each $tone, $token in $ppd-health-tokens {
+		.o_ppd_color_#{$tone} {
+			--ppd-kpi-color: var(--ppd-health-#{$token});
+		}
+
+		.o_ppd_kpi_value.o_ppd_tone_#{$tone} {
+			color: var(--ppd-health-#{$token}-text);
+		}
+	}
+
+	.o_ppd_kpi_value.o_ppd_tone_muted {
+		color: var(--ppd-text-secondary);
+	}
+}

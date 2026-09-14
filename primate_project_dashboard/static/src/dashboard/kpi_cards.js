@@ -1,6 +1,21 @@
 import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { formatMonetary } from "@web/views/fields/formatters";
+import {
+	NO_DATA,
+	formatMargin,
+	formatPercentage,
+	formatSignedPercentage,
+	hoursDeviationTone,
+	hoursDeviationTooltip,
+	marginTone,
+} from "./kpi_format";
+
+// Los tonos de salud en las clases de texto de Bootstrap que usa la vista clásica.
+const TONE_CLASSES = {
+	muted: "text-muted",
+	on_track: "text-success",
+	at_risk: "text-warning",
+	critical: "text-danger",
+};
 
 export class KpiCards extends Component {
 	static template = "primate_project_dashboard.KpiCards";
@@ -9,56 +24,31 @@ export class KpiCards extends Component {
 		config: Object,
 	};
 
-	/** El guion largo marca "sin dato"; el cero se reserva para el cero real. */
 	get noData() {
-		return "—";
+		return NO_DATA;
 	}
 
 	formatPercentage(value) {
-		if (value === null || value === undefined) {
-			return this.noData;
-		}
-		return `${Math.round(value)}%`;
+		return formatPercentage(value);
 	}
 
 	formatSignedPercentage(value) {
-		if (value === null || value === undefined) {
-			return this.noData;
-		}
-		const sign = value > 0 ? "+" : "";
-		return `${sign}${Math.round(value)}%`;
+		return formatSignedPercentage(value);
 	}
 
 	formatMargin(value) {
-		if (value === null || value === undefined) {
-			return this.noData;
-		}
-		return formatMonetary(value, { currencyId: this.props.kpis.currency_id });
+		return formatMargin(value, this.props.kpis.currency_id);
 	}
 
 	get hoursDeviationTooltip() {
-		if (this.props.kpis.hours_deviation !== null) {
-			return "";
-		}
-		if (!this.props.config.can_see_sale_data || !this.props.config.can_see_timesheet_data) {
-			return _t("You do not have access to the hours data of these projects.");
-		}
-		return _t("No project in this selection has sold hours to compare against.");
+		return hoursDeviationTooltip(this.props.kpis, this.props.config);
 	}
 
 	get deviationClass() {
-		const value = this.props.kpis.hours_deviation;
-		if (value === null || value === undefined) {
-			return "text-muted";
-		}
-		return value > 0 ? "text-warning" : "text-success";
+		return TONE_CLASSES[hoursDeviationTone(this.props.kpis.hours_deviation)];
 	}
 
 	get marginClass() {
-		const value = this.props.kpis.margin_estimate;
-		if (value === null || value === undefined) {
-			return "text-muted";
-		}
-		return value < 0 ? "text-danger" : "";
+		return TONE_CLASSES[marginTone(this.props.kpis.margin_estimate)] || "";
 	}
 }

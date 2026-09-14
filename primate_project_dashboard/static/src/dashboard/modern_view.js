@@ -1,4 +1,5 @@
 import { Component } from "@odoo/owl";
+import { ModernKpiCards } from "./modern_kpi_cards";
 import { dashboardViewProps } from "./view_props";
 
 /**
@@ -7,5 +8,6 @@ import { dashboardViewProps } from "./view_props";
  */
 export class DashboardModernView extends Component {
 	static template = "primate_project_dashboard.DashboardModernView";
+	static components = { ModernKpiCards };
 	static props = dashboardViewProps;
 }

@@ -36,6 +36,13 @@
 	--ppd-health-critical: #{$o-danger};
 	--ppd-health-no-plan: #{$gray-400};
 
+	// El semáforo como color de texto: mezclado con el texto primario para que un número
+	// naranja o rojo se lea sobre la card (el naranja puro no llega a 3:1 sobre blanco).
+	// Deriva de --ppd-text-primary, así que en oscuro se aclara solo, sin re-declararlo.
+	--ppd-health-on-track-text: color-mix(in srgb, var(--ppd-health-on-track) 70%, var(--ppd-text-primary));
+	--ppd-health-at-risk-text: color-mix(in srgb, var(--ppd-health-at-risk) 70%, var(--ppd-text-primary));
+	--ppd-health-critical-text: color-mix(in srgb, var(--ppd-health-critical) 70%, var(--ppd-text-primary));
+
 	// Tipografía: la fuente de Odoo, con más peso y más escala que la clásica.
 	--ppd-title-size: 1.75rem;
 	--ppd-section-title-size: 1.05rem;

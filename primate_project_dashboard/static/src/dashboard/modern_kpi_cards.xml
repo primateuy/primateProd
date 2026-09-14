@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ModernKpiCards">
+		<div class="o_ppd_kpi_row">
+			<div t-foreach="cards" t-as="card" t-key="card.key"
+				class="o_ppd_card o_ppd_kpi" t-att-class="'o_ppd_color_' + card.color"
+				t-att-data-kpi="card.key">
+				<span class="o_ppd_kpi_badge" aria-hidden="true">
+					<i t-att-class="'fa ' + card.icon"/>
+				</span>
+				<div class="o_ppd_kpi_body">
+					<div class="o_ppd_kpi_label" t-esc="card.label"/>
+					<div class="o_ppd_kpi_value" t-att-class="card.tone ? 'o_ppd_tone_' + card.tone : ''"
+						t-att-title="card.tooltip" t-esc="card.value"/>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>
