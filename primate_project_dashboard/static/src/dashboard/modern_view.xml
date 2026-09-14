@@ -10,6 +10,7 @@
 				loadingMore="props.loadingMore"
 				onOpenProject="props.onOpenProject" onLoadMore="props.onLoadMore"/>
 			<ModernTaskDonut areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
+			<ModernAreaWorkload areas="props.data.areas" onOpenTasks="props.onOpenAreaTasks"/>
 		</div>
 	</t>
 

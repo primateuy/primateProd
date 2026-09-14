@@ -1,4 +1,5 @@
 import { Component } from "@odoo/owl";
+import { initialOf } from "./area_format";
 import { NO_DATA } from "./kpi_format";
 import * as projectFormat from "./project_format";
 
@@ -30,8 +31,7 @@ export class ModernProjectList extends Component {
 	}
 
 	initial(row) {
-		const match = (row.name || "").match(/[\p{L}\p{N}]/u);
-		return match ? match[0].toUpperCase() : "?";
+		return initialOf(row.name);
 	}
 
 	/** La fila es un botón: Enter y espacio abren el proyecto, como el click. */

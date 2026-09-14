@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="primate_project_dashboard.ModernAreaWorkload">
+		<section class="o_ppd_card o_ppd_workload">
+			<h2 class="o_ppd_section_title o_ppd_card_title">Workload by area</h2>
+
+			<div t-if="!props.areas.length" class="o_ppd_empty">
+				<i class="fa fa-users" aria-hidden="true"/>
+				<span>No work areas configured.</span>
+			</div>
+			<ul t-else="" class="o_ppd_area_list list-unstyled mb-0">
+				<!-- La ocupación usa las clases del semáforo: mismos umbrales que la tarjeta clásica. -->
+				<li t-foreach="rows" t-as="row" t-key="row.area.area"
+					class="o_ppd_area" t-att-class="'o_ppd_health_' + row.state" t-att-data-area="row.area.area">
+					<span class="o_ppd_area_initial" t-att-class="'o_ppd_color_' + row.color"
+						aria-hidden="true" t-esc="row.initial"/>
+					<div class="o_ppd_area_main">
+						<div class="o_ppd_area_name" t-esc="row.area.name"/>
+						<!-- Los mismos cuatro links que la tarjeta clásica, con los mismos targets. -->
+						<div class="o_ppd_area_links">
+							<a href="#" class="o_ppd_area_link" data-metric="open"
+								t-on-click.prevent="() => props.onOpenTasks(row.area.area, 'open')">
+								<t t-esc="row.area.open_tasks"/> open tasks
+							</a>
+							<a href="#" class="o_ppd_area_link o_ppd_link_critical" data-metric="blocked"
+								t-on-click.prevent="() => props.onOpenTasks(row.area.area, 'blocked')">
+								<t t-esc="row.area.blocked_tasks"/> blocked
+							</a>
+							<a href="#" class="o_ppd_area_link o_ppd_link_at_risk" data-metric="waiting"
+								t-on-click.prevent="() => props.onOpenTasks(row.area.area, 'waiting')">
+								<t t-esc="row.area.waiting_tasks"/> waiting for customer
+							</a>
+							<a href="#" class="o_ppd_area_link o_ppd_link_critical" data-metric="overdue"
+								t-on-click.prevent="() => props.onOpenTasks(row.area.area, 'overdue')">
+								<t t-esc="row.area.overdue_tasks"/> overdue
+							</a>
+						</div>
+						<div t-if="row.area.pm_note" class="o_ppd_pm_note" t-att-title="row.area.pm_note_date"
+							t-esc="row.area.pm_note"/>
+					</div>
+					<div class="o_ppd_area_capacity">
+						<div class="o_ppd_bar" role="img" t-att-aria-label="row.tooltip" t-att-title="row.tooltip">
+							<div class="o_ppd_bar_fill" t-att-style="'width: ' + row.width"/>
+						</div>
+					</div>
+					<span class="o_ppd_area_pct" t-att-title="row.tooltip" t-esc="row.label"/>
+				</li>
+			</ul>
+		</section>
+	</t>
+
+</templates>

@@ -88,6 +88,33 @@
 		color: var(--ppd-text-secondary);
 	}
 
+	// Barra fina compartida (proyectos, ocupación por área): el track es sólo el fondo;
+	// el relleno lo fija --ppd-bar-color y es siempre el semáforo.
+	.o_ppd_bar {
+		position: relative;
+		height: 0.5rem;
+		border-radius: 999px;
+		background-color: var(--ppd-track);
+	}
+
+	.o_ppd_bar_fill {
+		height: 100%;
+		border-radius: inherit;
+		background-color: var(--ppd-bar-color);
+	}
+
+	@each $state, $token in (on_track: on-track, at_risk: at-risk, critical: critical) {
+		.o_ppd_health_#{$state} {
+			--ppd-bar-color: var(--ppd-health-#{$token});
+		}
+	}
+
+	// Sin plan (o sin equipo en el área): gris apagado. No es un riesgo medido, es un dato
+	// que falta.
+	.o_ppd_health_no_plan {
+		--ppd-bar-color: var(--ppd-health-no-plan);
+	}
+
 	.o_ppd_modern_view {
 		display: flex;
 		flex-direction: column;

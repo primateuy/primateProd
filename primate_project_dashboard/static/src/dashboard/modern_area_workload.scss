@@ -1,0 +1,124 @@
+// Carga por área de la vista moderna. La barra y sus colores son los del tema
+// (.o_ppd_bar + .o_ppd_health_*); acá sólo va la disposición de cada fila.
+
+.o_primate_dashboard .o_ppd_modern {
+	.o_ppd_workload {
+		container-type: inline-size;
+	}
+
+	// Angosto: inicial a la izquierda, nombre y % arriba, la barra debajo.
+	.o_ppd_area {
+		display: grid;
+		grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+		grid-template-areas:
+			"initial main pct"
+			"initial capacity capacity";
+		align-items: center;
+		column-gap: 0.75rem;
+		row-gap: 0.5rem;
+		padding: 0.75rem 0.5rem;
+
+		& + .o_ppd_area {
+			box-shadow: inset 0 1px 0 var(--ppd-divider);
+		}
+	}
+
+	// El color del área, el mismo de su segmento en el donut: anillo sólido y fondo tintado.
+	.o_ppd_area_initial {
+		grid-area: initial;
+		align-self: start;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		font-weight: var(--ppd-weight-bold);
+		color: var(--ppd-text-primary);
+		background-color: color-mix(in srgb, var(--ppd-swatch) var(--ppd-tint), var(--ppd-card-bg));
+		box-shadow: inset 0 0 0 2px var(--ppd-swatch);
+	}
+
+	.o_ppd_area_main {
+		grid-area: main;
+		min-width: 0;
+	}
+
+	.o_ppd_area_name {
+		overflow: hidden;
+		font-weight: var(--ppd-weight-semibold);
+		color: var(--ppd-text-primary);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	// Angosto: dos por renglón y sin separadores (partidos en varias líneas, los "·"
+	// quedaban al principio de renglón).
+	.o_ppd_area_links {
+		display: grid;
+		grid-template-columns: repeat(2, max-content);
+		gap: 0 1rem;
+		font-size: var(--ppd-label-size);
+	}
+
+	.o_ppd_area_link {
+		color: var(--ppd-text-secondary);
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			text-decoration: underline;
+		}
+	}
+
+	// Como en la tarjeta clásica: bloqueadas y vencidas en rojo, esperando al cliente en
+	// naranja. Variante de texto chico para que se lean.
+	.o_ppd_link_critical {
+		color: var(--ppd-health-critical-text-sm);
+	}
+
+	.o_ppd_link_at_risk {
+		color: var(--ppd-health-at-risk-text-sm);
+	}
+
+	.o_ppd_area_capacity {
+		grid-area: capacity;
+		min-width: 0;
+	}
+
+	.o_ppd_area_pct {
+		grid-area: pct;
+		// Angosto: a la altura del nombre, no a media altura de los links.
+		align-self: start;
+		min-width: 2.75rem;
+		font-weight: var(--ppd-weight-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--ppd-text-primary);
+		text-align: end;
+	}
+
+	@container (min-width: 40rem) {
+		.o_ppd_area {
+			grid-template-columns: 2.25rem minmax(12rem, 1.2fr) minmax(8rem, 1fr) 3.25rem;
+			grid-template-areas: "initial main capacity pct";
+			column-gap: 1rem;
+		}
+
+		.o_ppd_area_pct {
+			align-self: center;
+		}
+
+		// Ancho: en un renglón, separados con un punto.
+		.o_ppd_area_links {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0 0.5rem;
+		}
+
+		.o_ppd_area_link + .o_ppd_area_link::before {
+			content: "·";
+			margin-inline-end: 0.5rem;
+			color: var(--ppd-text-secondary);
+		}
+	}
+}

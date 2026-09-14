@@ -1,48 +1,11 @@
 import { Component, useState } from "@odoo/owl";
+import { areaColors } from "./area_format";
 
 // Geometría del anillo en unidades del viewBox (120 x 120).
 const RADIUS = 48;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 // Separación entre segmentos, en las mismas unidades. Con un solo segmento no hay.
 const GAP = 2.5;
-
-// Orden de uso de la paleta: tres acentos de color, el gris azulado recién como cuarto
-// (en este dashboard el gris ya dice "sin plan", no conviene dárselo a un área grande),
-// y desde la quinta área las variantes de luminosidad.
-const PREFERRED_COLORS = ["blue", "violet", "teal"];
-const FALLBACK_COLORS = ["slate", "blue_alt", "violet_alt", "teal_alt", "slate_alt"];
-
-/** Hash chico y determinístico: el mismo code da el mismo número en cualquier base. */
-function codeHash(code) {
-	let hash = 0;
-	for (const char of code || "") {
-		hash = (hash * 31 + char.codePointAt(0)) >>> 0;
-	}
-	return hash;
-}
-
-/**
- * Color por área, atado al code y no a la posición. Cada área prefiere el acento que le
- * toca por su code; si ya lo tomó un área anterior del catálogo, pasa al siguiente acento
- * libre y, agotados los tres, al resto de la paleta en orden. Con cuatro áreas o menos no
- * se repite ningún color, y sumar un área al final del catálogo no le cambia el color a
- * las demás. Con más de ocho se repite: la leyenda las nombra.
- */
-export function areaColors(areas) {
-	const taken = new Set();
-	const colors = {};
-	for (const area of areas) {
-		const preferred = codeHash(area.area) % PREFERRED_COLORS.length;
-		const candidates = [
-			...PREFERRED_COLORS.map((_, step) => PREFERRED_COLORS[(preferred + step) % PREFERRED_COLORS.length]),
-			...FALLBACK_COLORS,
-		];
-		const color = candidates.find((candidate) => !taken.has(candidate)) || PREFERRED_COLORS[preferred];
-		taken.add(color);
-		colors[area.area] = color;
-	}
-	return colors;
-}
 
 /** Porcentajes enteros que suman 100 (resto mayor): la leyenda no puede decir 99%. */
 export function roundedShares(counts) {

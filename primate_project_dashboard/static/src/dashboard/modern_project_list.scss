@@ -3,8 +3,6 @@
 // (container query), no del de la ventana: la misma lista sirve a pantalla completa
 // y dentro de una columna de la grilla.
 
-$ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
-
 .o_primate_dashboard .o_ppd_modern {
 	.o_ppd_projects {
 		container-type: inline-size;
@@ -113,19 +111,6 @@ $ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
 		min-width: 0;
 	}
 
-	.o_ppd_bar {
-		position: relative;
-		height: 0.5rem;
-		border-radius: 999px;
-		background-color: var(--ppd-track);
-	}
-
-	.o_ppd_bar_fill {
-		height: 100%;
-		border-radius: inherit;
-		background-color: var(--ppd-bar-color);
-	}
-
 	// Avance planificado: la raya que explica por qué la barra está en rojo.
 	.o_ppd_bar_marker {
 		position: absolute;
@@ -168,17 +153,6 @@ $ppd-health-tokens: (on_track: on-track, at_risk: at-risk, critical: critical);
 			background-color: var(--ppd-bar-color);
 			vertical-align: 0.05em;
 		}
-	}
-
-	@each $state, $token in $ppd-health-tokens {
-		.o_ppd_health_#{$state} {
-			--ppd-bar-color: var(--ppd-health-#{$token});
-		}
-	}
-
-	// Sin plan: gris apagado. No es un riesgo medido, es un dato que falta.
-	.o_ppd_health_no_plan {
-		--ppd-bar-color: var(--ppd-health-no-plan);
 	}
 
 	.o_ppd_project_meta {
